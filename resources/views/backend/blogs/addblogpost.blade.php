@@ -33,11 +33,10 @@
                 </select>
             </div>
 
-            {{-- <Button class="btn btn-primary">click</Button> --}}
             <div class="form-group shadow-textarea">
                 <label>Main story</label>
-                <textarea id="blo-details" name="blo_details" class="form-control" placeholder="Write The Content Here..."></textarea>
-                {{-- <trix-editor input="blo-details"></trix-editor> --}}
+            <textarea id="blo-details" name="blo_details" class="form-control" placeholder="Write The Content Here..."></textarea>
+                
             </div>
 
             <div class="form-group">

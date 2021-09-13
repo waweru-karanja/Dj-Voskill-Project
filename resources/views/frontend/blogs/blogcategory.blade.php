@@ -1,5 +1,5 @@
 @extends('frontend.master')
-@section('title','post category')
+@section('title','$blogcategorys->blogcat_title')
 @section('content')
 <section class="single-layout">
   <div class="container">
@@ -25,7 +25,7 @@
                                 <!--comments for the article-->
                                 {{-- <a href="#"><i class="fa fa-comments"><span>{{ count($blog->blogcomments) }} Comments</span></i></a> --}}
 
-                                <p class="card-text">{{ str_limit($blog->blo_details,255)}}
+                                <p class="card-text">{!!str_limit($blog->blo_details,255)!!}
                                     <div class="stage">
                                     <a href="{{ url('blog/post/'.Str::slug($blog->blo_title).'/'.$blog->id) }}">Read More</a>
                                     </div>
@@ -39,23 +39,6 @@
         <div class="d-flex justify-content-center">
           {!! $blogposts->links() !!}
         </div>
-        <!-- Archive posts -->
-        {{-- <div class="archive-posts theiaStickySidebar">
-          <h2></h2>
-          @foreach ($blogposts as $blog)
-          <div class="card mb-5" style="background: white; border:2px solid black">
-            <h4><a href="{{ url('blogpost/'.Str::slug($blog->blo_title).'/'.$blog->id) }}"><span>{{ $blog->id }}.</span>{{ $blog->blo_title }}</a></h4>
-          </div>
-          @endforeach
-          {{-- @if (count($blogcategorys)>0)
-          
-          @else
-           <h3>No Trending News Or Music Releases Found</h3>
-          @endif 
-      </div> --}}
-      {{-- <div class="d-flex justify-content-center">
-            {!! $blogcategorys->links() !!}
-       </div> --}}
       </div>
       @include('frontend.blogsidebar')
     </div>

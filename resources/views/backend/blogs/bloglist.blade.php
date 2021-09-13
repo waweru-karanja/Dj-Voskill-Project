@@ -36,7 +36,7 @@
                     <td>{{$post->id}}</td>
                     <td>{{$post->blo_title}}</td>
                     <td>{{$post->blogcategor->blogcat_title }}</td>
-                    <td>{{$post->blo_details}}</td>
+                    <td>{!!$post->blo_details!!}</td>
                     <td><img src="{{ asset ('blogposts/'.$post->blo_image) }}" style="width:100px; height:100px;"></td>
                     <td>
                         <a class="btn btn-info" href="{{ url('admin/blogpost/'.$post->id.'/edit')}}">Update</a>

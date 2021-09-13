@@ -51,13 +51,6 @@ class Mix_Controller extends Controller
        
 
         $mix_id=DB::table('mixxes')->latest()->first();
-        
-        // if($request->mix_audio('mix_audio')){
-        //     $file=$request->mix_audio('mix_audio');
-        //     $filename=$request->get('mix_name').'.'.$file->getClientOriginalExtension();
-        //     $requestfile->file->move('mixtapes/',$filename);
-        //     $mix->file= $filename;
-        // }
 
         $file=$request->file('mix_audio');
         if($file->isValid())

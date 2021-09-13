@@ -22,6 +22,7 @@ class User extends Authenticatable
         'is_admin',
         'password',
         'avatar',
+        'role_id',
     ];
     
     // public function IsAdmin(){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blogtag;
 use App\Models\Blogpost;
 use App\Models\Blogcategory;
+use App\Models\Commentreply;
 use App\Models\Events_Model;
 use App\Models\Mixxes_Model;
 use App\Models\Postcomments;
@@ -69,13 +70,16 @@ class Home_Controller extends Controller
     public function postdetails (Request $request,$slug,$post_id){
         $events=Events_Model::latest()->take(4)->get();
         $cats=Blogcategory::all();
+
         Blogpost::find($post_id)->increment('views');
         $postdetails=Blogpost::find($post_id);
         $recent_posts= Blogpost::latest()->limit(5)->get();
         $posttags=Blogtag::all();
         $relatedposts=Blogpost::where('id',"!=",$post_id)->take(4)->get();
-        $postcomments=Postcomments::where('post_id',$post_id)->get(); 
-        return view('frontend.blogs.blogpost',['events'=>$events,'cats'=>$cats,'postdetails'=>$postdetails,'recent_posts'=>$recent_posts,'posttags'=>$posttags,'postcomments'=>$postcomments,'relatedposts'=>$relatedposts]);
+        $postcomments=Postcomments::where('post_id',$post_id)->get();
+        // $commentreplies=Commentreply::where('comment_id',$comment_id)->get();
+
+        return view('frontend.blogs.blogpost',compact('events','recent_posts','posttags','relatedposts','postcomments','cats','postdetails'));
     }
 
     // public function saveblogcomment (Request $request,$slug,$id){
@@ -112,14 +116,25 @@ class Home_Controller extends Controller
         return view('frontend.blogs.blogcategory',['events'=>$events,'cats'=>$cats,'blogcategorys'=>$blogcategorys,'recent_posts'=>$recent_posts,'posttags'=>$posttags,'blogposts'=>$blogposts]);
     }
 
-    public function posttags (Request $request,$tag_slug, $blogtag_id)
+    public function blogtag (Request $request, $tag_slug,$tag_id)
     {
-        $posttags=Blogtag::find($blogtag_id);
+        $events=Events_Model::latest()->take(4)->get();
+        $tags=Blogtag::all();
+        $posttags=Blogtag::all();
+        $cats=Blogcategory::all();
+        $blogtag=Blogtag::find($tag_id);
         $blogposts=Blogpost::orderBy('id','desc')->paginate(3);
         $recent_posts= Blogpost::latest()->limit(5)->get();
-
-        return view('frontend.blogs.posttags',['recent_posts'=>$recent_posts,'posttags'=>$posttags,'blogposts'=>$blogposts]);
+        return view('frontend.blogs.posttags',['cats'=>$cats,'posttags'=>$posttags,'blogposts'=>$blogposts,'events'=>$events,'tags'=>$tags,'blogtag'=>$blogtag,'recent_posts'=>$recent_posts,'blogposts'=>$blogposts]);
     }
+    // public function posttags (Request $request,$tag_slug, $blogtag_id)
+    // {
+    //     $posttags=Blogtag::find($blogtag_id);
+    //     $blogposts=Blogpost::orderBy('id','desc')->paginate(3);
+    //     $recent_posts= Blogpost::latest()->limit(5)->get();
+
+    //     return view('frontend.blogs.posttags',['recent_posts'=>$recent_posts,'posttags'=>$posttags,'blogposts'=>$blogposts]);
+    // }
 
     
     

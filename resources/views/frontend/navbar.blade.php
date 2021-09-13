@@ -1,299 +1,230 @@
-<!-- header -->
-		{{-- <header id="header" style="background-image: url('dist/frontend/images/DjVoskillLogo.jpg');background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;">
-			<!-- logo -->
-			<strong class="logo">
-				<a href="index.html">
-					<img class="logo-desktop" src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill">
-					<img class="logo-mobile" src="dist/frontend/images/DjVoskillLogomobile.png" alt="Dj Voskill">
-				</a>
-			</strong>	
-			<!-- slogan -->
-			{{-- <strong class="slogan">Dj Voskill</strong> 
-			
-		</header> --}}
-        {{-- panel --}}
-        <div class="panel">
-            {{-- nav-holder  --}}
-            <div class="site-mobile-menu site-navbar-target">
-                <div class="site-mobile-menu-header">
-                  <div class="site-mobile-menu-close mt-3">
-                    <span class="icon-close2 js-menu-toggle"></span>
-                  </div>
-                </div>
-                <div class="site-mobile-menu-body"></div>
-              </div> 
-              <!-- .site-mobile-menu -->
-            <div class="nav-holder">
-                {{-- nav --}}
-                <nav id="nav">
-                    <header class="site-navbar mt-3">
-                        <div class="container-fluid">
-                          <div class="row align-items-center">
-                            <div class="site-logo col-6"><a href="index.html">Brand</a></div>
-                      
-                            <nav class="mx-auto site-navigation">
-                              <ul class="site-menu js-clone-nav d-none d-xl-block ml-0 pl-0">
-                                <li><a href="index.html" class="nav-link active">Home</a></li>
-                                <li><a href="about.html">About</a></li>
-                                <li class="has-children">
-                                  <a href="job-listings.html">Job Listings</a>
-                                  <ul class="dropdown">
-                                    <li><a href="job-single.html">Job Single</a></li>
-                                    <li><a href="post-job.html">Post a Job</a></li>
-                                  </ul>
-                                </li>
-                                <li class="has-children">
-                                  <a href="services.html">Pages</a>
-                                  <ul class="dropdown">
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="service-single.html">Service Single</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="portfolio-single.html">Portfolio Single</a></li>
-                                    <li><a href="testimonials.html">Testimonials</a></li>
-                                    <li><a href="faq.html">Frequently Ask Questions</a></li>
-                                    <li><a href="gallery.html">Gallery</a></li>
-                                  </ul>
-                                </li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contact</a></li>
-                                <li class="d-lg-none"><a href="post-job.html"><span class="mr-2">+</span> Post a Job</a></li>
-                                <li class="d-lg-none"><a href="login.html">Log In</a></li>
-                              </ul>
-                            </nav>
-                            
-                            <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
-                              <div class="ml-auto">
-                                <a href="post-job.html" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-add"></span>Post a Job</a>
-                                <a href="login.html" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span class="mr-2 icon-lock_outline"></span>Log In</a>
-                              </div>
-                              <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span class="icon-menu h3 m-0 p-0 mt-2"></span></a>
-                            </div>
-                      
-                          </div>
-                        </div>
-                      </header>
-                    {{-- <strong class="logo-panel"><a href="{{route ('index') }}"><img src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill"></a></strong>
-                    <ul>
-                        <li class="{{'/'==request()->path()?'active':' ' }}"><a href="{{route ('index') }}">Home</a></li>
-                        <li class="{{'contact'==request()->path()?'active':' ' }}"><a href="{{route ('contact') }}">Contact Us</a></li>
-                        <li class="{{'audiomixtapes'==request()->path()?'active':' ' }}"><a href="{{route ('audiomixtapes') }}">Mixtapes</a></li>
-                        <li class="{{'events'==request()->path()?'active':' ' }}"><a href="{{route ('events') }}">Events</a></li>
-                        <li class="menu-item menu-item--expanded {{'blog'==request()->path()?'active':' ' }}">
-                            <a href="{{ route ('blog') }}">Blog</a>
-                            <ul class="menu {{'blog/*'==request()->path()?'active':' ' }}">
-                                <li class="menu-item {{'blog/category'==request()->path()?'active':' ' }}">
-                                    <?php $cats=DB::table('blogcategories')->get();?>
-                                    @foreach ( $cats as $cat )
-                                       <li><a class="dropdown-item" href="{{ url('blog/category/'.Str::slug($cat->blogcat_title).'/'.$cat->id) }}">{{ Ucwords($cat->blogcat_title) }}</a></li>
-                                    @endforeach
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="float-right">
-                        {{-- <li class="nav-item">
-                            <a href="#!" class="nav-link navbar-link-2 waves-effect">
-                            <i class="fas fa-shopping-cart pl-0"></i>
-                            </a>
-                        </li>
-                        @guest
-                        <li class="nav-item">
-                            <a class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Log In/Sign Up
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#LogInModal">Log in</a></li>
-                                {{-- href="{{ url ('login') }}" 
-                                <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#RegistrationModal">Register</a>
-                                {{-- href="{{ url ('register') }}" 
-                            </ul>
-                        </li>
-                        @else
-                        <li class="nav-item">
-                            <a href="{{ route('userprofile.show',Auth::user()->id)}}">My Account</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('logout') }}">Log Out</a>
-                        </li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="post">
-                            @csrf
-                        </form>
-                        @endguest
-    
-                        
-           
-                    </ul> --}}
-                </nav>
-            </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="{{ asset('dist/frontend/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+
+      <!--fontawesome-->
+       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" 
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+          <link rel="stylesheet" href="style.css">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+    <title>Navbar</title>
+  </head>
+  
+  
+  <body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="container-fluid px-lg-5">
+      <nav class="navbar navbar-expand-lg my-navbar">
+  <a class="navbar-brand" href="#"><span class="logo">
+    <img src="img/logo5.png" class="img-fluid" style="width:30px; margin:-3px 0px 0px 0px;">Vishweb design</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"><i class="fas fa-bars" style="margin:5px 0px 0px 0px;"></i></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav m-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Products<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Downloads</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#">Enterprice</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Pricing
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
         </div>
-          header --}}
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Blog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Resources</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="header-btn my-2 my-sm-0" type="submit">Subscribe free</button>
+    </form>
+  </div>
+</nav>
 
-
-          {{-- <!-- header -->
-		<header id="header" style="background-image: url('dist/frontend/images/DjVoskillLogo.jpg');background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: cover;">
-			<!-- logo -->
-			<strong class="logo">
-				<a href="index.html">
-					<img class="logo-desktop" src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill">
-					<img class="logo-mobile" src="dist/frontend/images/DjVoskillLogomobile.png" alt="Dj Voskill">
-				</a>
-			</strong>	
-			<!-- slogan -->
-			{{-- <strong class="slogan">Dj Voskill</strong> --}}
-			
-		</header>
-    <!-- panel
-    <div class="panel">
-        <!-- nav-holder 
-        <a class="opener" href="#"><span>Menu</span></a>
-        <div class="nav-holder">
-            <!-- nav
-            <nav id="nav">
-                <strong class="logo-panel"><a href="{{route ('index') }}"><img src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill"></a></strong>
-                <ul>
-                    <li class="{{'/'==request()->path()?'active':' ' }}"><a href="{{route ('index') }}">Home</a></li>
-                    <li class="{{'contact'==request()->path()?'active':' ' }}"><a href="{{route ('contact') }}">Contact Us</a></li>
-                    <li class="{{'audiomixtapes'==request()->path()?'active':' ' }}"><a href="{{route ('audiomixtapes') }}">Mixtapes</a></li>
-                    <li class="{{'events'==request()->path()?'active':' ' }}"><a href="{{route ('events') }}">Events</a></li>
-                    <li class="menu-item menu-item--expanded {{'blog'==request()->path()?'active':' ' }}">
-                        <a href="{{ route ('blog') }}">Blog</a>
-                        <ul class="menu {{'blog/*'==request()->path()?'active':' ' }}">
-                            <li class="menu-item {{'blog/category'==request()->path()?'active':' ' }}">
-                                <?php $cats=DB::table('blogcategories')->get();?>
-                                @foreach ( $cats as $cat )
-                                   <li><a class="dropdown-item" href="{{ url('blog/category/'.Str::slug($cat->blogcat_title).'/'.$cat->id) }}">{{ Ucwords($cat->blogcat_title) }}</a></li>
-                                @endforeach
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="float-right">
-                    {{-- <li class="nav-item">
-                        <a href="#!" class="nav-link navbar-link-2 waves-effect">
-                        <i class="fas fa-shopping-cart pl-0"></i>
-                        </a>
-                    </li> --}}
-                    @guest
-                    <li class="nav-item">
-                        <a class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Log In/Sign Up
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#LogInModal">Log in</a></li>
-                            {{-- href="{{ url ('login') }}" --}}
-                            <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#RegistrationModal">Register</a>
-                            {{-- href="{{ url ('register') }}" --}} 
-                        </ul>
-                    </li>
-                    @else
-                    <li class="nav-item">
-                        <a href="{{ route('userprofile.show',Auth::user()->id)}}">My Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url('logout') }}">Log Out</a>
-                    </li>
-                    <form id="logout-form" action="{{ route('logout') }}" method="post">
-                        @csrf
-                    </form>
-                    @endguest
-
-                    
-       
-                </ul>
-            </nav>
-        </div>
     </div>
-      {{-- header --}} 
+  </div>
 
-
-
-
-
-
-
-      <!-- header -->
-		<header id="header" style="background-image: url('dist/frontend/images/DjVoskillLogo.jpg');background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;">
-<!-- logo -->
-<strong class="logo">
-<a href="index.html">
-  <img class="logo-desktop" src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill">
-  <img class="logo-mobile" src="dist/frontend/images/DjVoskillLogomobile.png" alt="Dj Voskill">
-</a>
-</strong>	
-<!-- slogan
-<strong class="slogan">Dj Voskill</strong> -->
 
 </header>
- {{-- panel --}}
-<div class="panel" style="border:2px solid rgb(214, 70, 70);
-                        box-shadow: 0px 10px 10px 3px rgba(0, 0, 0, 0.3);
-                        background-color: rgb(248, 248, 248);">
-    
-    
-  <!-- Header End -->
-    <a class="opener" href="#"><span>Menu</span></a>
-    <div class="nav-holder">
-            {{-- nav  --}}
-        <nav id="nav">
-            <strong class="logo-panel"><a href="{{route ('index') }}"><img src="dist/frontend/images/DjVoskillLogo.jpg" alt="Dj Voskill"></a></strong>
-            <ul>
-                <li class="{{'/'==request()->path()?'active':' ' }}"><a href="{{route ('index') }}">Home</a></li>
-                <li class="{{'contact'==request()->path()?'active':' ' }}"><a href="{{route ('contact') }}">Contact Us</a></li>
-                <li class="{{'audiomixtapes'==request()->path()?'active':' ' }}"><a href="{{route ('audiomixtapes') }}">Mixtapes</a></li>
-                <li class="{{'events'==request()->path()?'active':' ' }}"><a href="{{route ('events') }}">Events</a></li>
-                <li class="menu-item menu-item--expanded dropdown {{'blog'==request()->path()?'active':' ' }}">
-                    <a href="{{ route ('blog') }}">Blog</a>
-                    <ul class="menu {{'blog/*'==request()->path()?'active':' ' }}">
-                        <li class="menu-item {{'blog/category'==request()->path()?'active':' ' }}">
-                            <?php $cats=DB::table('blogcategories')->get();?>
-                            @foreach ( $cats as $cat )
-                               <li><a class="dropdown-item" href="{{ url('blog/category/'.Str::slug($cat->blogcat_title).'/'.$cat->id) }}">{{ Ucwords($cat->blogcat_title) }}</a></li>
-                            @endforeach
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="login-signup" style="float: right;">
-                 {{-- <li class="nav-item">
-                    <a href="#!" class="nav-link navbar-link-2 waves-effect">
-                    <i class="fas fa-shopping-cart pl-0"></i>
-                    </a>
-                </li>  --}}
-                @guest
-                <li class="nav-item">
-                    <a class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Log In/Sign Up
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#LogInModal">Log in</a></li>
-                        {{-- href="{{ url ('login') }}"  --}}
-                        <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#RegistrationModal">Register</a></li>
-                        {{-- href="{{ url ('register') }}"  --}}
-                    </ul>
-                </li>
-                @else
-                <li class="nav-item">
-                    <a href="{{ route('userprofile.show',Auth::user()->id)}}">My Account</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('logout') }}">Log Out</a>
-                </li>
-                <form id="logout-form" action="{{ route('logout') }}" method="post">
-                    @csrf
-                </form>
-                @endguest
 
-                
-   
-            </ul>
-        </nav>
+<section class="content-banner">
+
+  <div class="container">
+<div class="row d-flex justify-content-center">
+  <div class="col-md-12">
+    <div class="banner-con text-center">
+      <p class="first-title">vishweb design tutorials &amp; subscribe</p>
+      <p class="banner-des">prototype,design,collaborate and design system all in mockplus</p>
+      <a href="https://www.youtube.com/results?search/query=vishweb+design" target="_blank" class="banner-btn">Get started for free</a>
     </div>
 </div>
-{{-- header --}} 
+</div>
+</div>
+</section>
+
+<div class="main-content">
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+  <section>
+     <div class="container">
+            <h2>Your journey starts here.</h2>
+            <p> This is it. You've made it so far. There is no going back.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta iste molestias vel commodi, quae quaerat ex numquam. Consectetur corporis explicabo, qui labore, repellat dignissimos illo molestias maxime nisi a consequuntur?</p>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit fuga autem dolore, ex nobis, iste quasi, asperiores esse repellendus tempore, obcaecati numquam minima maxime! Laboriosam, ut ipsam magnam corporis aut.</p>
+            <h3>Get lost and find yourself.</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi placeat dolor molestias facere veritatis culpa amet fugiat debitis dolorem qui quidem consequuntur mollitia, nesciunt pariatur voluptatum! Dolor accusamus labore, sequi.</p>
+        </div>
+  </section>
+
+  </div>
+
+   
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+  <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+  <script type="text/javascript">
+    $(function(){
+      var navbar = $('.header-inner');
+      $(window).scroll(function(){
+        if($(window).scrollTop() <=40){
+          navbar.removeClass('navbar-scroll');
+        }else{
+          navbar.addClass('navbar-scroll');
+        }
+      });
+    });
+  </script>
+ 
+  
+
+  
+  </body>
+</html>

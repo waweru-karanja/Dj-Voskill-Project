@@ -22,7 +22,7 @@
                     <td>{{ $blogcomment->user->name }}</td>
                     <td>{{ $blogcomment->comment }}</td>
                     <td>
-                        <a class="btn btn-primary" href="{{ url('post/'.Str::slug($blogcomment->blogposts->blo_title).'/'.$blogcomment->blogposts->id) }}">View Post</a>
+                        <a class="btn btn-primary" href="{{ url('blog/post/'.Str::slug($blogcomment->blogposts->blo_title).'/'.$blogcomment->blogposts->id) }}">View Post</a>
                     <td>
                         <a class="btn btn-info" href="{{ url('admin/blogcomments/'.$blogcomment->id.'/delete')}}">Delete</a>
                     </td>

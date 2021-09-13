@@ -83,6 +83,10 @@ class Admins_Controller extends Controller
              $user->roles()->sync($role);
              $user->update(['is_admin'=>0]);
          }
+
+         $user->role_id=$request->rolename;
+         $user->save();
+
         //  dd($role);
         return redirect()->route('admins.index')->withsuccess (Ucwords($user->name). 'has been Assigned Another Role');
     }

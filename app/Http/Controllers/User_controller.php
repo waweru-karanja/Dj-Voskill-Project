@@ -82,6 +82,8 @@ class User_controller extends Controller
             $user->update(['is_admin'=>1]);
         }
 
+        $user->role_id=$request->rolename;
+        $user->save();
         // dd($role);
         return redirect()->route('users.index')->withsuccess (Ucwords($user->name). 'has been Updated Successfully');
         

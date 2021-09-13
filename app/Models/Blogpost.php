@@ -11,9 +11,6 @@ class Blogpost extends Model
     protected $table = 'blogposts';
     protected $fillable = ['user_id','cat_id','blo_image','tag_id','blo_details','blo_title'];
 
-    function blogcomments(){
-        return $this->belongsTo('App\Models\Blogpost','blogcomments','id'); 
-    }
     function postcomments(){
         return $this->hasMany('App\Models\Blogpost'); 
     }

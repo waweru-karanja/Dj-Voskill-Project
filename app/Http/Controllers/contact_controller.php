@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Events_Model;
 use Illuminate\Http\Request;
 use App\Mail\ContactFormMail;
+use App\Models\Bookingcategory;
 use Illuminate\Support\Facades\Mail;
 
 class contact_controller extends Controller
@@ -16,8 +17,9 @@ class contact_controller extends Controller
      */
     public function index()
     {
+        $bookingcats=Bookingcategory::all();
         $events=Events_Model::latest()->take(4)->get();
-        return view('frontend.contact',['events'=>$events]);
+        return view('frontend.contact',['events'=>$events,'bookingcats'=>$bookingcats]);
       
     }
 

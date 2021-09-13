@@ -122,38 +122,39 @@
 							</div>
                         </div>
                         <div id="two" class="tab-pane active show fade">
-                            {{-- Bookings --}}
+                              Bookings
+							  	@if(Session::has('success'))
+									<div class="alert alert-success">
+										{{Session::get('success')}}
+									</div>
+								@endif
 							<div class="container">
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="well-box">
 											<h2 class="text-center">For booking on events and shows</h2>
-											@if(Session::has('success'))
-												<div class="alert alert-success">
-													{{Session::get('success')}}
-												</div>
-											@endif
-											<form action="{{ url('/contact') }}" method="POST" id="contactFormSendMail" class="form" >
+											
+											<form action="{{ url('/sendbooking') }}" method="POST" id="contactFormSendMail" class="form" >
 												{{csrf_field()}}
 												<!-- Text input-->
 												<div class="form-group">
-													<label class="control-label" for="name">Your Full Name
+													<label class="control-label" for="full_name">Your Full Name
 														<span class="required">*</span>
 													</label>
-													<input id="name" name="name" type="text" value="{{ old('name') }}" class="form-control input-md {{ $errors->has('name') ? 'error' : '' }}" required>
+													<input id="full_name" name="full_name" type="text" value="{{ old('full_name') }}" class="form-control input-md {{ $errors->has('full_name') ? 'error' : '' }}" required>
 													<!-- Error -->
-													@if ($errors->has('name'))
+													@if ($errors->has('full_name'))
 													<div class="error">
-														{{ $errors->first('name') }}
+														{{ $errors->first('full_name') }}
 													</div>
 													@endif
 												</div>
 
 												<!-- Text input-->
 												<div class="form-group">
-													<label class="control-label" for="name">Location
+													<label class="control-label" for="location">Location
 													</label>
-													<input id="location" name="location" type="text" value="{{ old('location') }}" class="form-control input-md {{ $errors->has('location') ? 'error' : '' }}" required>
+													<input id="location" name="location" type="text" value="{{ old('location') }}" class="form-control input-md" required>
 													<!-- Error -->
 													@if ($errors->has('location'))
 													<div class="error">
@@ -185,18 +186,37 @@
 													</div>
 													@endif
 												</div>
-												
+
+												<!-- Text input-->
 												<div class="form-group">
-													<div class='input-group date' id='datetimepicker'>
-													<input type='text' class="form-control" />
-													<span class="input-group-addon">
-													  <span class="glyphicon glyphicon-calendar"></span>
-													</span>
+													<label class=" control-label" for="date">Date of the Event/Show <span class="required">*</span></label>
+													<input name="date" type="date" value="{{ old('date') }}" class="form-control input-md {{ $errors->has('date') ? 'error' : '' }}" required>
+													<!-- Error -->
+													@if ($errors->has('date'))
+													<div class="error">
+														{{ $errors->first('date') }}
 													</div>
+													@endif
+												</div>
+												
+												<div class="form-group shadow-textarea">
+													<label>Describe your Booking</label>
+												<textarea id="event_details" name="event_details" class="form-control" placeholder="Explain to us details here about your booking"></textarea>
+													
 												</div>
 
 												<!-- Text input-->
 												<div class="form-group">
+													<label for="FormControlSelect">Event Types and Shows</label>
+													<select name="eventcategory" class="form-control" id="FormControlSelect">
+														<option>Choose an Event Type or Show</option>
+														@foreach($bookingcats as $bookingcat)
+														   <option value="{{ $bookingcat->id }}">{{ $bookingcat->booking_category }}</option>
+														@endforeach
+													</select>
+												</div>
+
+												{{-- <div class="form-group">
 													<label for="eventtype">Event Types and Shows:</label>
 													<select class="form-control" id="sel1">
 														<option>Wedding</option>
@@ -211,7 +231,7 @@
 														{{ $errors->first('eventtype') }}
 													</div>
 													@endif
-												</div>
+												</div> --}}
 												
 												<!-- Button -->
 												<div class="form-group">

@@ -10,4 +10,10 @@ class Blogtag extends Model
     use HasFactory;
     protected $table='blogtags';
     protected $fillable = ['blogtag_title'];
+
+    public function blogtags ()
+    {
+        return $this->belongsTo('App\Models\Blogpost');
+    }
 }
+

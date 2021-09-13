@@ -32,8 +32,8 @@
                     <tr>
                         <td>{{$tag->id}}</td>
                         <td>{{$tag->blogtag_title}}</td>
-                        <td><a href="#">view post</a></td>
                         <td>
+                            {{-- <a href="{{ url('blog/post/'.Str::slug($tag->blogtags->blo_title).'/'.$tag->blogtags->id) }}">View Posts</a> --}}
                             <a class="btn btn-info" href="{{ url('admin/blogtags/'.$tag->id.'/edit')}}">Update</a>
                             <a onclick="confirm return('Are you Sure You want to Delete?')" class="btn btn-info" href="{{ url('admin/blogtags/'.$tag->id.'/delete')}}">Delete</a>
                         </td>

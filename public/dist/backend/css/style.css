@@ -11813,7 +11813,7 @@ input[type="button"].btn-block {
   border-top: 1px solid #f3f3f3;
 }
 
-.dropdown-item {
+/* .dropdown-item {
   display: block;
   width: 100%;
   padding: 0.25rem 1.5rem;
@@ -11842,7 +11842,7 @@ input[type="button"].btn-block {
   color: #6c757d;
   pointer-events: none;
   background-color: transparent;
-}
+} */
 
 .dropdown-menu.show {
   display: block;
@@ -11857,11 +11857,11 @@ input[type="button"].btn-block {
   white-space: nowrap;
 }
 
-.dropdown-item-text {
+/* .dropdown-item-text {
   display: block;
   padding: 0.25rem 1.5rem;
   color: #000;
-}
+} */
 
 .btn-group,
 .btn-group-vertical {
@@ -22075,3 +22075,8 @@ dl li {
 .table th, .table td { max-width: 150px;
    min-width: 70px; overflow-x: scroll;
     text-overflow: scroll; white-space: nowrap; }
+
+
+    /* notifications dropdown */
+
+  

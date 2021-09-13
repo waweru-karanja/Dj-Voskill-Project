@@ -24,6 +24,14 @@
                 </select>
             </div> --}} 
             <div class="form-group">
+                <label>Role of the user</label>
+                @foreach($user->roles as $role)
+                     {{ $role->id }}
+                @endforeach
+            
+            </div>
+
+            <div class="form-group">
                 <label for="FormControlSelect">Roles</label>
                 <select name="rolename" class="form-control" id="FormControlSelect">
                     <option>ReAssign The Role</option> 

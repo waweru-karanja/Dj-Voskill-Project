@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blogpost;
+use App\Models\Bookings;
 use App\Models\Events_Model;
 use App\Models\Mixxes_Model;
 use App\Models\User;
@@ -22,9 +23,11 @@ class AdminDashboard_Controller extends Controller
         $user=User::all();
         $posts=Blogpost::all();
         $mixxes=Mixxes_Model::all();
+        $bookings=Bookings::all();
         $events=Events_Model::all();
+        auth()->user()->unreadNotifications->markAsRead();
        // return $user[0];
-        return view('backend.admindashboard',compact('user','adminposts','posts','mixxes','events'));
+        return view('backend.admindashboard',compact('user','bookings','adminposts','posts','mixxes','events',['notifications'=>Auth()->user()->notifications->take(4)],));
     }
 
     /**

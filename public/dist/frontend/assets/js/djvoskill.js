@@ -13,7 +13,8 @@
 
 	// datatables
 	$(document).ready( function () {
-		$('#frontdatatables').DataTable();
+		$('#frontendmix').DataTable({
+		})
 	});	
 
 	

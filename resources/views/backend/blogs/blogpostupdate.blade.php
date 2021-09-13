@@ -44,11 +44,30 @@
             </div>
 
             <div class="form-group">
+                {{-- <div class="form-line {{ $errors->has('tags') ? 'focused error' : '' }}">
+                    <label for="tag">Select Tags</label>
+                    <select name="tags[]" id="tag" class="form-control show-tick" data-live-search="true" multiple>
+                        @foreach($tags as $tag)
+                            <option
+                                    @foreach($post->tags as $postTag)
+                                        {{ $postTag->id == $tag->id ? 'selected' :'' }}
+                                    @endforeach
+                                    value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                </div> --}}
                 <label for="tags">Post Tags</label>
-                <select name="tags[]" class="form-control" id="selected-tags" multiple="multiple">
-                    @foreach($tags as $blogtag)
-                       <option value="{{ $blogtag->id  }}">{{ $blogtag->blogtag_title }}</option>
+                <select name="tags[]" class="blogtags form-control" multiple="multiple">
+                    @foreach($blogtags as $blogtag)
+                        <option
+                            @foreach($data->blogtags as $postTag)
+                                {{ $postTag->id == $blogtag->id ? 'selected' :'' }}
+                            @endforeach
+                            value="{{ $blogtag->id }}">{{ $blogtag->name }}</option>
                     @endforeach
+                    {{-- @foreach($blogtags as $blogtag)
+                       <option value="{{ $blogtag->id}}">{{ $blogtag->blogtag_title }}</option>
+                    @endforeach --}}
                 </select>
             </div>
 
@@ -64,13 +83,24 @@
         </form>
     </div>
 </div>
-@php
-    $tag_ids=[];
-@endphp
-
-@foreach ($data->blogtags as $tag)
+    
     @php
-        array_push($tag_ids,$tag->id);
+    $tag_ids=[];
     @endphp
-@endforeach
+
+    @foreach ($data->blogtags as $blogtag);
+    @php
+        array_push($tag_ids,$blogtag->id);
+    @endphp
+    @endforeach
+    <script>
+            $(document).ready(function(){
+            $('.blogtags').select2();
+            //
+            // data=[];
+            // data=<?php echo json_encode($tag_ids);?>;
+            //     $('.blogtags') .val(data).trigger('change');
+            
+            // });
+    </script>
 @endsection 

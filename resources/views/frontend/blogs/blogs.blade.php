@@ -30,7 +30,8 @@
                                             <!--comments for the article-->
                                             {{-- <a href="#"><i class="fa fa-comments"><span>{{ count($blog->blogcomments) }} Comments</span></i></a> --}}
 
-                                            <p class="card-text">{{ str_limit($blog->blo_details,255)}}
+                                            <p class="card-text">
+                                                {!!str_limit($blog->blo_details,255)!!}
                                                 <div class="stage">
                                                 <a href="{{ url('blog/post/'.Str::slug($blog->blo_title).'/'.$blog->id) }}">Read More</a>
                                                 </div>

@@ -23,6 +23,7 @@ class RoleFactory extends Factory
     {
         return [
             'Role_name'=>'Regular User',
+            'email'=>'user@voskizy.com',
         ];
     }
 }

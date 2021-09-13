@@ -28,12 +28,6 @@
           </a>
         </li>
       @endcan
-      {{-- <li class="nav-item">
-        <a class="nav-link" href="{{ route('adminblogpost.index') }}">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
-          <span class="menu-title">Blog Posts</span>
-        </a>
-      </li> --}}
       <li class="nav-item {{ 'admin/mixxes'==request()->path()?'active':' ' }}">
         <a class="nav-link" href="{{ route('mixxes.index') }}">
           <i class="mdi mdi-grid-large menu-icon"></i>
@@ -44,12 +38,6 @@
         <a class="nav-link" href="{{ route('events.index') }}">
           <i class=" mdi mdi-calendar-clock menu-icon"></i>
           <span class="menu-title">Events</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/icons/mdi.html">
-          <i class="mdi mdi-emoticon menu-icon"></i>
-          <span class="menu-title">Merchadise</span>
         </a>
       </li>
       <li class="nav-item {{ 'admin/*'==request()->path()?'active':' ' }}">
@@ -64,6 +52,23 @@
             <li class="nav-item {{ 'admin/blogcategory'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('blogcategory.index') }}"> All Post Categories</a></li>
             <li class="nav-item {{ 'admin/blogtags'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('blogtags.index') }}"> All Post Tags </a></li>
             <li class="nav-item {{ 'admin/postcomments'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ url('admin/postcomments') }}"> All Post Comments </a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item {{ 'admin/*'==request()->path()?'active':' ' }}">
+        <a class="nav-link" data-toggle="collapse" href="#bookings" aria-expanded="false" aria-controls="bookings">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Boookings Manager</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="bookings">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item {{ 'admin/bookingcategory'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('bookingcategory.index') }}"> Bookings Categories</a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Bookings Recieved From Clients </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('approvedbookings') }}"> Bookings Approved by Manager </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Bookings Approved by Accountant </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Published Bookings </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Cancelled Bookings </a></li>
           </ul>
         </div>
       </li>

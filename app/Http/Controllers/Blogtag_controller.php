@@ -88,7 +88,7 @@ class Blogtag_controller extends Controller
         $blogtag=Blogtag::find($id);
 
         $blogtag->blogtag_title=$request->blogtag_title;
-           $blogtag->save();
+        $blogtag->save();
            
            return redirect('admin/blogtags')->with('success','The Post tag has Been Updated');
     }

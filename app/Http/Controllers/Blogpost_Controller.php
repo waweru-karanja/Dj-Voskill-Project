@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Blogcategory;
-use App\Models\Blogpost;
 use App\Models\Blogtag;
+use App\Models\Blogpost;
 use App\Models\Blogcomment;
+use App\Models\Blogcategory;
+use App\Models\Postcomments;
+use Illuminate\Http\Request;
 
 class Blogpost_Controller extends Controller
 {
@@ -17,12 +18,12 @@ class Blogpost_Controller extends Controller
      */
     public function index()
     {
-        $blogcomments=Blogcomment::all();
+        $blogcomments= Postcomments::all();
         $tags=Blogtag::all();
         $blogcats=Blogcategory::all();
         $data=Blogpost::all();
         
-        return view('backend.blogs.bloglist',['data'=>$data,'blogcomments'=>$blogcomments,'blogcats'=>$blogcats,'tags'=>$tags]);
+        return view('backend.blogs.bloglist',['blogcomments'=>$blogcomments,'data'=>$data,'blogcats'=>$blogcats,'tags'=>$tags]);
     }
 
     /**
@@ -92,10 +93,10 @@ class Blogpost_Controller extends Controller
      */
     public function edit($id)
     {
-        $tags=Blogtag::all();
+        $blogtags=Blogtag::all();
         $blogcats=Blogcategory::all();
         $data=Blogpost::find($id);
-        return view('backend.blogs.blogpostupdate',['blogcats'=>$blogcats,'tags'=>$tags,'data'=>$data]);
+        return view('backend.blogs.blogpostupdate',['blogcats'=>$blogcats,'blogtags'=>$blogtags,'data'=>$data]);
     }
 
     /**
@@ -112,6 +113,7 @@ class Blogpost_Controller extends Controller
             'blo_details'=>'required',
         ]);
 
+        
         if($request->hasfile('blo_image')){
             $postimage=$request->file('blo_image');
             $blogpostimage=$request->get('blo_title').'.'.$postimage->getClientOriginalExtension();

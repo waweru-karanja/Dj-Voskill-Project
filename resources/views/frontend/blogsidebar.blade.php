@@ -93,7 +93,7 @@
             <div class="well-box">
                 <h4 class="widget-title">Tags</h4>
                   @foreach ($posttags as $tag )
-                    <a href="#">{{ $tag->blogtag_title }}</a> 
+                  <a href="{{ url('blog/tag/'.Str::slug($tag->blogtag_title).'/'.$tag->id) }}">{{ $tag->blogtag_title }}</a> 
                   @endforeach
             </div>
         </div>

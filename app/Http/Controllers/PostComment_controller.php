@@ -19,7 +19,7 @@ class PostComment_controller extends Controller
     public function index()
     {
         $blogcomments=Postcomments::all();
-       return view('backend.blogs.blogpostcomments',['blogcomments'=>$blogcomments]);
+        return view('backend.blogs.blogpostcomments',['blogcomments'=>$blogcomments]);
     }
 
     /**
@@ -97,23 +97,9 @@ class PostComment_controller extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deletecomment=Postcomments::FindorFail($id);
+        $deletecomment->delete();
+        return redirect()->back()->with ('success','The Comment has Been Deleted Successfully');
     }
 
-    // public function comment(Request $request,$id)
-    // {
-    //     $request->validate([
-    //         'comment'=>'required',
-    //     ]);
-    //     $user=Auth::user();
-    //     $postdetails=Blogpost::find($id);
-    //     $postcomments=Postcomments::create([
-    //         'user_id'=>Auth::id(),
-    //         'post_id'=>$id,
-    //         'comment'=>request()->comment,
-
-
-    //     ]);
-    //     return redirect ('post/'.Str::slug($post->blo_title).'/'.$post->id)->with('success','Comment has been added Successfully');
-    // }
 }

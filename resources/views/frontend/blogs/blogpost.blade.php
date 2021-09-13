@@ -9,10 +9,9 @@
               <div class="post">
                   <div class="entry-header">
                       <div class="entry-date-media">
-                          {{-- <div class="entry-date">25 <span>july</span></div> --}}
-                          <div class="entry-media" style="border: 5px solid black">
-                            <img src="{{ asset ('blogposts/'.$postdetails->blo_image) }}" class="img img-responsive img-rounded" style="width:100%; height:500px;"alt="{{ $postdetails->blo_title }}">
-                          </div>
+                        <div class="entry-media" style="border: 5px solid black">
+                          <img src="{{ asset ('blogposts/'.$postdetails->blo_image) }}" class="img img-responsive img-rounded" style="width:100%; height:500px;"alt="{{ $postdetails->blo_title }}">
+                        </div>
                       </div>
 
                       <div class="entry-formet">
@@ -34,7 +33,7 @@
                   <!-- end of entry-header -->
 
                   <div class="entry-content">
-                      <p>{{$postdetails->blo_details }}</p>
+                    {!!$postdetails->blo_details!!}
                   </div>
                   <!-- end of entry-content -->
               </div>
@@ -42,7 +41,7 @@
               <div class="tag-social-share">
                   <div class="tag">
                     @foreach ($postdetails->blogtags as $singleposttag )
-                    <a href="#">{{ $singleposttag->blogtag_title }}</a>
+                      <a href="{{ url('blog/tag/'.Str::slug($singleposttag->blogtag_title).'/'.$singleposttag->id) }}">{{ $singleposttag->blogtag_title }}</a>
                     @endforeach
                   </div>
                   
@@ -52,192 +51,339 @@
                       <div class="addthis_inline_share_toolbox"></div>
                   </div>
               </div>
-              <div class="comments-area">
-                <h3 class="comments-title">{{ count($postcomments) }} comments</h3>
-                <ol class="comment-list">
-                  @if (count($postcomments)>0)
-                    @foreach ($postcomments as $comment )
-                    <li style="border: 2px solid red; padding:-5px;">
-                      <article  style="border: 2px solid black; ">
-                          <div class="comment-meta">
-                              <div class="comment-author-metadata">
-                                  <img src="{{ asset('usersimages'.'/'.$comment->user->avatar) }}" class="avatar" style="width: 50px;
-                                  height: 50px;
-                                  border-radius: 100%;">
-                                  @if ($comment->user->is_admin==1)
-                                    <h4><span>Admin</span></h4>
-                                  @else
-                                    <h4><span>{{ $comment->user->name }}</span></h4>
-                                  @endif
-                                  <div class="comment-metadata">
-                                    <i class="fa fa-calendar mr-2"></i>{{ $comment->created_at->diffforhumans()  }}</span>
-                                  </div>
+
+              <h3 style="text-align: center;">{{ count($postcomments) }} comments</h3>
+
+              @if (count($postcomments)>0)
+                @foreach ($postcomments as $comment )
+                  <div class="col-lg-12 margin-tb">
+                      <div class="pull-left">
+                          @if ($message=Session::get('success'))
+                              <div class="alert alert-success">
+                                  <p>{{ $message }}</p>
                               </div>
-                          </div>
-                          <div class="comment-content">
-                            <p data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">{{ $comment->comment }}</p>
-                          </div>
-                          {{-- <div class="review">
-                              <a href="{{ url('login')}}" class="comment-reply-link">Reply</a>
-                          </div> --}}
-                      </article>
-
-                      {{-- <ol>
-                          <li>
-                              <article>
-                                  <div class="comment-meta">
-                                      <div class="comment-author-metadata">
-                                          <img src="images/blog-details/author-2.jpg" alt class="avatar">
-                                          <h4><a href="#">Big bro's gf</a></h4>
-                                          <div class="comment-metadata">
-                                              <a href="#">June 4, 2017 at 08:00 AM</a>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="comment-content">
-                                      <p>Aenean commodo interdum ligula imperdiet dictum. Donec mollis non diam eget condimentum. Aliquam eu eros est. Praesent vulputate sodales magna, egestas blandit mi scelerisque a. Ut commodo venenatis luctus.</p>
-                                  </div>
-                                  <div class="review">
-                                      <a href="#" class="comment-reply-link">Reply</a>
-                                  </div>
-                              </article>
-                              <ol>
-                                  <li>
-                                      <article>
-                                          <div class="comment-meta">
-                                              <div class="comment-author-metadata">
-                                                  <img src="images/blog-details/author.jpg" alt class="avatar">
-                                                  <h4><a href="#">Big bro</a></h4>
-                                                  <div class="comment-metadata">
-                                                      <a href="#">June 4, 2017 at 08:00 AM</a>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="comment-content">
-                                              <p>Aenean commodo interdum ligula imperdiet dictum. Donec mollis non diam eget condimentum. Aliquam eu eros est. Praesent vulputate sodales magna, egestas blandit mi scelerisque a. Ut commodo venenatis luctus.</p>
-                                          </div>
-                                          <div class="review">
-                                              <a href="#" class="comment-reply-link">Reply</a>
-                                          </div>
-                                      </article>
-                                  </li>
-                              </ol>
-                            </li>
-                      </ol> --}}
-                    </li>
-                    @endforeach
-                  @else
-                    <p>No Comment Added for now</p>
-                  @endif
-                </ol>
-                <div class="comment-respond">
-                  <h3 class="comment-reply-title">Leave a comment</h3>
-                  @if (Auth::check())
-                  <form class="comment-form row" method="post" action="{{ route ('postcomment',['id'=>$postdetails->id]) }}" role="form">
-                    @csrf
-                      <div class="col col-sm-12">
-                          <textarea class="form-control"name="comment" id="comment"placeholder="Enter Your Comment*"></textarea>
+                          @endif
                       </div>
-                      @if ($errors)
-                        @foreach ($errors->all() as $error)
-                            <p class="text-danger">{{ $error }}</p>
-                        @endforeach
-                      @endif
-                      <div class="col col-sm-12 submit-btn">
-                        <button type="submit" class="btn theme-btn">Post Comment</button>
-                      </div>
-                       @else
-                        <div class="col col-sm-12 submit-btn">
-                          <a href="#" data-toggle="modal" data-target="#RegistrationModal"><button class="btn theme-btn">Log In To Comment</button></a>
-                        </div>
-                      @endif
-                  </form>
-                </div>
-              </div>
-          </div>
-          @include('frontend.blogsidebar')
-          <!-- end of blog-content 
-
-          <div class="blog-sidebar col col-md-4" style="border:2px solid blue;">
-              
-
-              <div class="widget categories-widget">
-                  <h3>Categories</h3>
-                  <ul>
-                    @foreach ($cats as $blogcat )
-                      <li><a href="#">{{ $blogcat->blogcat_title }}</a></li>
-                    @endforeach
-                  </ul>
-              </div>
-              <div class="widget popular-posts-widget" style="border:2px solid blue;">
-                <div class="sidebar-posts">
-                  <div class="sidebar-title">
-                    <h5>Latest Posts</h5>
                   </div>
-                  @if ($recent_posts)
-                    @foreach ($recent_posts as $post )
-                    <div class="sidebar-content p-0">
-                      <div class="card border-0">
-                          <div class="row no-gutters align-items-center">
-                              <div class="col-3 col-md-3">
-                                  <a href="{{ url('post/'.Str::slug($post->blo_title).'/'.$post->id) }}">
-                                      <img src="{{ asset('blogposts'.'/'.$post->blo_image) }}" class="card-img" alt="">
-                                  </a>
-                              </div>
-                              <div class="col-9 col-md-9">
-                                  <div class="card-body">
-                                      <ul class="category-tag-list mb-0">
-                                          <li class="category-tag-name">
-                                            <a href="{{ url('blogcategory/'.Str::slug($postdetails->blogcategor->blogcat_title).'/'.$postdetails->blogcategor->id) }}">{{ $postdetails->blogcategor->blogcat_title }}</a>
-                                          </li>
-                                      </ul>
-                                      <h5 class="card-title title-font"><a href="{{ url('blogpost/'.Str::slug($post->blo_title).'/'.$post->id) }}">{{ $post->blo_title }}</a>
-                                      </h5>
-                                      <div class="author-date">
-                                        <span>{{ $post->created_at->diffForHumans() }}</span>
-                                      </div>
+                  <div class="media g-mb-30 media-comment">
+                    <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{ asset('usersimages'.'/'.$comment->user->avatar) }}" alt="Image Description">
+                    <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30" id="accordion" style="box-shadow: 3px 3px 3px 3px #888888; border: 2px solid green;">
+                      <div class="g-mb-15">
+                        @if ($comment->user->is_admin==1)
+                          <h5 class="h5 g-color-gray-dark-v1 mb-0">Admin</h5>
+                        @else
+                          <h5 class="h5 g-color-gray-dark-v1 mb-0">{{ $comment->user->name }}</h5>
+                        @endif
+                        
+                        <span class="g-color-gray-dark-v4 g-font-size-12">{{ $comment->created_at->diffforhumans()  }}</span>
+                      </div>
+                      <p>{{ $comment->comment }}</p>
+                      <ul class="list-inline d-sm-flex my-0">
+                        @if (Auth::id()==$comment->user->id)
+                        <li class="list-inline-item g-mr-20">
+                          <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#!">
+                            edit
+                          </a>
+                        </li>
+                        <li class="list-inline-item g-mr-20">
+                          <a href="{{ url('blog/comment/'.$comment->id.'/delete') }}" class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" >
+                            delete
+                          </a>
+                        </li>
+                        @else
+
+                        @endif
+                        <li class="list-inline-item ml-auto">
+                          {{-- @if (Auth::check())
+                            @if (count($commentreplies)>0)
+                              <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-1">
+                                <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                                {{ count($commentreplies) }}Replies
+                              </a>
+                            @else
+                                <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                  <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                                  Reply
+                                </a>
+                            @endif
+                            {{-- <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="true" aria-controls="collapse-2">
+                              <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                              Reply
+                            </a>
+                          @else
+                            <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#" data-toggle="modal" data-target="#RegistrationModal">
+                              <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                              Reply
+                            </a>
+                          @endif --}}
+                        </li>
+                      </ul>
+
+                      {{-- <div id="accordion">
+                        <div class="card">
+                          <div class="card-header" id="heading-1">
+                            <h5 class="mb-0">
+                              <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                Item 1
+                              </a>
+                            </h5>
+                          </div>
+                          <div style="border: 2px solid green;"  id="collapse-1" class="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                            <div class="card-body">
+                      
+                              <div id="accordion-1">
+                                <div class="card">
+                                  <div class="card-header" id="heading-1-1">
+                                    <h5 class="mb-0">
+                                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1-1" aria-expanded="false" aria-controls="collapse-1-1">
+                                        Item 1 > 1
+                                      </a>
+                                    </h5>
                                   </div>
+                                  <div id="collapse-1-1" class="collapse" data-parent="#accordion-1" aria-labelledby="heading-1-1">
+                                    <div class="card-body">
+                      
+                                        <div id="accordion-1-1">
+                                          <div class="card">
+                                            <div class="card-header" id="heading-1-1-1">
+                                              <h5 class="mb-0">
+                                                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1-1-1" aria-expanded="false" aria-controls="collapse-1-1-1">
+                                                  Item 1 > 1 > 1
+                                                </a>
+                                              </h5>
+                                            </div>
+                                            <div id="collapse-1-1-1" class="collapse" data-parent="#accordion-1-1" aria-labelledby="heading-1-1-1">
+                                              <div class="card-body">
+                                                Text 1 > 1 > 1
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="card">
+                                            <div class="card-header" id="heading-1-1-2">
+                                              <h5 class="mb-0">
+                                                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1-1-2" aria-expanded="false" aria-controls="collapse-1-1-2">
+                                                  Item 1 > 1 > 2
+                                                </a>
+                                              </h5>
+                                            </div>
+                                            <div id="collapse-1-1-2" class="collapse" data-parent="#accordion-1-1" aria-labelledby="heading-1-1-2">
+                                              <div class="card-body">
+                                                Text 1 > 1 > 2
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="card">
+                                            <div class="card-header" id="heading-1-1-3">
+                                              <h5 class="mb-0">
+                                                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1-1-3" aria-expanded="false" aria-controls="collapse-1-1-3">
+                                                  Item 1 > 1 > 3
+                                                </a>
+                                              </h5>
+                                            </div>
+                                            <div id="collapse-1-1-3" class="collapse" data-parent="#accordion-1-1" aria-labelledby="heading-1-1-3">
+                                              <div class="card-body">
+                                                Text 1 > 1 > 3
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                      
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="card">
+                                  <div class="card-header" id="heading-1-2">
+                                    <h5 class="mb-0">
+                                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-1-2" aria-expanded="false" aria-controls="collapse-1-2">
+                                        Item 1 > 2
+                                      </a>
+                                    </h5>
+                                  </div>
+                                  <div id="collapse-1-2" class="collapse" data-parent="#accordion-1" aria-labelledby="heading-1-2">
+                                    <div class="card-body">
+                                      Text 1 > 2
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>      
+                            
+                            </div>
+                          </div>
+                        </div>
+                      </div> --}}
+                      {{-- <div id="collapse-1" class="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                        <div class="d-flex flex-start mt-4">
+                          <a class="me-3" href="#">
+                            <img
+                              class="rounded-circle shadow-1-strong"
+                              src="https://mdbootstrap.com/img/Photos/Avatars/img%20(11).jpg"
+                              alt="avatar"
+                              width="65"
+                              height="65"
+                            />
+                          </a>
+                          <div class="flex-grow-1 flex-shrink-1">
+                            <div>
+                              <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-1">
+                                  Simona Disa <span class="small">- 3 hours ago</span>
+                                </p>
+                              </div>
+                              <p class="small mb-0">
+                                letters, as opposed to using 'Content here, content here',
+                                making it look like readable English.
+                              </p>
+                              <ul class="list-inline d-sm-flex my-0">
+                                <li class="list-inline-item g-mr-20">
+                                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#!">
+                                    edit
+                                  </a>
+                                </li>
+                                <li class="list-inline-item g-mr-20">
+                                  <a href="#" class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" >
+                                    delete
+                                  </a>
+                                </li>
+                                <li class="list-inline-item ml-auto">
+                                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                    <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
+                                    Reply
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div> --}}
+                      <div id="collapse-1" class="collapse show" data-parent="#accordion" aria-labelledby="heading-1" style="border: 2px solid black;">
+                        <div class="d-flex flex-column comment-section">
+                          <div class="bg-light p-2">
+                              @if ($errors)
+                                @foreach ($errors->all() as $error)
+                                  <p class="text-danger">{{ $error }}</p>
+                                @endforeach
+                              @endif
+                              <form method="post" action="{{ route ('commentreply',['id'=>$postdetails->id]) }}" role="form">
+                                @csrf
+                                <div class="d-flex flex-row align-items-start">
+                                  {{-- <img class="rounded-circle" src="{{ asset('usersimages'.'/'.$postdetails->user->avatar) }}" width="40"> --}}
+                                  <textarea class="form-control ml-1 shadow-none textarea" name="reply" style="border: 1px solid black;"></textarea>
+                                </div>
+                                <div class="mt-2 text-right">
+                                  <button class="btn btn-primary btn-sm shadow-none" type="submit">Reply</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+                      {{-- <div id="collapse-2" class="collapse show" data-parent="#accordion" aria-labelledby="heading-1" style="border: 2px solid black;">
+                        @if (count($commentreplies)>0)
+                          @foreach ($commentreplies as $replies )
+                            <div class="d-flex flex-start mt-4">
+                              <a class="me-3" href="#">
+                                <img
+                                  class="rounded-circle shadow-1-strong"
+                                  src="{{ asset('usersimages'.'/'.$replies->user->avatar) }}"
+                                  alt="avatar"
+                                  width="65"
+                                  height="65"
+                                />
+                              </a>
+                              <div class="flex-grow-1 flex-shrink-1">
+                                <div>
+                                  <div class="d-flex justify-content-between align-items-center">
+                                    <p class="mb-1">
+                                      @if ($replies->user->is_admin==1)Admin
+                                      @else{{ $replies->user->name }}
+                                      @endif
+                                    <span class="small">{{ $replies->created_at->diffforhumans()  }}</span>
+                                    </p>
+                                  </div>
+                                  <p class="small mb-0">
+                                    {{ $replies->reply }}
+                                  </p>
+                                  <ul class="list-inline d-sm-flex my-0">
+                                    <li class="list-inline-item g-mr-20">
+                                      <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#!">
+                                        edit
+                                      </a>
+                                    </li>
+                                    <li class="list-inline-item g-mr-20">
+                                      <a href="#" class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" >
+                                        delete
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
                               </div>
                             </div>
-                      </div>
+                            <div class="d-flex flex-column comment-section">
+                              <div class="bg-light p-2">
+                                  @if ($errors)
+                                    @foreach ($errors->all() as $error)
+                                      <p class="text-danger">{{ $error }}</p>
+                                    @endforeach
+                                  @endif
+                                  <form method="post" action="{{ route ('commentreply',['id'=>$postdetails->id]) }}" role="form">
+                                    @csrf
+                                    <div class="d-flex flex-row align-items-start">
+                                      <img class="rounded-circle" src="{{ asset('usersimages'.'/'.$postdetails->user->avatar) }}" width="40">
+                                      <textarea class="form-control ml-1 shadow-none textarea" name="reply" style="border: 1px solid black;"></textarea>
+                                    </div>
+                                    <div class="mt-2 text-right">
+                                      <button class="btn btn-primary btn-sm shadow-none" type="submit">Reply</button>
+                                    </div>
+                                </form>
+                              </div>
+                            </div>
+                          @endforeach
+                        @endif
+                      </div> --}}
                     </div>
-                    @endforeach
-                  @endif
-                </div>
-                  <h3>Latest Posts</h3>
-                  <ul>
-                    @if ($recent_posts)
-                      @foreach ($recent_posts as $post )
-                      <li>
-                        <div>
-                            <span class="date">{{ $post->created_at->diffForHumans() }}</span>
-                            <h6><a href="{{ url('blogpost/'.Str::slug($post->blo_title).'/'.$post->id) }}">{{ $post->blo_title }}</a></h6>
-                        </div>
-                      </li>
-                      @endforeach
-                    @endif
-                  </ul>
-              </div>
+                  </div>
+                @endforeach
+              @else
+                <p>No Comment Added for now</p>
+              @endif
 
-              <div class="widget populer-tags-widget">
-                  <h3>Popular tags</h3>
-                  <ul>
-                      <li><a href="#">Wedding ceremony</a></li>
-                      <li><a href="#">Love</a></li>
-                      <li><a href="#">Story</a></li>
-                      <li><a href="#">Events</a></li>
-                      <li><a href="#">Love</a></li>
-                      <li><a href="#">First Metting</a></li>
-                      <li><a href="#">Couple</a></li>
-                      <li><a href="#">Gift</a></li>
-                  </ul>
-              </div>
+              @if (Auth::check())
+
+                <div class="d-flex flex-column comment-section">
+                  <div class="bg-light p-2">
+                      @if ($errors)
+                        @foreach ($errors->all() as $error)
+                          <p class="text-danger">{{ $error }}</p>
+                        @endforeach
+                      @endif
+                      <form method="post" action="{{ route ('postcomment',['id'=>$postdetails->id]) }}" role="form">
+                        @csrf
+                        <div class="d-flex flex-row align-items-start">
+                          {{-- <img class="rounded-circle" src="{{ asset('usersimages'.'/'.$postdetails->user->avatar) }}" width="40"> --}}
+                          <textarea class="form-control ml-1 shadow-none textarea" name="comment" style="border: 1px solid black;"></textarea>
+                        </div>
+                        <div class="mt-2 text-right">
+                          <button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              @else
+
+                <div class="mt-2 text-right">
+                  <a href="#" data-toggle="modal" data-target="#RegistrationModal">
+                    <button class="btn btn-primary btn-sm shadow-none">Log in To add a comment</button>
+                  </a>
+                </div>
+              @endif
           </div>
+        
+          @include('frontend.blogsidebar')
           <!-- end of sidebar -->
+
       </div>
-      <!-- end of row -->
   </div>
-  <!-- end of container -->
+          
 </section>
 <!-- end of blog-main -->
 <!-- Recommended posts end -->
@@ -258,16 +404,6 @@
               </div>
           </div>
         </div>
-        {{-- <div class="col-lg-3 p-2">
-          <div class="card small-card simple-overlay-card m-0">
-            <a href="#"><img  class="card-img img-fluid img-thumbnail" alt="" /></a>
-            <div class="card-img-overlay">
-              <h5 class="card-title title-font">
-                <a href="#">{{ $singlepost->blo_title }}</a>
-              </h5>
-            </div>
-          </div>
-        </div> --}}
         @empty
           
         @endforelse

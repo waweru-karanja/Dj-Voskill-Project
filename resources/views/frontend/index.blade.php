@@ -83,107 +83,44 @@
             <div class="col-lg-12 col-md-12">
                 
                 @if (!empty($mixxes))
-                    <table class="table table-bordered dt-responsive nowrap  order-column table-responsive" style="width:100%;" id="frontdatatable">
+                    <table id="frontendmix" class="table table-bordered  display nowrap" cellspacing="0" width="100%">
                         <thead class="thead-dark">
                             <tr>
-                            <th style="border: 2px solid black; width: 17%;">Name</th>
-                            <th style="border: 2px solid black; width: 20%;">Image</th>
-                            <th style="border: 2px solid black; width: 37%;">Stream</th>
-                            <th style="border: 2px solid black; width: 11%;">Size</th>
-                            <th style="border: 2px solid black; width: 15%;">Download</th>
-                            </tr>
-                        </thead> 
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Stream</th>
+                                <th>Size</th>
+                                <th>Download</th>
+                        </thead>
                         <tbody>
                             @forelse ($mixxes as $mix)
                             
                             <tr>
                                 <td>{{ $mix->mix_name }}</td>
-                                <td><img src="{{ asset ('miximages/'.$mix->mix_image) }}" style="width:100%; border:2px solid black;height:100px;"></td>
+                                <td><img src="{{ asset ('miximages/'.$mix->mix_image) }}" class="img-fluid" style="width:120px; height:120px;"></td>
                                 <td>
-                                <div class="players" style="border: 2px solid black; margin:0;">
-                                    <audio id="player2" preload="none" controls >
-                                        <source src="{{ asset ('mixtapes/'.$mix->mix_audio) }}" type="audio/mp3">                
-                                    </audio>
-                                </div>
+                                    <div class="players" style="border: 2px solid black; margin:0;">
+                                        <audio id="player2" preload="none" controls >
+                                            <source src="{{ asset ('mixtapes/'.$mix->mix_audio) }}" type="audio/mp3">                
+                                        </audio>
+                                    </div>
                                 </td>
                                 <td>{{$mix->mix_size}}Mb</td>
                                 <td><a href="/home/download/{{$mix->mix_audio}}">Download</a></td>
-                                
                             </tr>
                             @empty
                             <strong style="font-size: 20px;">No Available Mixxes</strong>
                             @endforelse
                         </tbody>
+                        <tfoot class="thead-dark">
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Stream</th>
+                            <th>Size</th>
+                            <th>Download</th>
+                        </tfoot>
                     </table>
                 @endif
-                {{-- @if (!empty($mixxes))
-                <table class="table table-bordered dt-responsive nowrap  order-column" id="frontdatatables" style="border:2px solid red;">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Mixtape Name</th>
-                            <th scope="col">Mixtape Length</th>
-                            <th scope="col">Mixtape Size</th>
-                            <th scope="col">Mixtape Image</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($mixxes as $mix)
-                        <tr>
-                            <td>{{$mix->id}}</td>
-                            <td>{{$mix->mix_name}}</td>
-                            <td>{{$mix->mix_length}}mins</td>
-                            <td>{{$mix->mix_size}}MB</td>
-                            <td><img src="{{ asset ('miximages/'.$mix->mix_image) }}" style="width:120px; border:2px solid black;height:80px;"></td>
-                            <td>
-                                <form action="{{route('mixxes.destroy',$mix->id)}}" method="post">
-                                    {{csrf_field()}}
-                                    {{method_field('DELETE')}}
-                                    <a class="btn btn-success" href="{{ route('mixxes.edit',$mix->id)}}"> Edit </a>
-                                    <input type="submit" class="btn btn-warning" value="DELETE">
-                                </form>
-                            </td>
-                        </tr>
-                        @empty
-                        <strong style="font-size: 20px;">No Available Mixxes</strong>
-                        @endforelse
-                    </tbody>
-                </table>
-                @endif --}}
-
-                {{-- <table class="table table-bordered dt-responsive" style="width:100%;">
-                    {{-- <thead>
-                        <tr>
-                          <th style="border: 2px solid black; width: 17%;">Name</th>
-                          <th style="border: 2px solid black; width: 20%;">Image</th>
-                          <th style="border: 2px solid black; width: 37%;">Stream</th>
-                          <th style="border: 2px solid black; width: 11%;">Size</th>
-                          <th style="border: 2px solid black; width: 15%;">Download</th>
-                        </tr>
-                      </thead> 
-                      <tbody>
-                          @forelse ($mixxes as $mix)
-                          
-                          <tr>
-                              <td>{{ $mix->mix_name }}</td>
-                              <td><img src="{{ asset ('miximages/'.$mix->mix_image) }}" style="width:100%; border:2px solid black;height:100%;"></td>
-                              <td>
-                                <div class="players" style="border: 2px solid black; margin:0;">
-                                  <audio id="player2" preload="none" controls style="width: 100%;">
-                                      <source src="{{ asset ('mixtapes/'.$mix->mix_audio) }}" type="audio/mp3">                
-                                  </audio>
-                                </div>
-                              </td>
-                              <td>{{$mix->mix_size}}Mb</td>
-                              <td><a href="/home/download/{{$mix->mix_audio}}">Download</a></td>
-                              
-                          </tr>
-                          @empty
-                          <strong style="font-size: 20px;">No Available Mixxes</strong>
-                          @endforelse
-                      </tbody>
-                </table> --}}
             </div>
             
         </div>
