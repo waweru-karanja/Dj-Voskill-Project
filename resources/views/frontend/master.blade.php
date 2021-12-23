@@ -1,8 +1,9 @@
 <!doctype html>
-    
+<html lang="en">   
 
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@yield('title')</title>
     <meta name="description" content="Dj Voskill The Muzikal Genious">
@@ -14,9 +15,10 @@
 		
                     {{-- bootstrap --}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    {{-- <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/navstyle.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/customstyle.css') }}">
+    {{-- <s --}}
                     {{-- BOOTSTRAP SELECT --}}
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
 
@@ -29,25 +31,23 @@
 
     <!--  extension responsive  -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
-        
-  
-    </head>
-    <body>
+</head>
+    <body class="animate fadeIn four">
         
         <!-- header-start -->
-		@include('frontend.nav')
+		    @include('frontend.nav')
         <!-- header-start -->
         <div class="container">
 
-            @yield('content')
-             
-        </div class="container">
+           @yield('content')
+            
+        </div>
 
         <!-- footer-area-start -->
             @include('frontend.footer')
         <!-- footer-area-end -->
 
-         
+         @yield('xtra-js')
         
         {{-- Bootstrap Modals Forms --}}
 
@@ -209,22 +209,48 @@
         </div>
         <!-- ------- FORGOT FORM ends ------- --> 
 
-{{-- // JS Library by CXDI --}}
+        <!-- ------- COUPON MODAL------- -->
+        <div class="modal fade" id="showcoupon" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="#">
+                            <p class="checkout-coupon">
+                                <input type="text" placeholder="Coupon Code" />
+                                <button class="btn theme-btn" type="submit">Apply Coupon</button>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ------- COUPON MODAL ENDS ------- -->
 
-<script src="https://cdn.jsdelivr.net/gh/CDNSFree/mediaelement@latest/mediaelement.js"></script>
-    
-{{-- // Go to www.addthis.com/dashboard to customize your tools --}}
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-608158671db44c40"></script>
+        
+{{-- bootstrap jquery --}}
 
-<script type="text/javascript" src="{{asset('dist/frontend/assets/js/demoscripts.js')}}"></script>
-
-        {{-- bootstrap jquery --}}
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script> --}}
+
+{{-- // Go to www.addthis.com/dashboard to customize your tools --}}
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-608158671db44c40"></script>
+
+<script type="text/javascript" src="{{ asset('dist/frontend/assets/js/demoscripts.js')}}"></script>
+
+
+{{-- sweetalert --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
+
+{{-- // JS Library by CXDI --}}
+
+<script src="https://cdn.jsdelivr.net/gh/CDNSFree/mediaelement@latest/mediaelement.js"></script>
 
 {{-- // datatables --}}
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> 

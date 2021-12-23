@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Events;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Events_Model;
@@ -16,7 +17,7 @@ class Events_Controller extends Controller
     public function index()
     {
         
-        $events=Events_Model::latest()->paginate(5);
+        $events=Events::all();
 
         return view('backend.events.allevents',compact('events'))->with(request()->input('page'));
     }
@@ -44,6 +45,7 @@ class Events_Controller extends Controller
             'eve_details'=>'required',
             'eve_location'=>'required',
             'eve_time'=>'required',
+            'eve_date'=>'required',
             'eve_image'=>'required|mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:5048',
             
         ]);
@@ -60,12 +62,13 @@ class Events_Controller extends Controller
         }
 
         $data = $request->all();
-        $Event = new Events_Model;
+        $Event = new Events();
         
         $Event->eve_name = $request->get('eve_name');
         $Event->eve_details = $request->get('eve_details');
         $Event->eve_location = $request->get('eve_location');
         $Event->eve_time = $request->get('eve_time');
+        $Event->eve_date = $request->get('eve_date');
         $Event->eve_image = $eveimage;
         $Event->save();
 
@@ -91,7 +94,7 @@ class Events_Controller extends Controller
      */
     public function edit($id)
     {
-        $event=Events_Model::find($id);
+        $event=Events::find($id);
         return view('backend.events.editevent',compact('event'));
     }
 
@@ -109,15 +112,15 @@ class Events_Controller extends Controller
             'eve_details'=>'required',
             'eve_location'=>'required',
             'eve_time'=>'required',
+            // 'eve_date'=>'required',
             //'eve_image'=>'required',
         ]);
         
-        $event=Events_Model::find($id);
+        $event=Events::find($id);
         $file=$request->eve_image;
         if($request->hasFile('eve_image') && $file->isValid())
         {
             $destinationPath='eventimages/';
-            //$image=date('YmdHis').'.'.$file->getClientOriginalExtension();
             $eveimage=$id.'_'.$request->get('eve_image').'.'.$file->getClientOriginalExtension();
             $file->move($destinationPath,$eveimage);
             $eventUpdate['eve_image'] = $eveimage;
@@ -128,10 +131,11 @@ class Events_Controller extends Controller
             'eve_details' => $request->eve_details,
             'eve_location' => $request->eve_location,
             'eve_time' => $request->eve_time,
+            'eve_date' => $request->eve_date,
         ];
         
         
-        Events_Model::where('id',$id)->update($eventUpdate);
+        Events::where('id',$id)->update($eventUpdate);
 
 
         return redirect()->route('events.index')->with('success','Event Details Updated Successfully');
@@ -148,7 +152,7 @@ class Events_Controller extends Controller
      */
     public function destroy($id)
     {
-        $deleteData=Events_Model::FindorFail($id);
+        $deleteData=Events::FindorFail($id);
         $deleteData->delete();
         return redirect()->route ('events.index')->with ('success','Event has Been Deleted Successfully');
     }

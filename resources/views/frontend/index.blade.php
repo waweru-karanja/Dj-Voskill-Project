@@ -2,16 +2,12 @@
 @extends('frontend.master')
 @section('title','VOSKILL')
 @section('content')
-
-<div class="container" style="border:2px solid black; background:rgb(255, 249, 249);">
-    
-
     <!----Events Start---->
-    <div class="ms_genres_wrapper" style=" margin-bottom:20px;">
+    <div class="ms_genres_wrapper">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ms_heading">
-                    <h3>Upcoming Events</h3>
+                    <h2>Upcoming Events</h2>
                     <span class="veiw_all"><a href="{{route ('events') }}">View All</a></span>
                 </div>
             </div>
@@ -48,12 +44,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ms_heading">
-                    <h3>Blog Posts</h3>
+                    <h2>Blog Posts</h2>
                     <span class="veiw_all"><a href="{{route ('blog') }}">View All</a></span>
                 </div>
             </div>
             @foreach ($blog as $bl )
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6" style="border:2px solid black;">
                 <div class="swiper-slide">
                     <div class="ms_rcnt_box">
                         <div class="ms_rcnt_box_img">
@@ -76,7 +72,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ms_heading">
-                    <h3>Mixtapes</h3>
+                    <h2>Mixtapes</h2>
                     <span class="veiw_all"><a href="{{route ('audiomixtapes') }}">View All</a></span>
                 </div>
             </div>
@@ -125,6 +121,4 @@
             
         </div>
     </div>
-</div>
-
 @endsection

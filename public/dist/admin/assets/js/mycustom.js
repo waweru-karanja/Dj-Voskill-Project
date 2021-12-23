@@ -173,3 +173,4 @@ function range_slider(){
 $(document).ready(function() {
   $('#admindatatables').DataTable();
 });
+

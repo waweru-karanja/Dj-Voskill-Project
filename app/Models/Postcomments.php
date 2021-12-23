@@ -15,7 +15,11 @@ class Postcomments extends Model
     {
         return $this->belongsTo('App\Models\Blogpost','post_id');
     }
-    
+
+    public function replies(){
+    	return $this->hasMany('App\Models\Commentreply','reply_id');
+    }
+
     public function user ()
     {
         return $this->belongsTo('App\Models\User');

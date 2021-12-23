@@ -1,1 +1,0 @@
-<p>Merchadise Page</p>

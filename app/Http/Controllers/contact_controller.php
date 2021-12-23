@@ -6,6 +6,7 @@ use App\Models\Events_Model;
 use Illuminate\Http\Request;
 use App\Mail\ContactFormMail;
 use App\Models\Bookingcategory;
+use App\Models\Events;
 use Illuminate\Support\Facades\Mail;
 
 class contact_controller extends Controller
@@ -18,7 +19,7 @@ class contact_controller extends Controller
     public function index()
     {
         $bookingcats=Bookingcategory::all();
-        $events=Events_Model::latest()->take(4)->get();
+        $events=Events::latest()->take(4)->get();
         return view('frontend.contact',['events'=>$events,'bookingcats'=>$bookingcats]);
       
     }

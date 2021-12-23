@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('is-admin',function($user){
-            return $user->hasAnyRoles(['Super Admin','Company Manager']);
+            return $user->hasAnyRoles(['The Ceo','General Manager']);
         });
 
 

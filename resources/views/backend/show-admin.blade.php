@@ -18,15 +18,6 @@
                 <label>Email</label>
                 <input type="text" class="form-control disabled" value="{{ $admin->email }}" id="email">
             </div>
-            {{-- <div class="form-group">
-                <label for="FormControlSelect">Roles</label>
-                <select name="rolename" class="form-control" id="FormControlSelect">
-                    <option>Choose a Role</option>
-                    @foreach($roles as $role)
-                        <option selected value="{{ $role->id }}">{{ $role->Role_name }}</option>
-                    @endforeach
-                </select>
-            </div> --}} 
             <div class="form-group">
                 <label for="Role_name">Roles</label>
                 <select name="rolename" class="form-control" id="rolename">

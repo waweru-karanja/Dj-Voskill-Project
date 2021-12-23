@@ -10,29 +10,30 @@
 	width: 100%;
 	display: inline-block;
 	text-align: center;
+	background-color: #ac63b6;
 }
 .ms_heading h2 {
-	font-size: 18px;
+	font-size: 25px;
 	position: relative;
 	display: inline-block;
 	padding-bottom: 10px;
 	text-transform: capitalize;
 	margin-top:  20px;
-	border: 2px solid black;
+	color: whitesmoke;
 	
 }
 .veiw_all {
 	float: right;
 	position: relative;
-	top: 0px;
-	right: 0px;
+	top: 20px;
+	right: 10px;
 }
 .veiw_all a {
-	color: #202020;
+	color: whitesmoke;
 	text-transform: capitalize;
 }
 .veiw_all a:hover {
-	color: #ff4865;
+	color: #020202;
 }
 .ms_heading h1:after {
 	width: 100px;

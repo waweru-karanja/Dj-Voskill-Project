@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
@@ -50,6 +52,13 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        
+        if(!empty(Session::get('session_id')))
+        {
+            $user_id=Auth::user()->id;
+            $session_id=Session::get('session_id');
+            Cart::where('session_id',$session_id)->update(['user_id'=>$user_id]);
+        }
 
         // return redirect()->intended();
         return redirect($request['current_page']);

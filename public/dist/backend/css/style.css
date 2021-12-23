@@ -22077,6 +22077,17 @@ dl li {
     text-overflow: scroll; white-space: nowrap; }
 
 
-    /* notifications dropdown */
+  /*----------------------
+  10.- Contact us  
+-----------------------*/
 
-  
+.well-box { background-color: #fff; padding: 28px; border: 1px solid #e9e6e0; margin-bottom: 30px; }
+.well-white { background-color: #fff; border: 1px solid #e9e6e0; margin-bottom: 30px; }
+
+
+.contact-info .address, .contact-info .email, .contact-info .call { margin-bottom: 20px; border-bottom: 1px solid #e9e6e0; padding-bottom: 20px; }
+.contact-info .address i, .contact-info .email i, .contact-info .call i { padding-right: 10px; font-size: 16px; color: #706a68 }
+
+.contact-info p { margin-bottom: 0px; }
+.contact-info li:last-child { margin-bottom: 0px; border: none; }
+

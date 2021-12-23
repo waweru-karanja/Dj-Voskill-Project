@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Subscriber;
 use App\Models\Mixxes_Model;
+use Illuminate\Http\Request;
+use App\Notifications\Newmixadded;
+use Illuminate\Notifications\Channels\MailChannel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 // use File;
 
 class Mix_Controller extends Controller
@@ -38,7 +43,7 @@ class Mix_Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { //return $request->all();
+    {
         $request->validate([
             'mix_name'=>'required',
             'mix_audio'=>'required|mimes:M4a,mp3',
@@ -81,6 +86,14 @@ class Mix_Controller extends Controller
         $mix->mix_image =$miximage;;
         $mix->mix_audio =$mixaudio;
         $mix->save();
+
+        $subscribers=Subscriber::all();
+        foreach($subscribers as $subscriber)
+        {
+            Notification::route('mail',$subscriber->email)
+            ->notify(new Newmixadded($mix));
+        }
+        
 
         return redirect()->route('mixxes.index')->with('success','Mixtape Created Successfully');
     }

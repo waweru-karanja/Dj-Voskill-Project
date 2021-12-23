@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Blogpost;
 use App\Models\Bookings;
+use App\Models\Events;
 use App\Models\Events_Model;
+use App\Models\Merchadise;
 use App\Models\Mixxes_Model;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,10 +26,12 @@ class AdminDashboard_Controller extends Controller
         $posts=Blogpost::all();
         $mixxes=Mixxes_Model::all();
         $bookings=Bookings::all();
-        $events=Events_Model::all();
+        $events=Events::all();
+        $merchadise=Merchadise::latest()->take(4)->get();
+        $merchadisedata=Merchadise::all();
         auth()->user()->unreadNotifications->markAsRead();
        // return $user[0];
-        return view('backend.admindashboard',compact('user','bookings','adminposts','posts','mixxes','events',['notifications'=>Auth()->user()->notifications->take(4)],));
+        return view('backend.admindashboard',compact('merchadise','merchadisedata','user','bookings','adminposts','posts','mixxes','events',['notifications'=>Auth()->user()->notifications->take(4)],));
     }
 
     /**

@@ -1,5 +1,5 @@
 @extends('backend.adminmaster')
-@section('title','List Blogs')
+@section('title','All Post Comments')
 @section('content')
 <div class="container_fluid">
     

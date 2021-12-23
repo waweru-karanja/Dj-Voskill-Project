@@ -2,8 +2,7 @@
 @extends('frontend.master')
 @section('title','Audio Mixtapes')
 @section('content')
-<div class="container">
-  <div class="row">
+<div class="row">
     <div class="col-md-12">
       <H2 class="text-center">Mixtapes</H2>
       @if (!empty($mixxes))
@@ -47,5 +46,4 @@
       @endif
     </div>
 </div>
-
 @endsection

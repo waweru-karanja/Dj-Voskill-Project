@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Bookings;
 use App\Models\Bookingstatus;
+use App\Models\Bookingpackage;
 use Illuminate\Database\Seeder;
 
 class BookingsSeeder extends Seeder
@@ -73,5 +74,26 @@ class BookingsSeeder extends Seeder
         $Cancelled->bookingstatus()->attach($Cancelledstatus);
         $DepositPaid->bookingstatus()->attach($DepositPaidstatus);
         $Published->bookingstatus()->attach($Publishedstatus);
+
+
+
+        $fullpackage=Bookingpackage::where(['package_name'=>'Dj and Full Sound System',
+                                            'package_description'=>'Dj and Full Sound System.Dj and Full Sound System',
+                                            'package_price'=>'sh 80,000'])->first();
+    
+        $fullsetpackage=Bookings::create([
+            'full_name'=>'Best Promoters',
+            'location'=>'Nairobi',
+            'phone'=>'0792492584',
+            'is_booking'=>2,
+            'package_id'=>'1',
+            'email'=>'Werupromoter@admin.com',
+            'date'=>'07/02/2021',
+            'event_id'=>'5',
+            'event_details'=>'we would like to book you for a wedding'
+
+        ]);
+        
+        $fullsetpackage->bookingpack()->attach($fullpackage);
     }
 }

@@ -37,7 +37,7 @@ class Bookingcategory_controller extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'booking_category'=>'required'
+            'booking_category'=>'required|unique:bookingcategories'
         ]);
 
         $bookingcat=new Bookingcategory();

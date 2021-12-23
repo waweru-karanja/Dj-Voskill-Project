@@ -3,12 +3,25 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\Merchadise;
+use App\Models\Ticketstatus;
 use App\Models\Bookingstatus;
+use App\Models\bookingpackage;
 use Illuminate\Database\Seeder;
+use App\Models\Merchadisestatus;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\Userseeder;
+use App\Models\Merchadisecategory;
+use Database\Seeders\EventsSeeder;
 use Database\Seeders\BookingsSeeder;
+use Database\Seeders\MerchadiseSeeder;
+use Database\Seeders\TicketstatusSeeder;
 use Database\Seeders\BookingstatusSeeder;
+use Database\Seeders\BlogcategoriesSeeder;
+use Database\Seeders\BookingpackageSeeder;
+use Database\Seeders\MerchadisestatusSeeder;
+use Database\Seeders\BookingcategoriesSeeder;
+use Database\Seeders\MerchadisecategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,11 +32,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        
         $this->call([
             RoleSeeder::class,
             Userseeder::class,
         ]);
         \App\Models\Role::factory()->hasUsers(10)->create();
+
+        $this->call([
+            BookingpackageSeeder::class,
+            BookingsSeeder::class,
+        ]);
+        \App\Models\bookingpackage::factory()->hasbookingpackags(10)->create();
         
         $this->call([
             BookingsSeeder::class,
@@ -31,6 +51,25 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Bookingstatus::factory()->hasbookings(10)->create();
 
-        
+        $this->call([
+            TicketstatusSeeder::class,
+            EventsSeeder::class,
+        ]);
+        \App\Models\Ticketstatus::factory()->hasevents(10)->create();
+
+        $this->call(BlogcategoriesSeeder::class);
+
+        $this->call(BookingcategoriesSeeder::class);
+
+        $this->call(MerchadisecategorySeeder::class);
+
+        $this->call([
+            MerchadisestatusSeeder::class,
+            MerchadiseSeeder::class,
+        ]);
+        \App\Models\Merchadisestatus::factory()->hasproducts(10)->create();
+
+        $this->call(ProductattributeSeeder::class);
+
     }
 }

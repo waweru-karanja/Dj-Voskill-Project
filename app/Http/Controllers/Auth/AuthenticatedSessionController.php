@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Cart;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
@@ -32,6 +35,14 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // update user cart with user_id
+        if(!empty(Session::get('session_id')))
+        {
+            $user_id=Auth::user()->id;
+            $session_id=Session::get('session_id');
+            Cart::where('session_id',$session_id)->update(['user_id'=>$user_id]);
+        }
 
         return redirect($request['current_page']);
     }

@@ -12,8 +12,9 @@ class Blogpost extends Model
     protected $fillable = ['user_id','cat_id','blo_image','tag_id','blo_details','blo_title'];
 
     function postcomments(){
-        return $this->hasMany('App\Models\Blogpost'); 
+        return $this->hasMany('App\Models\Postcomments'); 
     }
+    
     function user(){
             return $this->belongsTo('App\Models\User','user_id');
     }

@@ -56,6 +56,22 @@
         </div>
       </li>
       <li class="nav-item {{ 'admin/*'==request()->path()?'active':' ' }}">
+        <a class="nav-link" data-toggle="collapse" href="#merchadise" aria-expanded="false" aria-controls="merchadise">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Merchadise</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="merchadise">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item {{ 'admin/merchadisecategory'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('bookingcategory.index') }}"> Bookings Categories</a></li>
+            <li class="nav-item {{ 'admin/merchadise'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('merchadise.index') }}"> All Merchadise </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Bookings Approved by Accountant </a></li>
+            <li class="nav-item {{ 'admin/shippingcharges'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('shippingcharges') }}"> Shipping Charges </a></li>
+            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Cancelled Bookings </a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item {{ 'admin/*'==request()->path()?'active':' ' }}">
         <a class="nav-link" data-toggle="collapse" href="#bookings" aria-expanded="false" aria-controls="bookings">
           <i class="mdi mdi-account menu-icon"></i>
           <span class="menu-title">Boookings Manager</span>

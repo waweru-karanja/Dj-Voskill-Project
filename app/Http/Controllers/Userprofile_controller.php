@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Events;
 use App\Models\Events_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class Userprofile_controller extends Controller
      */
     public function show($id)
     {
-        $events=Events_Model::latest()->take(4)->get();
+        $events=Events::latest()->take(4)->get();
         $user=User::findorfail($id);
 
         return view('frontend.userprofile',['events'=>$events,'user'=>$user]);
@@ -63,7 +64,7 @@ class Userprofile_controller extends Controller
     public function edit($id)
     {
         $user=User::findorfail($id);
-        $events=Events_Model::latest()->take(4)->get();
+        $events=Events::latest()->take(4)->get();
         return view('frontend.userprofileupdate',['user'=>$user,'events'=>$events]);
     }
 

@@ -35,7 +35,7 @@
 
             <div class="form-group shadow-textarea">
                 <label>Main story</label>
-            <textarea id="blo-details" name="blo_details" class="form-control" placeholder="Write The Content Here..."></textarea>
+                <textarea id="blo-details" name="blo_details" class="form-control" placeholder="Write The Content Here..."></textarea>
                 
             </div>
 
@@ -58,7 +58,4 @@
             <button type="submit" class="btn btn-dark btn-block">Submit</button>
         </form>
 </div>
-   <script>
-     flatpickr('#eve_date')
-   </script>
 @endsection

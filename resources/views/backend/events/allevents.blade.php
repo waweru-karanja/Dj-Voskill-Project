@@ -1,16 +1,7 @@
 @extends('backend.adminmaster')
 @section('title','All Events')
 @section('content')
-<div class="container" style="border: 2px solid black;">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            @if ($message=Session::get('success'))
-                <div class="alert alert-success">
-                    <p>{{ $message }}</p>
-                </div>
-            @endif
-        </div>
-    </div>
+<div class="container">
     <div class="col-lg-12 margin-tb">
         <div class="pull-right">
             <a class="btn btn-success" href="{{ route('events.create') }}">Add An Event</a>
@@ -18,6 +9,15 @@
     </div>
     @if (!empty($events))
     <table id="admindatatables" class="table table-striped table-bordered dt-responsive nowrap  order-column" style="width:100%">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                @if ($message=Session::get('success'))
+                    <div class="alert alert-success">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
+            </div>
+        </div>
         <thead class="thead-dark">
             <tr>
                 <th>id</th>

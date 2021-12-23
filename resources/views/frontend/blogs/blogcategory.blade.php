@@ -1,5 +1,5 @@
 @extends('frontend.master')
-@section('title','$blogcategorys->blogcat_title')
+@section('title','Blogcategory')
 @section('content')
 <section class="single-layout">
   <div class="container">
@@ -11,7 +11,7 @@
                 <div class="row no-gutters align-items-center align-items-center">
                     <h5 class="card-title title-font" style=" width:100%;"><a href="{{ url('blog/post/'.Str::slug($blog->blo_title).'/'.$blog->id) }}"><span>{{ $blog->id }}.</span>{{ $blog->blo_title }}</h5>
                     <div class="col-md-4" style="border: 2px solid black;">
-                        <a href="{{ url('blog/post/'.Str::slug($blog->blo_title).'/'.$blog->id) }}">
+                        <a href="{{ route('postdetails',['id' => $blog->id,'slug' => $blog->blo_title,'comment_id' => $blog->postcomments]) }}">
                             <img src="{{ asset('blogposts/'.$blog->blo_image) }}" class="card-img img-fluid img-thumbnail" alt="{{ $blog->blo_title }}" style="width: 100%; height:100%;">
                         </a>
                     </div>

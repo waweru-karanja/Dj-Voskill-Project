@@ -10,6 +10,7 @@ use App\Http\Controllers\User_controller;
 use App\Http\Controllers\Searchcontroller;
 use App\Http\Controllers\Admins_Controller;
 use App\Http\Controllers\Events_Controller;
+use App\Http\Controllers\Address_Controller;
 use App\Http\Controllers\Blogtag_controller;
 use App\Http\Controllers\contact_controller;
 use App\Http\Controllers\Product_Controller;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Blogpost_Controller;
 use App\Http\Controllers\Bookings_controller;
 use App\Http\Controllers\ContactUs_Controller;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\Merchadise_controller;
 use App\Http\Controllers\PostComment_controller;
 use App\Http\Controllers\Userprofile_controller;
 use App\Http\Controllers\Blogcategory_Controller;
@@ -24,9 +26,12 @@ use App\Http\Controllers\Commentreply_controller;
 use App\Http\Controllers\Adminsettings_controller;
 use App\Http\Controllers\AdminDashboard_Controller;
 use App\Http\Controllers\Commentreplies_controller;
+use App\Http\Controllers\MerchadiseAttr_controller;
 use App\Http\Controllers\BlogpostComment_controller;
 use App\Http\Controllers\Bookingcategory_controller;
 use App\Http\Controllers\product_categoriescontroller;
+use App\Http\Controllers\Bookingsattributes_controller;
+use App\Http\Controllers\Merchadisecategory_controller;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
@@ -60,11 +65,30 @@ Route::get('/audiomixtapes', [Home_Controller::class,'audiomixtapes'])->name('au
             
             /*Events Page */
 Route::get('/events', [Home_Controller::class,'events'])->name('events');
-Route::get('/event/{slug}/id', [Home_Controller::class,'singleevent'])->name('singleevent');
+Route::get('event/{slug}/{id}', [Home_Controller::class,'singleevent'])->name('singleevent');
 
-            /*Products Page */
-Route::get('/merchadise', [Home_Controller::class,'merchadise'])->name('merchadise');
+            /*Merchadise Page */
+Route::get('/products', [Home_Controller::class,'merchadise'])->name('merchadise');
 
+Route::get('merchadise/{slug}/{id}', [Home_Controller::class,'singleproduct'])->name('singleproduct');
+
+Route::post('/addtocart', [Home_Controller::class,'addtocart'])->name('addtocart');
+
+Route::post('/getproductprice', [Home_Controller::class,'getproductprice'])->name('getproductprice');
+
+Route::get('/mycart',[Home_controller::class,'cart'])->name('mycart');
+
+Route::post('delete-cart-item/{id}', [Home_controller::class,'deletecartitem'])->name('deletecartitem');
+
+Route::post('/updatecartitemquantity', [Home_Controller::class,'updatecartitem'])->name('updatecartitem');
+
+Route::get('/checkout',[Home_controller::class,'checkout'])->middleware(['auth'])->name('mycheckout');
+
+Route::get('/getshippingprice',[Home_controller::class,'getshippingprice'])->name('getshippingprice');
+
+Route::get('/displayshippingprice',[Home_controller::class,'displayshippingprice'])->name('displayshippingprice');
+
+Route::resource('address',Address_Controller::class);
 
             /*Blog Page */
 Route::group(['prefix'=>'blog'],function(){
@@ -145,6 +169,28 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
 
     Route::resource('blogpost', Blogpost_Controller::class);
 
+    Route::resource('merchadise', Merchadise_controller::class);
+    
+    // Route::post('/getproductprice', [Home_controller::class,'getproductprice'])->name('getproductprice');
+
+    // Merchadise attributes
+    Route::get('merchadise/addatributes/{id}', [Merchadise_controller::class,'show'])->name('addattributes');
+
+    Route::post('/attributes/{id}', [Merchadise_controller::class,'addattributes'])->name('attributes');
+
+    Route::post('/edit-attributes/{id}', [Merchadise_controller::class,'editattributes'])->name('editattributes');
+
+    Route::post('/updateattributestatus', [Merchadise_controller::class,'updateattributestatus'])->name('updateattributestatus');
+
+    Route::get('/shippingcharges', [Merchadise_controller::class,'shippingcharges'])->name('shippingcharges');
+
+    Route::match(['get','post'],'editshippingcharges/{id}', [Merchadise_controller::class,'editshippingcharge'])->name('editshippingcharge');
+
+    Route::get('/updateshippingstatus',[Merchadise_controller::class,'updateshippingstatus'])->name('updateshippingstatus');
+    
+    /*Post comment Page */
+
+    Route::resource('merchadisecategory', Merchadisecategory_controller::class);
 
     Route::get('blogpost/{id}/delete', [Blogpost_Controller::class,'destroy']);
 
@@ -155,6 +201,10 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     Route::resource('mixxes', Mix_Controller::class);
 
     Route::get('/postcomments', [PostComment_controller::class,'index'])->name('allcomments');
+
+                // Bookings Attributes
+
+    Route::get('/bookingsattributes', [Bookingsattributes_controller::class,'index'])->name('bookingattributes');
 
     Route::resource('bookingcategory', Bookingcategory_controller::class);
 
@@ -175,6 +225,8 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     Route::get('requestpayment/{id}', [Bookings_controller::class,'requestpayment'])->name('requestdeposit');
 
     Route::get('/paidbookings', [Bookings_controller::class,'depositpaid'])->name('paidbookings');
+
+    Route::get('/cancelledbookings', [Bookings_controller::class,'cancelledbookings'])->name('cancelledbookings');
 
 });
 

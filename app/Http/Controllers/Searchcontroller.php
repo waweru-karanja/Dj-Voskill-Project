@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blogtag;
 use App\Models\Blogpost;
 use App\Models\Blogcategory;
+use App\Models\Events;
 use App\Models\Events_Model;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class Searchcontroller extends Controller
 {
     public function index(Request $request)
     {
-        $events=Events_Model::latest()->take(4)->get();
+        $events=Events::latest()->take(4)->get();
         $cats=Blogcategory::all();
         $recent_posts= Blogpost::latest()->limit(5)->get();
         $posttags=Blogtag::all();

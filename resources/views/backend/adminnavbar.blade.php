@@ -10,116 +10,8 @@
       </div>  
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <!-- Single button -->
-          <div class="btn-group pull-right top-head-dropdown">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Notification <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">You have <b>3 new themes</b> trending</div>
-                  <div class="top-text-light">15 minutes ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">New asset recommendations in <b>Gaming Laptop</b></div>
-                  <div class="top-text-light">2 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">New asset recommendations in <b>5 themes</b></div>
-                  <div class="top-text-light">4 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">Assets specifications modified in themes</div>
-                  <div class="top-text-light">4 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">We crawled <b>www.dell.com</b> successfully</div>
-                  <div class="top-text-light">5 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">Next crawl scheduled on <b>10 Oct 2016</b></div>
-                  <div class="top-text-light">6 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">You have an update for <b>www.dell.com</b></div>
-                  <div class="top-text-light">7 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading"><b>"Gaming Laptop"</b> is now trending</div>
-                  <div class="top-text-light">7 hours ago</div>
-                </a> 
-              </li>
-              <li>
-                <a href="#" class="top-text-block">
-                  <div class="top-text-heading">New asset recommendations in <b>Gaming Laptop</b></div>
-                  <div class="top-text-light">7 hours ago</div>
-                </a> 
-              </li>
-             <li>
-              <div class="loader-topbar"></div>
-             </li>
-            </ul>
-          </div>
-        </div>
-      </div>
       <ul class="navbar-nav navbar-nav-right">
-
-        <!-- All Notifications -->
-        
-        {{-- <li class="nav-item dropdown no-arrow mx-1">
-          {{-- <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-bell fa-fw"></i>
-              <!-- Counter - Alerts -->
-              <span class="badge badge-danger badge-counter">{{ auth()->user()->unreadNotifications->count() }}</span>
-          </a> 
-          <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
-            <i class="mdi mdi-bell mx-0"></i>
-            @auth
-              <a href="#">
-                <span class="count">{{ auth()->user()->unreadNotifications->count() }}</span>
-              </a>
-            @endauth
-          </a>
-          <!-- Dropdown - Alerts -->
-          <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-              aria-labelledby="alertsDropdown">
-              <h6 class="dropdown-header">
-                  All Notifications
-              </h6>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                      <div class="icon-circle bg-primary">
-                          <i class="fas fa-file-alt text-white"></i>
-                      </div>
-                  </div>
-                  <div>
-                      <div class="small text-gray-500">December 12, 2019</div>
-                      <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-              </a>
-              <a class="dropdown-item text-center small text-gray-500" href="#">Show All Notifications</a>
-          </div>
-      </li> --}}
-
-        <li class="nav-item dropdown mr-4">
+        {{-- <li class="nav-item dropdown mr-4">
           <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center notification-dropdown" id="notificationDropdown" href="#" data-toggle="dropdown">
             <i class="mdi mdi-bell mx-0"></i>
             @auth
@@ -155,7 +47,7 @@
               <h4><a href="{{ route('mynotifications') }}">View all</a></h4>
             </div>
           </div>
-        </li>
+        </li> --}}
         
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">

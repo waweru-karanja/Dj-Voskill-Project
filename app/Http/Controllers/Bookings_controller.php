@@ -6,9 +6,12 @@ use App\Models\Bookings;
 use Illuminate\Http\Request;
 use App\Models\Bookingcategory;
 use App\Http\Controllers\Controller;
+use App\Models\bookingpackage;
 use App\Models\Bookingstatus;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\Approvedbookings;
+use App\Notifications\Checknewbooking;
 use App\Notifications\Newbookingrecieved;
 use Illuminate\Support\Facades\Notification;
 
@@ -69,6 +72,9 @@ class Bookings_controller extends Controller
         
         $booking->save();
 
+        // $users=User::where('role_id','1')->first();
+        // Notification::send($users,new Checknewbooking($booking));
+
         return redirect('/contact')->with('success','We have successfully received the Booking.We Will Get back to you ');
     }
 
@@ -119,7 +125,7 @@ class Bookings_controller extends Controller
         }
         
         $users=User::where('role_id','3')->first();
-        Notification::send($users,new Newbookingrecieved($bookingstatus));
+        Notification::send($users,new Approvedbookings($bookingstatus));
 
         return redirect()->back()->with('success','The Booking has successfully been Aproved to the accountant');
     }
@@ -167,6 +173,16 @@ class Bookings_controller extends Controller
         $status=Bookingstatus::all();
         
         return view('backend.bookings.requestpayment',['bookingcats'=>$bookingcats,'booking'=>$booking,'status'=>$status]);
+    }
+
+    // First Approval by the Manager
+
+    public function cancelledbookings()
+    {
+        $bookings=Bookings::where('is_booking',2)->get();
+        $bookingcats=Bookingcategory::all();
+        
+        return view('backend.bookings.cancelled',['bookings'=>$bookings,'bookingcats'=>$bookingcats]);
     }
 
     // Show notifications to the admins

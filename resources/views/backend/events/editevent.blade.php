@@ -60,6 +60,18 @@
                     @endif
                 </div>
 
+                <div class="form-group">
+                    <label>Event Date</label>
+                    <input type="text" class="form-control {{ $errors->has('eve_date') ? 'error' : '' }}" name="eve_date" id="eve_date" value="{{ old('eve_date') ?? $event->eve_date }}"
+                        id="eve_date">
+    
+                    @if ($errors->has('eve_date'))
+                    <div class="error">
+                        {{ $errors->first('eve_date') }}
+                    </div>
+                    @endif
+                </div>
+
     
                 <div class="form-group">
                     <label>Event Details</label>

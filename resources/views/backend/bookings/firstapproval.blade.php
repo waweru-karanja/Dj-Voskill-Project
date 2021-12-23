@@ -8,13 +8,9 @@
                     <tr>
                         <th>Booking id</th>
                         <th>Clients Full Name</th>
-                        {{-- <th>Location</th>
-                        <th>Phone</th>
-                        <th>Date</th> --}}
                         <th>Email</th>
                         <th>Booking Status</th>
                         <th>Action</th>
-                        {{-- <th>Image</th> --}}
                 </thead>
                 <tbody>
                     @forelse ($bookings as $booking)
@@ -22,10 +18,6 @@
                     <tr>
                         <td>{{ $booking->id }}</td>
                         <td>{{ $booking->full_name }}</td>
-                        {{-- <td>{{ $booking->location }}</td>
-                        <td>{{ $booking->phone }}</td>
-                        <td>{{ $booking->date }}</td>
-                        <td>{{ $booking->email }}</td>--}}
                         <td>{{ $booking->bookingtyp->booking_category }}</td>
                         <td>
                             @foreach($booking->bookingstatus as $status)

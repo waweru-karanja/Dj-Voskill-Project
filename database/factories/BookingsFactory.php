@@ -23,6 +23,7 @@ class BookingsFactory extends Factory
     {
         return [
             'is_booking'=>0,
+            'package_id'=>0,
             'full_name'=>$this->faker->unique()->name,
             'location'=>$this->faker->address,
             'phone'=>$this->faker->numerify('###-###-####'),
