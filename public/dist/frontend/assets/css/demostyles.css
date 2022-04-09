@@ -344,3 +344,10 @@ p.checkout-coupon input[type="text"] {
 	width: 100%;
 	margin-bottom: 19px;
 }
+
+.checkout_title::before
+{
+  font: var(fa-solid fa-check);
+  content: "\f00c";
+}
+

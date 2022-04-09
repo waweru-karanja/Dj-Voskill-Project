@@ -32,23 +32,14 @@
                             <input data-id="{{ $shippingcharge->id }}" class="toggle-class" type="checkbox" 
                                     data-onstyle="success" data-offstyle="danger" data-toggle="toggle" 
                                     data-on="Active" data-off="In Active" {{ $shippingcharge->is_shipping ? 'checked':'' }}>
-                            {{-- @if ($shippingcharge->is_shipping==0)
-                                <a class="updateshippingstatus" href="javascript:void(0)" id="shipping_{{ $shippingcharge->id }}" shipping_id="{{ $shippingcharge->id }}">
-                                    <i class="fa fa-toggle-on" aria-hidden="true" is_shipping="Active"></i>
-                                </a>
-                            @else
-                                <a class="updateshippingstatus" href="javascript:void(0)" id="shipping_{{ $shippingcharge->id }}" shipping_id="{{ $shippingcharge->id }}">
-                                    <i class="fa fa-toggle-off" aria-hidden="true" is_shipping="In Active"></i>
-                                </a>
-                            @endif --}}
                         </td>
                         <td>
                             <a class="btn btn-info" href="{{ route('editshippingcharge',$shippingcharge->id)}}">Edit the Charges</a>
                         </td>
+                        @empty
+                            <strong style="font-size: 20px;">No Shipping Charges Added</strong>
+                        @endforelse
                     </tr>
-                    @empty
-                    <strong style="font-size: 20px;">No Shipping Charges Added</strong>
-                    @endforelse
                 </tbody>
             </table>
         @endif

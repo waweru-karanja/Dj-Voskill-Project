@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
             Cart::where('session_id',$session_id)->update(['user_id'=>$user_id]);
         }
 
-        return redirect($request['current_page']);
+        redirect($request['current_page']);
     }
 
     /**
@@ -61,7 +61,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect($request['current_page']);
        
     }
 }

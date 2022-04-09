@@ -20,7 +20,7 @@ class Postcomments extends Model
     	return $this->hasMany('App\Models\Commentreply','reply_id');
     }
 
-    public function user ()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }

@@ -3075,106 +3075,132 @@ padding: 4rem 0rem 4rem;
 section:nth-of-type(even){background-color: #fe4066;
 color: white;}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.view-group {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.thumbnail
+{
+  margin-bottom: 30px;
+  padding: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+/* template testing */
+
+/*start css toggle products section products grid-view*/
+.view{
+  text-align: right;
+  padding: 5px;
+}
+.view i{
+  cursor:pointer;
+}
+.view i.selected{
+  color:#ef0000;
+}
+.prod{
+  width:800px;
+  margin:20px auto;
+  overflow: hidden;
+}
+.prod.grid-view .item{
+  width:46%;
+  float:left;
+  background-color: #fff;
+  border:1px solid #ccc;
+  padding:10px;
+}
+.prod.grid-view .item.first{
+  margin-right:.5%;
+  margin-bottom:.5%;
+}
+.prod.grid-view .item h3{
+  color: #615e5e;
+   margin:0;
+}
+.prod.grid-view .item .date{
+  color: #888;
+  font-size: 12px;
+  padding: 2px 0;
+  display:block
+}
+.prod.grid-view .item img{
+  background-color: #fff;
+  border:1px solid #ccc;
+  padding: 2px
+}
+.prod.grid-view .item i{
+  border:1px solid #ccc;
+  background-color: #eee;
+  display:block;
+  color:#333;
+  cursor:pointer;
+  padding: 5px ;
+  font-size:16px
+}
+.prod.grid-view .item p{
+  color:#333;
+  padding:10px 0;
+  display:none
+}
+/*start css toggle products section products list-view*/
+
+.prod.list-view .item{
+  background-color: #fff;
+  border:1px solid #ccc;
+  padding:10px;
+  position: relative;
+  overflow: hidden;
+  min-height:100px;
+  margin:5px;
+}
+.prod.list-view .item h3{
+  color: #615e5e;
+  margin:0;
+  position:absolute;
+  left:120px
+
+}
+.prod.list-view .item .date{
+  color: #888;
+  font-size: 12px;
+  padding: 2px 0;
+  position:absolute;
+  left:120px;
+  bottom: 70px;
+
+}
+.prod.list-view .item img{
+  background-color: #fff;
+  border:1px solid #ccc;
+  padding: 2px;
+  position:absolute;
+}
+.prod.list-view .item i{
+  border:1px solid #ccc;
+  background-color: #eee;
+  display:block;
+  color:#333;
+  position:absolute;
+  cursor:pointer;
+  padding: 5px ;
+  font-size:16px;
+  bottom: 5px;
+  right: 5px;
+}
+.prod.list-view .item p{
+  color:#333;
+  position:absolute;
+  padding:10px 0;
+  display:none;
+  margin:0;
+  left:120px;
+  top: 40px;
+}

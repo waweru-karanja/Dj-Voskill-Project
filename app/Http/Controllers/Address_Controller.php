@@ -43,8 +43,11 @@ class Address_Controller extends Controller
             'phone'=>'required',
         ]);
 
+        $shippingcost=$request->shipping_amount;
+
         $address=new Deliveryaddress();
         $address->user_id=Auth::user()->id;
+        $address->shipping_cost=$shippingcost;
         $address->county_id=$request->countyname;
         $address->city_id=$request->cityname;
         $address->first_name=$request->first_name;

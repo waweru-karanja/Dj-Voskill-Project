@@ -11,10 +11,10 @@
                 <form method="post" action="{{ url('admin/roles') }}">
                     @csrf
                     <div class="form-group">
-                        <label>Add A Role</label>
+                        <label>Role Name</label>
                         <input type="text" class="form-control" name="Role_name" id="Role_name" placeholder="Admin Role">
                     </div>
-    
+                    
                     <button type="submit" class="btn btn-dark btn-block">Submit</button>
                 </form>
             </div>

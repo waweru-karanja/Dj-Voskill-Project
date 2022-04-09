@@ -12,6 +12,7 @@ use App\Models\Merchadisestatus;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\Userseeder;
 use App\Models\Merchadisecategory;
+use Database\Seeders\couponSeeder;
 use Database\Seeders\EventsSeeder;
 use Database\Seeders\BookingsSeeder;
 use Database\Seeders\MerchadiseSeeder;
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(couponSeeder::class);
         
         $this->call([
             RoleSeeder::class,

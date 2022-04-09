@@ -22,14 +22,16 @@ class MerchadiseFactory extends Factory
     public function definition()
     {
         return [
-            'merch_name'=>$this->faker->unique(5)->name(),
+            'merch_name'=>$this->faker->unique(5)->company(),
             'merch_code'=>$this->faker->numerify('merch-####'),
             'merch_price'=>$this->faker->numberBetween(300, 400),
-            'merch_splprice'=>$this->faker->numberBetween(300, 350),
-            'merch_image'=>'merchadise/product.PNG',
-            'merch_isactive'=>0,
+            // 'merch_splprice'=>$this->faker->numberBetween(300, 350),
+            'merch_image'=>'product.PNG',
+            'merch_isactive'=>1,
             'merchcat_id'=>$this->faker->numberBetween(1, 4),
-            'merch_details'=>$this->faker->paragraphs(2, true)
+            'merch_details'=>$this->faker->paragraphs(2, true),
+            'product_discount'=>$this->faker->numberBetween(0,50),
+            'is_attribute'=>1,
         ];
     }
 }

@@ -1,7 +1,6 @@
 
 $(document).ready(function(){
-  $('.blogtags').select2();
-    
+  $('.adminselect2').select2();    
 });
 
    
@@ -25,6 +24,9 @@ $(document).ready(function() {
       responsive: true
   });
 }); 
+
+
+
     
     
 

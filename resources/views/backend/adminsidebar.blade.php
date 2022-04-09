@@ -65,9 +65,9 @@
           <ul class="nav flex-column sub-menu">
             <li class="nav-item {{ 'admin/merchadisecategory'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('bookingcategory.index') }}"> Bookings Categories</a></li>
             <li class="nav-item {{ 'admin/merchadise'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('merchadise.index') }}"> All Merchadise </a></li>
-            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Bookings Approved by Accountant </a></li>
+            {{-- <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Bookings Approved by Accountant </a></li> --}}
             <li class="nav-item {{ 'admin/shippingcharges'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('shippingcharges') }}"> Shipping Charges </a></li>
-            <li class="nav-item {{ 'admin/received'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('receivedbookings') }}"> Cancelled Bookings </a></li>
+            <li class="nav-item {{ 'admin/coupons'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('coupons.index') }}"> Coupons For Our Merchadise </a></li>
           </ul>
         </div>
       </li>

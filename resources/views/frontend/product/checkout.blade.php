@@ -3,486 +3,232 @@
 @section('title','My Checkout')
 @section('content')
     <!-- Checkout Page Start -->
+    <?php use App\Models\Merchadise; ?>
+    <?php use App\Models\Cart; ?>
         <!-- checkout-area start -->
         <section class="checkout-area pb-70">
             <div class="container">
+                {{-- <div class="row">
+                    <div class="col-md-3">
+                        <!-- Tabs nav -->
+                        <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="nav-link mb-3 p-3 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                <i class="fa fa-user-circle-o mr-2"></i>
+                                <span class="font-weight-bold small text-uppercase">Billing and Shipping Details</span></a>
+        
+                            <a class="nav-link mb-3 p-3 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                <i class="fa fa-calendar-minus-o mr-2"></i>
+                                <span class="font-weight-bold small text-uppercase">Bookings</span></a>
+        
+                            <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                                <i class="fa fa-star mr-2"></i>
+                                <span class="font-weight-bold small text-uppercase">Reviews</span></a>
+        
+                            <a class="nav-link mb-3 p-3 shadow" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                <i class="fa fa-check mr-2"></i>
+                                <span class="font-weight-bold small text-uppercase">Confirm booking</span></a>
+                            </div>
+                    </div>
+        
+        
+                    <div class="col-md-9">
+                        <!-- Tabs content -->
+                        <div class="tab-content" id="v-pills-tabContent">
+                            <div class="tab-pane fade shadow rounded bg-white show active p-5" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                <h4 class="font-italic mb-4">Personal information</h4>
+                                <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                            
+                            <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                <h4 class="font-italic mb-4">Bookings</h4>
+                                <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                            
+                            <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                                <h4 class="font-italic mb-4">Reviews</h4>
+                                <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                            
+                            <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                <h4 class="font-italic mb-4">Confirm booking</h4>
+                                <p class="font-italic text-muted mb-2">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="checkbox-form">
-                            <h3>Billing Details</h3>
-                                @if ($errors->any())
-                                    @foreach ($errors->all() as $error)
-                                        <div>{{$error}}</div>
-                                    @endforeach
-                                @endif
+                            @if ($errors->any())
+                                @foreach ($errors->all() as $error)
+                                    <div>{{$error}}</div>
+                                @endforeach
+                            @endif
 
-                                <!-- Success message -->
-                                @if(Session::has('success_message'))
-                                <div class="alert alert-success">
-                                    {{Session::get('success_message')}}
-                                </div>
-                                @endif
+                            <!-- Success message -->
+                            @if(Session::has('success_message'))
+                            <div class="alert alert-success">
+                                {{Session::get('success_message')}}
+                            </div>
+                            @endif
 
-                                {{-- @if (Auth::user()->id!==$addresses->user_id)
-                                    <div class="card border-2 shadow p-3 mb-5 bg-white rounded">
-                                        <div class="card-header" style="position: relative;">
-                                            <p class="card-text text-dark">SHIPPING DETAILS</p>
-                                            <a href="#" class="float-right" style="position: absolute; 
-                                            right: 25px;
-                                            top: 25px;">edit</a>
-                                            <hr class="my-0">
+                            @empty($addresses)
+                             <h4>1.BILLING DETAILS</h4>
+                                <form method="post" action="{{ route('address.store') }}" class="form">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="checkout-form-list">
+                                                <label>First Name <span class="required">*</span></label>
+                                                <input type="text" placeholder="First Name" name="first_name" class="form-control input-md {{ $errors->has('first_name') ? 'error' : '' }}" required/>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row justify-content-between">
-                                                <div class="col-auto mt-0">
-                                                    <p><b>
-                                                        {{ $deliveriesdata->shipcharges->county }}
-                                                    </b></p>
-                                                </div>
-                                                <br>
-                                                <div class="col-auto">
-                                                    <p><b>{{ $deliveriesdata->towns->town }},{{ $deliveriesdata->towns->pickuppoint }}</b></p>
-                                                </div>
+                                        <div class="col-md-6">
+                                            <div class="checkout-form-list">
+                                                <label>Last Name <span class="required">*</span></label>
+                                                <input type="text" placeholder="Last Name" name="last_name" class="form-control input-md {{ $errors->has('last_name') ? 'error' : '' }}" required/>
                                             </div>
                                         </div>
                                     </div>
-                                @else --}}
-                                    <form method="post" action="{{ route('address.store') }}" class="form">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="checkout-form-list">
-                                                    <label>First Name <span class="required">*</span></label>
-                                                    <input type="text" placeholder="First Name" name="first_name" class="form-control input-md {{ $errors->has('first_name') ? 'error' : '' }}" required/>
-                                                </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Company Name</label>
+                                            <input type="text" placeholder="Your Company Name" name="company_name" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Phone <span class="required">*</span></label>
+                                            <input type="text" placeholder="Your Phone Number" name="phone" class="form-control input-md {{ $errors->has('phone') ? 'error' : '' }}" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="country-select">
+                                            <label>County <span class="required">*</span></label>
+                                            <select id="cty_id" class="county form-control" name="countyname">
+                                                <option value="0" disabled="true" selected="true">Choose Your County</option>
+                                                    @foreach($delivaddresses as $address)
+                                                        <option value="{{ $address->id }}">{{ $address->county }}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Town / City <span class="required">*</span></label>
+                                            <select class="town form-control" name="cityname">
+                                                <option value=" " disabled="true" selected="true">Select Your City</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Pick Up Point <span class="required">*</span></label>
+                                            <input type="text" name="street_address" class="pickup_point form-control input-md" value=" " />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>price <span class="required">*</span></label>
+                                            <input type="text"name="shipping_amount" class="total_amount form-control input-md" value=" " />
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark btn-block">Submit</button>
+                                </form>
+                            @else
+                            <h4 class="checkout_title">1.BILLING DETAILS</h4>
+                                <div class="card border-2 shadow p-3 mb-5 bg-white rounded">
+                                    <div class="card-header" style="position: relative;">
+                                        <p class="card-text text-dark">SHIPPING DETAILS</p>
+                                        <a href="#" class="float-right" style="position: absolute; 
+                                        right: 25px;
+                                        top: 25px;">Change</a>
+                                        <hr class="my-0">
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto mt-0">
+                                                <p><b>
+                                                    {{ $addresses->shipcharges->county }}
+                                                </b></p>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="checkout-form-list">
-                                                    <label>Last Name <span class="required">*</span></label>
-                                                    <input type="text" placeholder="Last Name" name="last_name" class="form-control input-md {{ $errors->has('last_name') ? 'error' : '' }}" required/>
-                                                </div>
+                                            <br>
+                                            <div class="col-auto">
+                                                <p><b>{{ $addresses->towns->town }},{{ $addresses->towns->pickuppoint }}</b></p>
                                             </div>
                                         </div>
-                                        
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Company Name</label>
-                                                <input type="text" placeholder="Your Company Name" name="company_name" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Phone <span class="required">*</span></label>
-                                                <input type="text" placeholder="Your Phone Number" name="phone" class="form-control input-md {{ $errors->has('phone') ? 'error' : '' }}" required/>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="country-select">
-                                                <label>County <span class="required">*</span></label>
-                                                <select id="cty_id" class="county form-control" name="countyname">
-                                                    <option value="0" disabled="true" selected="true">Choose Your County</option>
-                                                        @foreach($delivaddresses as $address)
-                                                            <option value="{{ $address->id }}">{{ $address->county }}</option>
-                                                        @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Town / City <span class="required">*</span></label>
-                                                <select class="town form-control" name="cityname">
-                                                    <option value=" " disabled="true" selected="true">Select Your City</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="checkout-form-list">
-                                                <label>Pick Up Point <span class="required">*</span></label>
-                                                <input type="text" name="street_address" class="pickup_point form-control input-md" value=" " />
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-dark btn-block">Submit</button>
-                                    </form>
-                                {{-- @endif --}}
+                                    </div>
+                                </div>
+                            @endempty
                         </div>
                     </div>
                     <div class="col-lg-6">
+                        @if(Session::has('success'))
+                            <div class="alert alert-success">
+                                {{Session::get('success')}}
+                            </div>
+                        @endif
                         <div class="your-order mb-30 ">
-                            <h3>Your order</h3>
-                            <div class="your-order-table table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="product-name">Product</th>
-                                            <th class="product-total">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($usercartitems as $item)
-                                            <tr class="cart_item">
-                                                <td class="product-name">{{ $item['product'] ['merch_name'] }}<strong class="product-quantity"> × 1</strong>
-                                                </td>
-                                                <td class="product-total">
-                                                    <span class="amount">$165.00</span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="cart-subtotal">
-                                            <th>Cart Subtotal</th>
-                                            <td><span class="amount sub_total">$300.00</span></td>
-                                        </tr>
-                                        <tr class="shipping">
-                                            <th>Shipping
-                                                <br>
-                                            </th>
-                                            <td><span class="shipping_amount">$0</span></td>
-                                        </tr>
-                                        <tr class="order-total">
-                                            <th>Order Total</th>
-                                            <td><strong><span class="amount total_amount">$215.00</span></strong>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                            <div class="payment-method">
-                                <div class="accordion" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-header" id="headingOne">
-                                            <h5 class="mb-0">
-                                                <button class="btn-link" type="button" data-toggle="collapse"
-                                                    data-target="#collapseOne" aria-expanded="true"
-                                                    aria-controls="collapseOne">
-                                                    Direct Bank Transfer
-                                                </button>
-                                            </h5>
-                                        </div>
-
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                            data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                Make your payment directly into our bank account. Please use your Order ID
-                                                as the payment
-                                                reference. Your order won’t be
-                                                shipped until the funds have cleared in our account.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo">
-                                            <h5 class="mb-0">
-                                                <button class="btn-link collapsed" type="button" data-toggle="collapse"
-                                                    data-target="#collapseTwo" aria-expanded="false"
-                                                    aria-controls="collapseTwo">
-                                                    Cheque Payment
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                            data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                Please send your cheque to Store Name, Store Street, Store Town, Store
-                                                State / County, Store
-                                                Postcode.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree">
-                                            <h5 class="mb-0">
-                                                <button class="btn-link collapsed" type="button" data-toggle="collapse"
-                                                    data-target="#collapseThree" aria-expanded="false"
-                                                    aria-controls="collapseThree">
-                                                    PayPal
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                            data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <p><span class='fw-medium'>PayPal</span> - the safer, easier way to pay</p>
-                                                <form class="row needs-validation" method="post" novalidate>
-                                                    <div class="col-sm-6">
-                                                        <div class="mb-3">
-                                                        <input class="form-control" type="email" placeholder="E-mail" required>
-                                                        <div class="invalid-feedback">Please enter valid email address</div>
+                            <h4>ORDER DETAILS</h4>
+                            <div class="card border-0 ">
+                                <div class="card-body pt-0">
+                                    <?php $total_price=0; ?>
+                                    @foreach ($usercartitems as $item )
+                                    <?php $attrpric=Merchadise::getdiscountedattrprice($item['product_id'],$item['size']);?>
+                                        <div class="row justify-content-between">
+                                            <div class="col-auto col-md-7">
+                                                <div class="media flex-column flex-sm-row">
+                                                    <img class=" img-fluid" src="{{ asset ('merchadise/'.$item->product->merch_image) }}" width="62" height="62">
+                                                    <div class="media-body my-auto">
+                                                        <div class="row ">
+                                                            <div class="col-auto">
+                                                                <p class="mb-0"><b>{{ $item->product->merch_name }}</b></p><small class="text-muted">{{ $item->product->merch_code }}</small>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="mb-3">
-                                                        <input class="form-control" type="password" placeholder="Password" required>
-                                                        <div class="invalid-feedback">Please enter your password</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="d-flex flex-wrap justify-content-between align-items-center"><a class="nav-link-style" href="#">Forgot password?</a>
-                                                        <button class="btn btn-primary" style="background-color: #fe696a;
-                                                        border-color: #fe696a;" type="submit">Log In</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                </div>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto my-auto">
+                                                <p class="boxed-1">{{ $item->quantity }}</p>
+                                            </div>
+                                            <div class=" pl-0 flex-sm-col col-auto my-auto ">
+                                                <p><b>{{ $attrpric['final_price']*$item['quantity'] }}</b></p>
                                             </div>
                                         </div>
-                                    </div>
+                                        <hr class="my-2">
+                                        <?php $total_price=$total_price+($attrpric['final_price']*$item['quantity']);?>
+                                    @endforeach
                                 </div>
-                                <div class="order-button-payment mt-20">
-                                    <button type="submit" class="btn theme-btn" style="background-color: #fe696a;
-                                    border-color: #fe696a;">Place order</button>
+
+                                <div class=" pl-0 flex-sm-col col-auto my-auto ">
+                                    <p><b>{{ $total_price }}</b></p>
+                                </div>
+                                <div class=" pl-0 flex-sm-col col-auto my-auto ">
+                                    <p>shipping cost<b></b></p>
                                 </div>
                             </div>
+
+                            <h4>PAYMENT METHODS</h4>
+                            <form method="post" action="{{url('/addtoorder')}}">
+                                @csrf
+                                @foreach($payment_methods as $payment_method)
+                                    <p>
+                                        <input type="radio" id="test1" value="{{ $payment_method->payment_name}}" name="payment_method" class="{{ $errors->has('payment_name') ? 'error' : '' }}" required >
+                                        <label for="test1">{{ $payment_method->payment_name}}</label>
+                                    </p>
+                                @endforeach
+                                <div class="row mb-5 mt-4 ">
+                                    <div class="col-md-7 col-lg-6 mx-auto">
+                                        <button type="submit" class="btn btn-block btn-outline-primary btn-lg">Proceed</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                        </ol>
                     </div>
+                    
                 </div>
             </div>
         </section>
-        <!-- checkout-area end -->
-    {{-- <div class="page-section section mt-90 mb-30" style="border:2px solid black;">
-        
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    
-                    <!-- Checkout Form s-->
-                    <form action="#" class="checkout-form">
-                    <div class="row row-40">
-                        
-                        <div class="col-lg-7 mb-20">
-                            
-                            <!-- Billing Address -->
-                            <div id="billing-form" class="mb-40">
-                                <h4 class="checkout-title">Billing Address</h4>
-
-                                <div class="row">
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>First Name*</label>
-                                        <input type="text" placeholder="First Name">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Last Name*</label>
-                                        <input type="text" placeholder="Last Name">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Email Address*</label>
-                                        <input type="email" placeholder="Email Address">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Phone no*</label>
-                                        <input type="text" placeholder="Phone number">
-                                    </div>
-
-                                    <div class="col-12 mb-20">
-                                        <label>Company Name</label>
-                                        <input type="text" placeholder="Company Name">
-                                    </div>
-
-                                    <div class="col-12 mb-20">
-                                        <label>Address*</label>
-                                        <input type="text" placeholder="Address line 1">
-                                        <input type="text" placeholder="Address line 2">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>County*</label>
-                                        <select class="nice-select">
-                                            @foreach ($deliveryaddresses as $address)
-                                                <option id="address{{ $address['id'] }}" value="{{ $address['id'] }}">{{ $address['county'] }}</option>
-                                            @endforeach
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Town/City*</label>
-                                        <input type="text" placeholder="Town/City">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>State*</label>
-                                        <input type="text" placeholder="State">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Zip Code*</label>
-                                        <input type="text" placeholder="Zip Code">
-                                    </div>
-
-                                    <div class="col-12 mb-20">
-                                        <div class="check-box">
-                                            <input type="checkbox" id="create_account">
-                                            <label for="create_account">Create an Acount?</label>
-                                        </div>
-                                        <div class="check-box">
-                                            <input type="checkbox" id="shiping_address" data-shipping>
-                                            <label for="shiping_address">Ship to Different Address</label>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            
-                            <!-- Shipping Address -->
-                            <div id="shipping-form" class="mb-40">
-                                <h4 class="checkout-title">Shipping Address</h4>
-
-                                <div class="row">
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>First Name*</label>
-                                        <input type="text" placeholder="First Name">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Last Name*</label>
-                                        <input type="text" placeholder="Last Name">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Email Address*</label>
-                                        <input type="email" placeholder="Email Address">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Phone no*</label>
-                                        <input type="text" placeholder="Phone number">
-                                    </div>
-
-                                    <div class="col-12 mb-20">
-                                        <label>Company Name</label>
-                                        <input type="text" placeholder="Company Name">
-                                    </div>
-
-                                    <div class="col-12 mb-20">
-                                        <label>Address*</label>
-                                        <input type="text" placeholder="Address line 1">
-                                        <input type="text" placeholder="Address line 2">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Country*</label>
-                                        <select class="nice-select">
-                                                <option>Bangladesh</option>
-                                                <option>China</option>
-                                                <option>country</option>
-                                                <option>India</option>
-                                                <option>Japan</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Town/City*</label>
-                                        <input type="text" placeholder="Town/City">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>State*</label>
-                                        <input type="text" placeholder="State">
-                                    </div>
-
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Zip Code*</label>
-                                        <input type="text" placeholder="Zip Code">
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            
-                        </div>
-                        
-                        <div class="col-lg-5">
-                            <div class="row">
-                                
-                                <!-- Cart Total -->
-                                <div class="col-12 mb-60">
-                                
-                                    <h4 class="checkout-title">Cart Total</h4>
-                            
-                                    <div class="checkout-cart-total">
-
-                                        <h4>Product <span>Total</span></h4>
-                                        
-                                        <ul>
-                                            @foreach($usercartitems as $item)
-                                             <li>{{ $item->product->merch_name }} X {{$item->quantity}} <span>sh.345<</span></li>
-                                            @endforeach
-                                            {{-- <li>{{ $item->product }} X 01 <span>$295.00</span></li> 
-                                            <li>Aquet Drone  D 420 X 02 <span>$550.00</span></li>
-                                            <li>Play Station X 22 X 01 <span>$295.00</span></li>
-                                            {{-- <li>Roxxe Headphone Z 75 X 01 <span>$110.00</span></li> 
-                                        </ul>
-                                        
-                                        <p>Sub Total <span>$1250.00</span></p>
-                                        <p>Shipping Fee <span>$00.00</span></p>
-                                        
-                                        <h4>Grand Total <span>$1250.00</span></h4>
-                                        
-                                    </div>
-                                    
-                                </div>
-                                
-                                <!-- Payment Method -->
-                                <div class="col-12 mb-60">
-                                
-                                    <h4 class="checkout-title">Payment Method</h4>
-                            
-                                    <div class="checkout-payment-method">
-                                        
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_check" name="payment-method" value="check">
-                                            <label for="payment_check">Check Payment</label>
-                                            <p data-method="check">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_bank" name="payment-method" value="bank">
-                                            <label for="payment_bank">Direct Bank Transfer</label>
-                                            <p data-method="bank">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_cash" name="payment-method" value="cash">
-                                            <label for="payment_cash">Cash on Delivery</label>
-                                            <p data-method="cash">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_paypal" name="payment-method" value="paypal">
-                                            <label for="payment_paypal">Paypal</label>
-                                            <p data-method="paypal">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_payoneer" name="payment-method" value="payoneer">
-                                            <label for="payment_payoneer">Payoneer</label>
-                                            <p data-method="payoneer">Please send a Check to Store name with Store Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        
-                                        <div class="single-method">
-                                            <input type="checkbox" id="accept_terms">
-                                            <label for="accept_terms">I’ve read and accept the terms & conditions</label>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <button class="place-order">Place order</button>
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
-                        
-                    </div>
-                    </form>
-                    
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- Checkout Page End --> 
 @endsection

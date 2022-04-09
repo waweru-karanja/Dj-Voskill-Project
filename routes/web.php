@@ -2,6 +2,7 @@
 
 use App\Models\Postcomments;
 use App\Http\Middleware\Admin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mix_Controller;
 use App\Http\Controllers\Home_Controller;
@@ -33,6 +34,7 @@ use App\Http\Controllers\product_categoriescontroller;
 use App\Http\Controllers\Bookingsattributes_controller;
 use App\Http\Controllers\Merchadisecategory_controller;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,13 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/slider', function () {
+    return view('frontend.slider');
+});
+
+Route::get('/post', function () {
+    return view('frontend.post');
+});
 
 Route::get('/', [Home_Controller::class,'homepage'])->name('index');
 
@@ -83,6 +92,8 @@ Route::post('delete-cart-item/{id}', [Home_controller::class,'deletecartitem'])-
 Route::post('/updatecartitemquantity', [Home_Controller::class,'updatecartitem'])->name('updatecartitem');
 
 Route::get('/checkout',[Home_controller::class,'checkout'])->middleware(['auth'])->name('mycheckout');
+
+Route::post('/addtoorder', [Home_Controller::class,'addtoorder'])->name('addtoorder');
 
 Route::get('/getshippingprice',[Home_controller::class,'getshippingprice'])->name('getshippingprice');
 
@@ -172,6 +183,12 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     Route::resource('merchadise', Merchadise_controller::class);
     
     // Route::post('/getproductprice', [Home_controller::class,'getproductprice'])->name('getproductprice');
+    // Merchadise
+    Route::resource('coupons', CouponController::class);
+
+    // Route::get('/createcoupon', [CouponController::class,'create'])->name('createcoupon');
+
+    // Route::match(['get','post'],'add-edit-coupon/{id?}',[CouponController::class,'addeditcoupon'])->name('addeditcoupon');
 
     // Merchadise attributes
     Route::get('merchadise/addatributes/{id}', [Merchadise_controller::class,'show'])->name('addattributes');
@@ -240,3 +257,6 @@ Route::group(['middleware'=>config('fortify.middleware',['web'])],
         ]));
     
     });
+Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

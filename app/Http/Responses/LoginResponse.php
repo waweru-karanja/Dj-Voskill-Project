@@ -19,17 +19,17 @@ class LoginResponse implements LoginResponseContract
             return response()->json(['two factor'=>false]);
         }
 
-        switch($role){
-            case'0';
-                return redirect($request['current_page'])->intended(config('fortify.home'));
+        // switch($role){
+        //     case'0';
+        //         return redirect($request['current_page'])->intended(config('fortify.home'));
                 
-                break;
+        //         break;
 
-            case'1';
-                return redirect($request['current_page'])->route('dashboard.index');
-                break;
-            default;
-                return redirect('/');
-        }
+        //     case'1';
+        //         return redirect($request['current_page'])->route('dashboard.index');
+        //         break;
+            // default;
+            //     return redirect('/');
+        // }
     }
 }

@@ -24,6 +24,10 @@ class Deliveryaddress extends Model
     }
 
     public function towns(){
-        return $this->belongsTo('App\Models\Town','county_id','id');
+        return $this->belongsTo('App\Models\Town','city_id','id');
+    }
+
+    public function deliveryuser(){
+        return $this->belongsTo('App\Models\User','user_id','id');
     }
 }

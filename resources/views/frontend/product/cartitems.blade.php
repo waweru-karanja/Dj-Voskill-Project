@@ -28,9 +28,14 @@
                             <td class="pro-price"><span>{{ $attrpric['merch_price'] }}</span></td>
                             <td class="pro-quantity">
                                 <div class="def-number-input number-input safari_only mb-0 w-100">
-                                    <button  onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="itemupdate qtyminus" type="button" data-cartid="{{ $item['id'] }}"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <button  
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()" 
+                                    class="itemupdate qtyminus" type="button" data-cartid="{{ $item['id'] }}">
+                                        <i class="fa fa-minus" aria-hidden="true"></i></button>
                                         <input data-id={{ $item->id }} class="quantity" min="1" name="quantity[]" value="{{ $item['quantity'] }}" type="number">
-                                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="itemupdate qtyplus" type="button" data-cartid="{{ $item['id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    <button 
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()" 
+                                    class="itemupdate qtyplus" type="button" data-cartid="{{ $item['id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div> 
                             </td>
                             <td class="pro-price"><span>sh.{{ $attrpric['discount']*$item['quantity']  }}</span></td>
@@ -42,11 +47,11 @@
                                     <button type="submit" class="btn btn-xs btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
                                 </form>
                             </td>
-                        </tr>  
-                    <?php $total_price=$total_price+($attrpric['final_price']*$item['quantity']);?>
-                @empty
-                    <P style="font-size: 15px; text-align:center;margin:40px;">Your Cart is Empty.Click <a href="{{url('products')}}">here</a> to shop for products</p>
-                @endforelse
+                        </tr>
+                        <?php $total_price=$total_price+($attrpric['final_price']*$item['quantity']);?>
+                        @empty
+                            <P style="font-size: 15px; text-align:center;margin:40px;">Your Cart is Empty.Click <a href="{{url('products')}}">here</a> to shop for products</p>
+                        @endforelse
         </tbody>
     </table>
 </div>
@@ -54,15 +59,16 @@
 <div class="row">
             <div class="col-12">
                 <div class="coupon-all">
-                    <div class="coupon">
-                        <input id="coupon_code" class="input-text" name="coupon_code" value=""
-                            placeholder="Coupon code" type="text">
-                            <button type="submit" class="btn btn-secondary">Apply
-                                coupon</button>
-                        <button class="btn theme-btn-2" name="apply_coupon" ></button>
-                    </div>
+                    <form class="coupon" id="applycoupon" method="POST" action="javascript:void;"
+                        @if (Auth::check())
+                            user="1"
+                        @endif>
+                        @csrf
+                        <input id="couponcode" class="input-text" name="couponcode" placeholder="Enter Your Coupon code" type="text">
+                        <button type="submit" class="btn btn-secondary">Apply Coupon</button>
+                    </form>
                     <div class="coupon2">
-                        <a href="#" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+                        <a href="{{ url('products') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -72,8 +78,8 @@
                 <div class="cart-page-total">
                     <h2>Cart totals</h2>
                     <ul class="mb-20">
-                        <li>Subtotal <span>$250.00</span></li>
-                        <li>Total <span>$250.00</span></li>
+                        {{-- <li>Subtotal <span>{{ $total_price+($attrpric['final_price']*$item['quantity']) }}</span></li> --}}
+                        <li>Total Price <span>{{ $total_price }}</span></li>
                     </ul>
                     @auth
                         <a href="{{ url('checkout') }}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a>

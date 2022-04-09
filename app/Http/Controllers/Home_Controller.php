@@ -14,7 +14,9 @@ use App\Models\Postcomments;
 use Illuminate\Http\Request;
 use App\Models\Productimages;
 use App\Models\Deliveryaddress;
+use App\Models\Order;
 use App\Models\shipping_charge;
+use App\Models\payment_methods;
 use App\Models\Productattribute;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User;
@@ -60,10 +62,24 @@ class Home_Controller extends Controller
         return view('frontend.events',['events'=>$events]);
     }
    
-    public function merchadise (){
-        $products=Merchadise::orderby('id','desc')->paginate(8);
-        $events=Events::latest()->take(4)->get();
-        return view('frontend.product.product',compact('events','products'));
+    public function merchadise (Request $request){
+        if($request->ajax()){
+            $start=$request->start;
+
+            $end=$request->end;
+
+            $products=Merchadise::where('merch_isactive',1)->
+            where('merch_price','>=',$start)->
+            where('merch_price','<=',$end)->
+            orderby('merch_price','DESC')->get();
+            response()->json($products);
+            $events=Events::latest()->take(4)->get();
+            return view('frontend.product.productsjson',compact('events','products'));
+        }else{
+            $events=Events::latest()->take(4)->get();
+            $products=Merchadise::where('merch_isactive',1)->orderby('merch_price','ASC')->paginate(5);
+            return view('frontend.product.product',compact('events','products'));
+        }
     }
 
     public function singleproduct ($product_slug,$id){
@@ -209,24 +225,56 @@ class Home_Controller extends Controller
     public function checkout(){
         $events=Events::latest()->take(4)->get();
         $delivaddresses=shipping_charge::all();
-        $addresses=Deliveryaddress::select('user_id')->first();
-        // dd( $addresses);
+        $userid=Auth::user()->id;
+        $addresses=Deliveryaddress::where('user_id',$userid)->first();
+        $payment_methods=payment_methods::where('status',1)->get();
         $usercartitems=Cart::usercartitems();
         $deliveriesdata=Deliveryaddress::deliveryaddresses();
-        // foreach($deliveriesdata as $key=>$value)
-        // {
-        //     $shippingcharges=Town::getshippingcharges($value['town']);
-        //     $deliveriesdata[$key]['shipping_charges']=$shippingcharges;
-        // }
-        // $total_price=0;
-        // foreach($usercartitems as $item)
-        // {
-        //     $attributprice=Merchadise::getdiscountedattrprice($item['product_id'],$item['productattribute_size']);
-        //     $total_price=$total_price+($attributprice['final_price']*$item['quantity']);
-        // }
-        return view('frontend.product.checkout')->with(compact('events','deliveriesdata','delivaddresses','addresses','usercartitems'));
+        
+            // foreach($deliveriesdata as $key=>$value)
+            // {
+            //     $shippingcharges=Town::getshippingcharges($value['town']);
+            //     $deliveriesdata[$key]['shipping_charges']=$shippingcharges;
+            // }
+        $total_price=0;
+        foreach($usercartitems as $item)
+        {
+            $attributprice=Merchadise::getdiscountedattrprice($item['product_id'],$item['productattribute_size']);
+           
+            $total_price=$total_price+($attributprice['final_price']*$item['quantity']);
+            // dd($total_price);die();
+        }
+        
+        return view('frontend.product.checkout')->with(compact('events','payment_methods','userid','deliveriesdata','delivaddresses','addresses','usercartitems'));
     }
     
+    public function addtoorder(Request $request){
+        $userid=Auth::user()->id;
+        $addresses=Deliveryaddress::where('user_id',$userid)->first();
+
+        if($request->isMethod('post')){
+            $data=$request->all();
+
+            $order = new Order();
+            $order->name = Auth::user()->name;
+            $order->phone =$addresses->phone;
+            $order->email =Auth::user()->email;
+            $order->county =$addresses->shipcharges->county;
+            $order->town =$addresses->towns->town;
+            $order->coupon_code = 0;
+            $order->order_status="New Order";
+            $order->payment_method = $request->payment_method;
+            $order->user_id =Auth::user()->id;
+            // $order->grand_total = $request->productsize;
+            // $order->shipping_charges=$user_id;
+            // $order->coupon_amount=$user_id;
+            $order->save();
+            
+            // $message="The Product has been added to Cart";
+            //     Session::flash('success_message',$message);
+            //     return redirect('/mycart')->with('success_message','Product has been Added to cart');
+        }
+    }
 
     public function singleevent ($event_slug,$id){
         $events = Events::find($id);
@@ -235,6 +283,7 @@ class Home_Controller extends Controller
     }
 
     public function postdetails (Request $request,$slug,$post_id){
+        
         $events=Events::latest()->take(4)->get();
         $cats=Blogcategory::all();
         Blogpost::find($post_id)->increment('views');
@@ -243,7 +292,6 @@ class Home_Controller extends Controller
         $posttags=Blogtag::all();
         $relatedposts=Blogpost::where('id',"!=",$post_id)->take(4)->get();
         $postcomments=Postcomments::where('post_id',$post_id)->get();
-
         return view('frontend.blogs.blogpost',compact('events','recent_posts','posttags','relatedposts','postcomments','cats','postdetails'));
     }
 

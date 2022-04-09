@@ -14,8 +14,11 @@
     <link rel="icon" type="image/JPG" href="{{ asset('dist/frontend/images/DjVoskillLogo.jpg') }}">
 		
                     {{-- bootstrap --}}
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}">
+    
+    {{-- <link rel="stylesheet" href="{{ asset('dist\frontend\assets\bootstrap-5.0.0-beta2-dist\css\bootstrap.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/navstyle.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/customstyle.css') }}">
     {{-- <s --}}
@@ -231,10 +234,11 @@
 
         
 {{-- bootstrap jquery --}}
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script> --}}
 
@@ -243,6 +247,8 @@
 
 <script type="text/javascript" src="{{ asset('dist/frontend/assets/js/demoscripts.js')}}"></script>
 
+{{-- price range slider --}}
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
 {{-- sweetalert --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
@@ -259,47 +265,100 @@
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 
 @section('scripts')
-<script>
-    function myFunction() {
-        var x = document.getElementById("myInput");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
         }
-    }
 
-    $(document).ready(function() {
-        $('#frontendmix').DataTable({
-            responsive: true
+        $(document).ready(function() {
+            $('#frontendmix').DataTable({
+                responsive: true
+            });
+        } ); 	
+
+        $(document).ready(function(){
+            $(".dropdown").hover(function(){
+                var dropdownMenu = $(this).children(".dropdown-menu");
+                if(dropdownMenu.is(":visible")){
+                    dropdownMenu.parent().toggleClass("open");
+                }
+            });
         });
-    } ); 	
 
-    $(document).ready(function(){
-        $(".dropdown").hover(function(){
-            var dropdownMenu = $(this).children(".dropdown-menu");
-            if(dropdownMenu.is(":visible")){
-                dropdownMenu.parent().toggleClass("open");
+        $(function(){
+        var navbar = $('.header-inner');
+        $(window).scroll(function(){
+            if($(window).scrollTop() <=40){
+            navbar.removeClass('navbar-scroll');
+            }else{
+            navbar.addClass('navbar-scroll');
             }
         });
-    });
+        });
 
-    $(function(){
-      var navbar = $('.header-inner');
-      $(window).scroll(function(){
-        if($(window).scrollTop() <=40){
-          navbar.removeClass('navbar-scroll');
-        }else{
-          navbar.addClass('navbar-scroll');
-        }
-      });
-    });
-</script>
-    
+        // list and grid view switcher
+        $(document).ready(function() {
+            $('#list').click(function(event){
+                event.preventDefault();$('#showproducts .item').addClass('list-group-item');
+            });
+            $('#grid').click(function(event){
+                event.preventDefault();$('#showproducts .item').removeClass('list-group-item');
+                $('#showproducts .item').addClass('grid-group-item');});
+        });
 
 
 
-    </body>
 
+        // slider function
+        $( function() {
+            $( "#slider-range" ).slider({
+                range: true,
+                min: 260,
+                max: 400,
+                values: [ 75, 300 ],
+                slide: function( event, ui ) {
+                    $( "#amount_start" ).val(ui.values[ 0 ]);
+                    $( "#amount_end" ).val(ui.values[ 1 ]);
 
+                    var start=$('#amount_start').val();
+                    var end=$('#amount_end').val();
+                        // alert(start);
+                    $.ajax({
+                        method:"get",
+                        dataType:'html',
+                        url:'',
+                        data:"start="+start+"&end="+end,
+
+                        success:function(response){
+                            // console.log(response)
+
+                            $('#showproducts').html(response);
+                        }
+                    })
+                }
+            });
+        });
+
+        // apply customer coupon
+        $("#applycoupon").submit(function(){
+            var user=$(this).attr("user");
+            // if(user==1){
+
+            // }else{
+            //     alert("Please Login To Apply Coupon");
+            //     return false;
+            // }
+            var code=$("#couponcode").val();
+            alert("code");
+
+        })
+
+        
+    </script>
+</body>
 </html>

@@ -27,6 +27,8 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ asset('dist/backend/css/style.css') }}"/>
 
+  {{-- Datepicker --}}
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!--  Datatables  -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>  
 
@@ -58,11 +60,7 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
-
-  <!-- plugins:js -->
-  {{-- <script src="{{ asset ('dist/backend/js/vendor.bundle.base.js') }}"></script> --}}
-  <!-- endinject -->
+  <!-- container-scroller -->     
   
   <!-- inject:js -->
   <script src="{{ asset('dist/backend/js/off-canvas.js') }}"></script>
@@ -73,7 +71,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <!-- endinject -->
-  
+
+  {{-- datepicker --}}
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   {{-- ck-editor --}}
   <script src="{{ asset('dist/backend/ckeditor/ckeditor.js') }}"></script>
 
@@ -89,7 +90,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> 
 
 <!-- extension responsive -->
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 @section('scripts')
 <script>
     $(document).ready(function() {
@@ -163,6 +164,30 @@
               }
           });
       });
+    });
+
+
+    $(document).ready(function(){
+      $("#manualcoupon").click(function(){
+        $("#coupon_field").show();
+      });
+
+      $("#automaticcoupon").click(function(){
+        $("#coupon_field").hide();
+      });
+    });
+
+
+    $(document).ready(function(){
+      $('.couponselect2').select2();    
+    });
+
+    $(document).ready(function(){
+      $('.usersselect2').select2();    
+    });
+
+    $(function(){
+      $("#expiry_date").datepicker();
     });
 </script>
     

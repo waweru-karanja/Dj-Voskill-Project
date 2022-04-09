@@ -41,7 +41,9 @@ class Merchadise extends Model
 
            
         $catdetails=Merchadisecategory::select('category_discount')
-            ->where('id',$prodetails['category_id'])->first();
+            // ->where('id',$prodetails['category_id'])
+            ->first();
+
         if($prodetails['product_discount']>0){
             $discountedprice=$prodetails['merch_price']-($prodetails['merch_price']*$prodetails['product_discount']/100);
         }
@@ -58,7 +60,8 @@ class Merchadise extends Model
     
 
     public static function getdiscountedattrprice($product_id,$productattr_size ){
-        $proattrprice=Productattribute::where(['product_id'=>$product_id,'productattr_size'=>$productattr_size])
+        $proattrprice=Productattribute::select('productattr_price')
+        // ->where(['product_id'=>$product_id,'productattr_size'=>$productattr_size])
             ->first();
         $prodetails=Merchadise::select('merch_price','product_discount','merchcat_id')
             ->where('id',$product_id)->first();
@@ -68,9 +71,9 @@ class Merchadise extends Model
 
         if($prodetails['product_discount']>0){
             $final_price=$proattrprice['productattr_price']-($proattrprice['productattr_price']*$prodetails['product_discount']/100);
-            $discount=$proattrprice['productattr_price']-$final_price;
-            // echo"<pre>";print_r($discount);die;          
+            $discount=$proattrprice['productattr_price']-$final_price;     
             
+            // dd($final_price);die();
         }elseif($catdetails['category_discount']>0){
             $final_price=$proattrprice['productattr_price']-($proattrprice['productattr_price']*$catdetails['category_discount']/100);
             $discount=$proattrprice['productattr_price']-$final_price;
