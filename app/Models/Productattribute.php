@@ -12,8 +12,8 @@ class Productattribute extends Model
     protected $table = 'productattributes';
     protected $fillable = ['productattr_size','product_id','productattr_price','productattr_stock','productattr_sku','productattr_status'];
     
-    public function merchads ()
+    public function merchads()
     {
-        return $this->belongsTo('App\Models\Merchadise','product_id','id');
+        return $this->belongsTo('App\Models\Merchadise','product_id');
     }
 }

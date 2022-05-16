@@ -14,26 +14,47 @@
     <link rel="icon" type="image/JPG" href="{{ asset('dist/frontend/images/DjVoskillLogo.jpg') }}">
 		
                     {{-- bootstrap --}}
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}">
+    {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}"> --}}
     
     {{-- <link rel="stylesheet" href="{{ asset('dist\frontend\assets\bootstrap-5.0.0-beta2-dist\css\bootstrap.min.css') }}"> --}}
-    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/navstyle.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/customstyle.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/navstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/customstyle.css') }}"> --}}
     {{-- <s --}}
                     {{-- BOOTSTRAP SELECT --}}
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+    {{-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
 
-    <!--fontawesome-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" >
+    
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.6/mediaelementplayer.css">
 
     <!--  Datatables  -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>  
 
     <!--  extension responsive  -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"> --}}
+
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" >
+
+                    {{-- custom css files --}}
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontuser/css/mediaelementplayer.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/frontuser/css/responsive.dataTables.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/navstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/customstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/frontend/assets/css/demostyles.css') }}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.2/css/fixedHeader.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
+
+    @stack('scripts')
 </head>
     <body class="animate fadeIn four">
         
@@ -212,32 +233,10 @@
         </div>
         <!-- ------- FORGOT FORM ends ------- --> 
 
-        <!-- ------- COUPON MODAL------- -->
-        <div class="modal fade" id="showcoupon" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="#">
-                            <p class="checkout-coupon">
-                                <input type="text" placeholder="Coupon Code" />
-                                <button class="btn theme-btn" type="submit">Apply Coupon</button>
-                            </p>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ------- COUPON MODAL ENDS ------- -->
-
-        
-{{-- bootstrap jquery --}}
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-{{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        {{-- bootstrap jquery --}}
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script> --}}
@@ -259,10 +258,27 @@
 <script src="https://cdn.jsdelivr.net/gh/CDNSFree/mediaelement@latest/mediaelement.js"></script>
 
 {{-- // datatables --}}
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> 
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap.min.js"></script>
 
-<!-- extension responsive -->
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+                {{-- custom js files --}}
+{{-- <script type="text/javascript" src="{{ asset('assets/frontuser/js/jquery-3.6.0.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/addthis_widget.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/jquery-ui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/sweetalert.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/mediaelement..js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/datatables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/sweetalert.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/frontuser/js/dataTables.responsive.min.js') }}"></script> --}}
+
+@yield('listingpagescripts')
+
+@yield('cartpagescripts')
 
 @section('scripts')
     <script>
@@ -276,89 +292,33 @@
         }
 
         $(document).ready(function() {
-            $('#frontendmix').DataTable({
+            var table = $('#userdatatables').DataTable({
                 responsive: true
             });
-        } ); 	
+        
+            new $.fn.dataTable.FixedHeader( table );
 
-        $(document).ready(function(){
             $(".dropdown").hover(function(){
                 var dropdownMenu = $(this).children(".dropdown-menu");
                 if(dropdownMenu.is(":visible")){
                     dropdownMenu.parent().toggleClass("open");
                 }
             });
-        });
+        }); 
 
         $(function(){
-        var navbar = $('.header-inner');
-        $(window).scroll(function(){
-            if($(window).scrollTop() <=40){
-            navbar.removeClass('navbar-scroll');
-            }else{
-            navbar.addClass('navbar-scroll');
-            }
-        });
-        });
-
-        // list and grid view switcher
-        $(document).ready(function() {
-            $('#list').click(function(event){
-                event.preventDefault();$('#showproducts .item').addClass('list-group-item');
-            });
-            $('#grid').click(function(event){
-                event.preventDefault();$('#showproducts .item').removeClass('list-group-item');
-                $('#showproducts .item').addClass('grid-group-item');});
-        });
-
-
-
-
-        // slider function
-        $( function() {
-            $( "#slider-range" ).slider({
-                range: true,
-                min: 260,
-                max: 400,
-                values: [ 75, 300 ],
-                slide: function( event, ui ) {
-                    $( "#amount_start" ).val(ui.values[ 0 ]);
-                    $( "#amount_end" ).val(ui.values[ 1 ]);
-
-                    var start=$('#amount_start').val();
-                    var end=$('#amount_end').val();
-                        // alert(start);
-                    $.ajax({
-                        method:"get",
-                        dataType:'html',
-                        url:'',
-                        data:"start="+start+"&end="+end,
-
-                        success:function(response){
-                            // console.log(response)
-
-                            $('#showproducts').html(response);
-                        }
-                    })
+            var navbar = $('.header-inner');
+            $(window).scroll(function(){
+                if($(window).scrollTop() <=40){
+                navbar.removeClass('navbar-scroll');
+                }else{
+                navbar.addClass('navbar-scroll');
                 }
             });
         });
 
-        // apply customer coupon
-        $("#applycoupon").submit(function(){
-            var user=$(this).attr("user");
-            // if(user==1){
-
-            // }else{
-            //     alert("Please Login To Apply Coupon");
-            //     return false;
-            // }
-            var code=$("#couponcode").val();
-            alert("code");
-
-        })
-
         
     </script>
+@stop
 </body>
 </html>

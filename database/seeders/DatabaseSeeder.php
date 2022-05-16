@@ -14,10 +14,12 @@ use Database\Seeders\Userseeder;
 use App\Models\Merchadisecategory;
 use Database\Seeders\couponSeeder;
 use Database\Seeders\EventsSeeder;
+use Database\Seeders\BlogpostSeeder;
 use Database\Seeders\BookingsSeeder;
 use Database\Seeders\MerchadiseSeeder;
 use Database\Seeders\TicketstatusSeeder;
 use Database\Seeders\BookingstatusSeeder;
+use Database\Seeders\paymentmethodSeeder;
 use Database\Seeders\BlogcategoriesSeeder;
 use Database\Seeders\BookingpackageSeeder;
 use Database\Seeders\MerchadisestatusSeeder;
@@ -35,29 +37,31 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(couponSeeder::class);
         
+        $this->call(BlogpostSeeder::class);
+
         $this->call([
             RoleSeeder::class,
             Userseeder::class,
         ]);
-        \App\Models\Role::factory()->hasUsers(10)->create();
+        \App\Models\Role::factory()->hasUsers(7)->create();
 
         $this->call([
             BookingpackageSeeder::class,
             BookingsSeeder::class,
         ]);
-        \App\Models\bookingpackage::factory()->hasbookingpackags(10)->create();
+        \App\Models\bookingpackage::factory()->hasbookingpackags(7)->create();
         
         $this->call([
             BookingsSeeder::class,
             BookingstatusSeeder::class,
         ]);
-        \App\Models\Bookingstatus::factory()->hasbookings(10)->create();
+        \App\Models\Bookingstatus::factory()->hasbookings(7)->create();
 
         $this->call([
             TicketstatusSeeder::class,
             EventsSeeder::class,
         ]);
-        \App\Models\Ticketstatus::factory()->hasevents(10)->create();
+        \App\Models\Ticketstatus::factory()->hasevents(7)->create();
 
         $this->call(BlogcategoriesSeeder::class);
 
@@ -69,9 +73,11 @@ class DatabaseSeeder extends Seeder
             MerchadisestatusSeeder::class,
             MerchadiseSeeder::class,
         ]);
-        \App\Models\Merchadisestatus::factory()->hasproducts(10)->create();
+        \App\Models\Merchadisestatus::factory()->hasproducts(7)->create();
 
         $this->call(ProductattributeSeeder::class);
+
+        $this->call(paymentmethodSeeder::class);
 
     }
 }

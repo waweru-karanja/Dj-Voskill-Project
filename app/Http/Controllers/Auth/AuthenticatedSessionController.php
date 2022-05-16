@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Cart;
-use Illuminate\Support\Facades\Session;
+use App\Models\User;
+use App\Models\Events;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Redirect;
 
@@ -21,7 +22,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        $events=Events::latest()->take(4)->get();
+        dd($events);die();
+        return view('auth.login',compact('events'));
     }
 
     /**

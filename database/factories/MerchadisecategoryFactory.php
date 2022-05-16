@@ -22,7 +22,7 @@ class MerchadisecategoryFactory extends Factory
     public function definition()
     {
         return [
-            'merchadisecat_title'=>'Hoodies'
+            // 'merchadisecat_title'=>'Hoodies'
         ];
     }
 }

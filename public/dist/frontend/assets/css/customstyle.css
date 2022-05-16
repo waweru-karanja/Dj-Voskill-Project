@@ -465,7 +465,7 @@ ul.more_option li a:hover .opt_icon .icon_share {
   10.- Contact us  
 -----------------------*/
 
-.well-box { background-color: #fff; padding: 28px; border: 1px solid #e9e6e0; margin-bottom: 30px; }
+.well-box { background-color: #fff; padding:10px; border: 1px solid #e9e6e0; margin-bottom: 15px; }
 .well-white { background-color: #fff; border: 1px solid #e9e6e0; margin-bottom: 30px; }
 
 
@@ -519,7 +519,7 @@ p.wp-caption-text { margin-bottom: 0; color: #353535; font-size: 11px; }
 /*----- Blog Sidebar --------*/
 .link { color: #3c3634 }
 
-.widget-title { margin-bottom: 30px; }
+.widget-title { margin-bottom: 10px; }
 
 .widget-category ul li { margin-bottom: 10px; }
 .widget-category ul li a { color: #706a68; border-bottom: 1px solid #e9e6e0; }

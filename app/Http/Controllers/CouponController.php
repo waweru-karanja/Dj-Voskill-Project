@@ -53,11 +53,11 @@ class CouponController extends Controller
                 'amount'=>'required',
                 'expiry_date'=>'required',
                 'prodcategories'=>'required',
-                'couponusers'=>'required',
+                // 'couponusers'=>'required',
             ];
 
             $custommessages=[
-                'couponusers.required'=>'Select Users',
+                // 'couponusers.required'=>'Select Users',
                 'prodcategories.required'=>'Select Categories',
                 'coupon_option.required'=>'Select a Coupon Option',
                 'coupon_type.required'=>'Select a Coupon Type',
@@ -77,27 +77,16 @@ class CouponController extends Controller
 
             if(isset($data['prodcategories'])){
                 $categories=implode(',',$data['prodcategories']);
+                
             }else{
                 $categories="";
             }
-
+            
             if($data['coupon_option']=="Automatic Coupon"){
                 $coupon_code=Str::random(6);
             }else{
                 $coupon_code=$data['coupon_code'];
             }
-
-
-            // if($id==""){
-            //     $coupon=new coupon;
-            //     $title="Add a Coupon";
-                
-            //     $message="Coupon Added Successfully";
-            // }else{
-            //     $coupon=coupon::find($id);
-            //     $title="Edit the Coupon";
-            //     $message="Coupon Updated Successfully";
-            // }
             
             $coupon=new coupon();
             $selectcats=array();
@@ -136,10 +125,8 @@ class CouponController extends Controller
     public function edit($id)
     {
         $coupon=coupon::find($id);
-        
         $selectcats=explode(',',$coupon->categories);
         $selectusers=explode(',',$coupon->users);
-        
         $prodctcategories=Merchadisecategory::all();
         $couponusers=User::select('email')->where('status',1)->get();
         return view('backend.merchadise.updatecoupon',['selectusers'=>$selectusers,'selectcats'=>$selectcats,'coupon'=>$coupon,'prodctcategories'=>$prodctcategories,'couponusers'=>$couponusers]);
@@ -154,6 +141,8 @@ class CouponController extends Controller
      */
     public function update(Request $request,$id)
     {
+        $data=$request->all();
+
         $rules=[
             'coupon_option'=>'required',
             'coupon_type'=>'required',
@@ -161,11 +150,11 @@ class CouponController extends Controller
             'amount'=>'required',
             'expiry_date'=>'required',
             'prodcategories'=>'required',
-            'couponusers'=>'required',
+            // 'couponusers'=>'required',
         ];
 
         $custommessages=[
-            'couponusers.required'=>'Select Users',
+            // 'couponusers.required'=>'Select Users',
             'prodcategories.required'=>'Select Categories',
             'coupon_option.required'=>'Select a Coupon Option',
             'coupon_type.required'=>'Select a Coupon Type',
@@ -176,27 +165,28 @@ class CouponController extends Controller
         ];
         $this->validate($request,$rules,$custommessages);
 
-        $coupon=coupon::find($id);
-        // $selectcats=explode(',',$coupon['categories']);
-        // $selectusers=explode(',',$coupon['users']);
-        $couponUpdate = [
-            'coupon_option' => $request->coupon_option,
-            'coupon_type' => $request->coupon_type,
-            'amount_type' => $request->amount_type,
-            'amount' => $request->amount,
-            'expiry_date' => $request->expiry_date,
-            'categories' => $request->prodcategories,
-            'users' => $request->couponusers,
-        ];
+        if(isset($data['couponusers'])){
+            $users=implode(',',$data['couponusers']);
+        }
         
-        
-        coupon::where('id',$id)->update($couponUpdate);
-        
-        
-        // $prodctcategories=Merchadisecategory::all();
-        // $couponusers=User::select('email')->where('status',1)->get();
 
-        return redirect()->route('coupons.index')->with(compact('coupon'))->with('success','Coupon has been Updated Successfully');
+        if(isset($data['prodcategories'])){
+            $categories=implode(',',$data['prodcategories']);
+            
+        }
+        
+        
+        $coupon=coupon::find($id);
+        $coupon->coupon_option=$data['coupon_option'];
+        $coupon->coupon_type=$data['coupon_type'];
+        $coupon->amount_type=$data['amount_type'];
+        $coupon->amount=$data['amount'];
+        $coupon->expiry_date=$data['expiry_date'];
+        $coupon->categories=$categories;
+        $coupon->users=$users;
+        $coupon->save();
+
+        return redirect()->route('coupons.index')->with(compact('coupon','categories','users'))->with('success','Coupon has been added Successfully');
     }
 
     /**

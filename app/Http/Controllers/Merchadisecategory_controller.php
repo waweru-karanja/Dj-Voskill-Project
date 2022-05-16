@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Merchadisecategory;
+use App\Models\merchadisesection;
 use Illuminate\Http\Request;
 
 class Merchadisecategory_controller extends Controller
@@ -14,7 +15,16 @@ class Merchadisecategory_controller extends Controller
      */
     public function index()
     {
-        //
+        $merchadisecats=Merchadisecategory::get();
+        return view('backend.merchadise.merchadisecategories',compact('merchadisecats'));
+    }
+
+    // update Coupon status
+    public function updatecategorystatus(Request $request)
+    {
+        $categorystatus=Merchadisecategory::find($request->category_id);
+        $categorystatus->status=$request->status;
+        $categorystatus->save();
     }
 
     /**
@@ -24,7 +34,9 @@ class Merchadisecategory_controller extends Controller
      */
     public function create()
     {
-        //
+        $productsections=merchadisesection::where('status',1)->get();
+        dd($productsections);die();
+        return view('backend.merchadise.addmerchadisecat');
     }
 
     /**
@@ -39,8 +51,14 @@ class Merchadisecategory_controller extends Controller
             'merchadisecat_title'=>'required|unique:merchadisecategories'
         ]);
        
+        if(empty($request->category_discount)){
+            $category_discount=0;
+        }else{
+            $category_discount=$request->category_discount;
+        }
         $merchadisecategory=new Merchadisecategory();
         $merchadisecategory->merchadisecat_title=$request->merchadisecat_title;
+        $merchadisecategory->category_discount=$category_discount;
         $merchadisecategory->save();
 
         return redirect('admin/merchadise')->with('success','The Category had been Created succesfully');

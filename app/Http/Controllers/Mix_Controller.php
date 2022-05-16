@@ -104,7 +104,10 @@ class Mix_Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function show ()  {    $mixxes=Mixxes_Model::find($id) return view('admin.audiomixxes.viewmix',compact('mix'));  }
+    public function show ($id) {    
+        $mixxes=Mixxes_Model::find($id);
+        return view('admin.audiomixxes.viewmix',compact('mixxes'));  
+    }
 
     /**
      * Show the form for editing the specified resource.

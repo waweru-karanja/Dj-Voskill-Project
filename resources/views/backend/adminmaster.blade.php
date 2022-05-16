@@ -23,20 +23,23 @@
 
   <!-- CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  {{-- <link href="{{ asset('bootstrap-4.5.3-dist/css/bootstrap.min.css') }}" rel="stylesheet" /> --}}
+  
   <link href="{{ asset('dist/backend/assets/css/vendor.bundle.base.css') }}" rel="stylesheet" />
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ asset('dist/backend/css/style.css') }}"/>
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.2/css/fixedHeader.bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css">
+ 
   {{-- Datepicker --}}
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!--  Datatables  -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>  
-
-  <!--  extension responsive  -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
 
   <!--  Switch buttons  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.css"/>
+
 
   <!-- endinject -->
   <link rel="icon" type="image/png" href="{{ asset('dist/backend/adminimages/DjVoskillLogo.jpg') }}">
@@ -60,44 +63,39 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->     
+  <!-- container-scroller -->
   
   <!-- inject:js -->
-  <script src="{{ asset('dist/backend/js/off-canvas.js') }}"></script>
+  {{-- <script src="{{ asset('dist/backend/js/off-canvas.js') }}"></script>
   <script src="{{ asset('dist/backend/js/hoverable-collapse.js') }}"></script>
-  <script src="{{ asset('dist/backend/js/template.js') }}"></script>
+  <script src="{{ asset('dist/backend/js/template.js') }}"></script> --}}
   
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <!-- endinject -->
+
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap.min.js"></script>
 
   {{-- datepicker --}}
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-  {{-- ck-editor --}}
-  <script src="{{ asset('dist/backend/ckeditor/ckeditor.js') }}"></script>
 
   <!-- Custom js for this page-->
-  <script src="{{ asset('dist/backend/js/dashboard.js') }}"></script>
+  {{-- <script src="{{ asset('dist/backend/js/dashboard.js') }}"></script> --}}
   <script src="{{ asset('node_modules/select2/dist/js/select2.min.js') }}"></script>
-  <script src="{{asset('assets/js/mycustom.js')}}"></script>
+  <script src="{{asset('assets/adminpanel/js/ckeditor/ckeditor.js')}}"></script>
+  <script src="{{asset('assets/adminpanel/js/adminpanelcustom.js')}}"></script>
 
   {{-- Switch cdns --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   
-  {{-- // datatables --}}
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script> 
-
-<!-- extension responsive -->
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 @section('scripts')
-<script>
-    $(document).ready(function() {
-        $('#admindatatables').DataTable({
-            responsive: true
-        });
-    } ); 	
+<script>	
 
     $(document).ready(function(){
         var maxField = 10; //Input fields increment limitation
@@ -146,7 +144,7 @@
 
     // change shipping status to active or inactive
     $(function(){
-      $('.toggle-class').change(function(){
+      $('#shippingstatus').change(function(){
           var status=$(this).prop('checked')==true? 1:0;
           var shipping_id=$(this).data('id');
           $.ajax({
@@ -166,6 +164,75 @@
       });
     });
 
+    // change coupon status to active or inactive
+    $(function(){
+      $('#couponstatus').change(function(){
+          var status=$(this).prop('checked')==true? 1:0;
+          var coupon_id=$(this).data('id');
+          $.ajax({
+              type:"GET",
+              dataType:"json",
+              url:'{{ route('updatecouponstatus') }}',
+              data:{'status':status,'coupon_id':coupon_id},
+              success:function(data){
+                  $('#notific').fadein();
+                  $('#notific').css('background','green');
+                  $('#notific').text('status changed Successfully');
+                  setTimeout(() => {
+                    $('#notific').fadeout();
+                  }, 3000);
+              }
+          });
+      });
+    });
+
+    // change section status to active or inactive
+    $(function(){
+      $('#sectionstatus').change(function(){
+          var status=$(this).prop('checked')==true? 1:0;
+          var section_id=$(this).data('id');
+          $.ajax({
+              type:"GET",
+              dataType:"json",
+              url:'{{ route('updatesectionstatus') }}',
+              data:{'status':status,
+              'sectionid':section_id},
+              success:function(data){
+                  $('#notific').fadein();
+                  $('#notific').css('background','green');
+                  $('#notific').text('status changed Successfully');
+                  setTimeout(() => {
+                    $('#notific').fadeout();
+                  }, 3000);
+              }
+          });
+      });
+    });
+
+    // change category status to active or inactive
+    $(function(){
+      $('#categorystatus').change(function(){
+          var status=$(this).prop('checked')==true? 1:0;
+          var category_id=$(this).data('id');
+
+          alert(status);
+          $.ajax({
+              type:"GET",
+              dataType:"json",
+              url:'{{ route('updatecategorystatus') }}',
+              data:{'status':status,
+              'category_id':category_id},
+              success:function(data){
+                  $('#notific').fadein();
+                  $('#notific').css('background','green');
+                  $('#notific').text('status changed Successfully');
+                  setTimeout(() => {
+                    $('#notific').fadeout();
+                  }, 3000);
+              }
+          });
+      });
+    });
 
     $(document).ready(function(){
       $("#manualcoupon").click(function(){
@@ -175,23 +242,30 @@
       $("#automaticcoupon").click(function(){
         $("#coupon_field").hide();
       });
-    });
 
+      $('.couponselect2').select2();
+      
+      $('.usersselect2').select2();
 
-    $(document).ready(function(){
-      $('.couponselect2').select2();    
-    });
-
-    $(document).ready(function(){
-      $('.usersselect2').select2();    
+      $(".productid").click(function() {
+        var productid=$(this).attr('id');
+      }); 
     });
 
     $(function(){
       $("#expiry_date").datepicker();
     });
+
+  //  datatables
+  $(document).ready(function() {
+    var table = $('#products').DataTable( {
+        responsive: true
+    } );
+ 
+    new $.fn.dataTable.FixedHeader( table );
+  });
 </script>
     
   
 </body>
 </html>
-

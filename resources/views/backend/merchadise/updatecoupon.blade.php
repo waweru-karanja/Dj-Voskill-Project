@@ -41,14 +41,14 @@
             <h6 class="mb-2 pb-1 form-label" style="text-align: center">Coupon Type: </h6>
             <div class="form-check form-check-inline">
               <label class="form-check-label" for="coupon_type">Single</label>
-              <input @if (isset($coupon['coupon_type']) && $coupon['coupon_type']=="Single Time")
+              <input value="Single Time" @if (isset($coupon['coupon_type']) && $coupon['coupon_type']=="Single Time")
                     checked=""
                 @endif class="form-check-input" type="radio" name="coupon_type"/>
             </div>
 
             <div class="form-check form-check-inline">
               <label class="form-check-label" for="coupon_type">Multiple Times</label>
-              <input @if (isset($coupon['coupon_type']) && $coupon['coupon_type']=="Multiple Times")
+              <input value="Multiple Times" @if (isset($coupon['coupon_type']) && $coupon['coupon_type']=="Multiple Times")
                   checked=""
               @elseif(!isset($coupon['coupon_type']))
                   checked=""
@@ -63,7 +63,7 @@
             <h6 class="mb-2 pb-1 form-label" style="text-align: center">Amount Type: </h6>
             <div class="form-check form-check-inline">
               <label class="form-check-label" for="amount_type">Percentage(%)</label>
-              <input 
+              <input value="Percentage" 
                 @if (isset($coupon['amount_type']) && $coupon['amount_type']=="Percentage")
                     checked=""
                 @elseif(!isset($coupon['amount_type']))
@@ -74,7 +74,7 @@
 
             <div class="form-check form-check-inline">
               <label class="form-check-label" for="amount_type">Fixed(Ksh)</label>
-              <input @if (isset($coupon['amount_type']) && $coupon['amount_type']=="Fixed")
+              <input value="Fixed"  @if (isset($coupon['amount_type']) && $coupon['amount_type']=="Fixed")
                         checked=""
                     @endif 
                 class="form-check-input" type="radio" name="amount_type"/>
@@ -108,8 +108,8 @@
           <select name="prodcategories[]" class="couponselect2 form-control" multiple="multiple">
             <option>Select Product Categories</option>
             @foreach($prodctcategories as $prodCategory)
-                <option value="{{ $prodCategory->merchadisecat_title }}" 
-                    @if(in_array($prodCategory->merchadisecat_title,$selectcats)) selected=" " @endif>{{ $prodCategory->merchadisecat_title }}</option>
+                <option value="{{ $prodCategory->id }}" 
+                    @if(in_array($prodCategory->id,$selectcats)) selected=" " @endif>{{ $prodCategory->merchadisecat_title }}</option>
             @endforeach
           </select>
         </div>

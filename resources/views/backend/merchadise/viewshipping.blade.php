@@ -29,7 +29,7 @@
                         <td>{{$shippingcharge->town}}</td>
                         <td>{{$shippingcharge->shipping_charges}}</td>
                         <td>
-                            <input data-id="{{ $shippingcharge->id }}" class="toggle-class" type="checkbox" 
+                            <input data-id="{{ $shippingcharge->id }}" id="shippingstatus" class="toggle-class" type="checkbox" 
                                     data-onstyle="success" data-offstyle="danger" data-toggle="toggle" 
                                     data-on="Active" data-off="In Active" {{ $shippingcharge->is_shipping ? 'checked':'' }}>
                         </td>

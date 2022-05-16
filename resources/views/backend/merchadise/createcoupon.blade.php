@@ -80,7 +80,7 @@
           <select name="prodcategories[]" class="couponselect2 form-control" multiple="multiple">
             <option>Select Product Categories</option>
             @foreach($prodctcategories as $prodCategory)
-                <option value="{{ $prodCategory->merchadisecat_title }}">{{ $prodCategory->merchadisecat_title }}</option>
+                <option value="{{ $prodCategory->id }}">{{ $prodCategory->merchadisecat_title }}</option>
             @endforeach
           </select>
         </div>

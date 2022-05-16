@@ -143,8 +143,8 @@ class Blogpost_Controller extends Controller
      */
     public function destroy($id)
     {
-        // Blogpost::where('id',$id)->delete();
+        Blogpost::where('id',$id)->delete();
 
-        // return redirect('admin/blogpost')->with('success','The Blogpost had been Deleted succesfully');
+        return redirect('admin/blogpost')->with('success','The Blogpost had been Deleted succesfully');
     }
 }

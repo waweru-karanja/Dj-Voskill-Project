@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+// use session;
 use App\Models\Cart;
 use App\Models\Town;
+use App\Models\Order;
+use App\Models\coupon;
 use App\Models\Events;
 use App\Models\Blogtag;
 use App\Models\Blogpost;
@@ -12,17 +15,20 @@ use App\Models\Commentreply;
 use App\Models\Mixxes_Model;
 use App\Models\Postcomments;
 use Illuminate\Http\Request;
+use App\Models\Ordersproduct;
 use App\Models\Productimages;
 use App\Models\Deliveryaddress;
-use App\Models\Order;
-use App\Models\shipping_charge;
 use App\Models\payment_methods;
+use App\Models\shipping_charge;
 use App\Models\Productattribute;
+use App\Models\Merchadisecategory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 
@@ -31,8 +37,9 @@ class Home_Controller extends Controller
     public function homepage () {
         $events=Events::latest()->take(4)->get();
         $blog=Blogpost::latest()->take(4)->get();
+        $merchad=Merchadise::latest()->take(4)->get();
         $mixxes=Mixxes_Model::latest()->paginate(5);
-        return view('frontend.index',compact('mixxes','events','blog'));
+        return view('frontend.index',compact('mixxes','merchad','events','blog'));
     }
 
     public function audiomixtapes () {
@@ -53,9 +60,11 @@ class Home_Controller extends Controller
         $cats=Blogcategory::all();
         $recent_posts= Blogpost::latest()->limit(5)->get();
         $posttags=Blogtag::all();
-        $posts=Blogpost::orderby('id','desc')->paginate(4);
+        $posts=Blogpost::orderby('id','asec')->paginate(4);
+        
         return view('frontend.blogs.blogs',['events'=>$events,'cats'=>$cats,'posts'=>$posts,'recent_posts'=>$recent_posts,'posttags'=>$posttags]);
     }
+
     public function events (){
         
         $events=Events::orderby('id','desc')->paginate(4);
@@ -73,25 +82,50 @@ class Home_Controller extends Controller
             where('merch_price','<=',$end)->
             orderby('merch_price','DESC')->get();
             response()->json($products);
+
+            $productcategories=Merchadisecategory::withCount('products')->get();
+
+            $productfilters=Merchadise::productfilters();
+            $fabricarray=$productfilters['fabricarray'];
+            $occasionarray=$productfilters['occasionarray'];
+
             $events=Events::latest()->take(4)->get();
-            return view('frontend.product.productsjson',compact('events','products'));
+            return view('frontend.product.productsjson',compact('events','fabricarray','occasionarray','productcategories','products'));
         }else{
-            $events=Events::latest()->take(4)->get();
-            $products=Merchadise::where('merch_isactive',1)->orderby('merch_price','ASC')->paginate(5);
-            return view('frontend.product.product',compact('events','products'));
+
+            $url=Route::current()->uri();
+            $categorycount=Merchadisecategory::where(['url'=>$url,'status'=>1])->count();
+
+            if($categorycount>0){
+                $categorydetails=Merchadisecategory::categorydetails($url);
+
+                $categoryproducts=Merchadise::whereIn('merchcat_id',$categorydetails['catids'])->with('merchadiseattributes')
+                ->where('merch_isactive',1)->orderby('id','DESC')->paginate(9);
+                $productcategories=Merchadisecategory::withCount('products')->get();
+            
+                $productfilters=Merchadise::productfilters();
+                $fabricarray=$productfilters['fabricarray'];
+                $occasionarray=$productfilters['occasionarray'];
+
+                $events=Events::latest()->take(4)->get();
+            
+                return view('frontend.product.products2',compact('events','categoryproducts','fabricarray','occasionarray','productcategories'));
+            }else{
+                abort(404);
+            }
         }
     }
 
     public function singleproduct ($product_slug,$id){
-        $products=Merchadise::find($id);
+        $singleproduct=Merchadise::find($id);
         $events=Events::latest()->take(4)->get();
-        return view('frontend.product.singleproduct',compact('events','products'));
+        return view('frontend.product.singleproduct',compact('events','singleproduct'));
     }
 
     public function cart(){
         $events=Events::latest()->take(4)->get();
         $cartitems=Cart::usercartitems();
-       
+
         return view('frontend.product.cart',compact('cartitems','events'));
     }
 
@@ -100,9 +134,8 @@ class Home_Controller extends Controller
         if($request->isMethod('post')){
             $data=$request->all();
 
-            
-            // $getproductstock=Productattribute::where(['product_id'=>$data['product_id'],'productattr_size'=>$data['productattr_size']])->first()->toArray();
-            // if( $getproductstock['productattr_stock']<$data['quantity']);
+            // $getproductstock=Productattribute::where(['product_id'=>$request->product_id,'productattr_size'=>$request->productsize])->first();
+            // if( $getproductstock['productattr_stock']<$request->quantity);
             // {
             //     $message="The Quantity isn't available at the moment";
             //     Session::flash('error_message',$message);
@@ -201,12 +234,65 @@ class Home_Controller extends Controller
     {
         if($request->ajax()){
             $data=$request->all();
-
-            $getdiscountedattrprice=Merchadise::getdiscountedattrprice($data['product_id'],$data['productattr_size']);
-            // echo"<pre>";print_r($getdiscountedattrprice);die;
-            return  $getdiscountedattrprice;
             
+            $getdiscountedattrprice=Merchadise::getdiscountedattrprice($data['product_id'],$data['productsize']);
+            
+            return  $getdiscountedattrprice;
+        }
+    }
 
+    // add product to cart using jquery
+    public function add_to_cart(Request $request)
+    {
+        dd($request->all());die();
+
+        $product_id=$request->input('product_id');
+
+        $product_qty=$request->input('quantity');
+
+        $product_attrsize=$request->productattrsize;
+
+        $product_check=Merchadise::where('id',$product_id)->first();
+
+        // dd($product_check);die();
+        if(Cart::where('product_id',$product_id)->exists())
+        {
+            return response()->json(['status'=>$product_check->merch_name."Already Exist in the cart"]);
+        }else{
+            $session_id=Session::get('session_id');
+            if(empty($session_id)){
+                $session_id=Session::getId();
+                Session::put('session_id',$session_id);
+            }
+
+            // dd($session_id);die();
+
+            if(Auth::check()){
+                $user_id=Auth::user()->id;
+            }else{
+                $user_id=0;
+            }
+
+            $newcart = new Cart();
+            $newcart->session_id = $session_id;
+            $newcart->product_id =$product_id;
+            $newcart->size = $product_attrsize;
+            $newcart->user_id=$user_id;
+            $newcart->quantity = $product_qty;
+            $newcart->save();
+
+            return response()->json(['status'=>$product_check->merch_name."Added to Cart"]);
+        }
+    }
+
+    public function getattrproductprice(Request $request)
+    {
+        if($request->ajax()){
+            $data=$request->all();
+            
+            $getdiscountedattrprice=Merchadise::getdiscountedattrprice($data['productid'],$data['productattrsize']);
+            
+            return  $getdiscountedattrprice;
         }
     }
 
@@ -222,28 +308,105 @@ class Home_Controller extends Controller
         return response()->json($shipprice);
     }
 
+    // apply coupon
+    public function applycoupon(Request $request){
+        if($request->ajax()){
+            $data=$request->all();
+            $couponcount=coupon::where('coupon_code',$data['code'])->count();
+            if($couponcount==0){
+                $cartitems=Cart::usercartitems();
+                $events=Events::latest()->take(4)->get();
+                return response()->json([
+                    'status'=>false,
+                    'message'=>'This Coupon Is Not Valid',
+                    'view'=>(string)view::make('frontend.product.cartitems')->with(compact('cartitems','events'))
+                ]);
+            }else{
+                $coupondetails=coupon::where('coupon_code',$data['code'])->first();
+                if($coupondetails['status']==0){
+                    $message='This Coupon Is Not Active';
+                }
+
+                $expiry_date=$coupondetails->expiry_date;
+                $current_date=date('m/d/y');
+                if($expiry_date<$current_date){
+                    $message='This Coupon Is Exired';
+                }
+
+                $catarr=explode(",",$coupondetails->categories);
+                $usercartitems=Cart::usercartitems();
+                if(!empty($coupondetails->users)){
+                    $usersarr=explode(",",$coupondetails->users);
+                    foreach($usersarr as $user){
+                        $getuserid=User::select('id')->where('email',$user)->first();
+                        $userid[]=$getuserid['id'];
+                    }
+                }
+
+                $total_amount=0;
+                foreach($usercartitems as $item){
+                    if(!in_array($item['product']['merchcat_id'],$catarr)){
+                        $message="This Coupon Code Is Not For This Products";
+                    }
+
+                    if(!empty($coupondetails->users)){
+                        if(!in_array($item['user_id'],$userid)){
+                            $message="This Coupon Code Is Not For You";
+                        }
+                    }
+
+                    $attrprice=Merchadise::getdiscountedattrprice($item['product_id'],$item['size']);
+                    
+                    $total_amount=$total_amount+($attrprice['final_price']*$item['quantity']);
+                }
+
+                if(isset($message)){
+                    $cartitems=Cart::usercartitems();
+                    $events=Events::latest()->take(4)->get();
+                    return response()->json([
+                        'status'=>false,
+                        'message'=>$message,
+                        'view'=>(string)view::make('frontend.product.cartitems')->with(compact('cartitems','events'))
+                    ]);
+                }else{
+                    //  echo"Coupon Can Be Redeemed Successfully";die();
+                
+                    if($coupondetails->amount_type=="Fixed"){
+                        $couponamount=$coupondetails->amount;
+                    }else{
+                        $couponamount=$total_amount*($coupondetails->amount/100);
+                    }
+
+                    $grand_total=$total_amount-$couponamount;
+                    Session::put('couponAmount',$couponamount);
+                    Session::put('couponCode',$data['code']);
+
+                    $message="Coupon Code Applied Successfully";
+                    $cartitems=Cart::usercartitems();
+                    $events=Events::latest()->take(4)->get();
+                    return response()->json([
+                        'status'=>true,
+                        'message'=>$message,
+                        'couponamount'=>$couponamount,
+                        'grand_total'=>$grand_total,
+                        'view'=>(string)view::make('frontend.product.cartitems')->with(compact('cartitems','events'))
+                    ]);
+                }
+            }
+        }
+    }
+
     public function checkout(){
         $events=Events::latest()->take(4)->get();
         $delivaddresses=shipping_charge::all();
         $userid=Auth::user()->id;
         $addresses=Deliveryaddress::where('user_id',$userid)->first();
+        // dd($addresses);die();
         $payment_methods=payment_methods::where('status',1)->get();
         $usercartitems=Cart::usercartitems();
-        $deliveriesdata=Deliveryaddress::deliveryaddresses();
         
-            // foreach($deliveriesdata as $key=>$value)
-            // {
-            //     $shippingcharges=Town::getshippingcharges($value['town']);
-            //     $deliveriesdata[$key]['shipping_charges']=$shippingcharges;
-            // }
-        $total_price=0;
-        foreach($usercartitems as $item)
-        {
-            $attributprice=Merchadise::getdiscountedattrprice($item['product_id'],$item['productattribute_size']);
-           
-            $total_price=$total_price+($attributprice['final_price']*$item['quantity']);
-            // dd($total_price);die();
-        }
+        $deliveriesdata=Deliveryaddress::deliveryaddresses();
+    
         
         return view('frontend.product.checkout')->with(compact('events','payment_methods','userid','deliveriesdata','delivaddresses','addresses','usercartitems'));
     }
@@ -255,25 +418,102 @@ class Home_Controller extends Controller
         if($request->isMethod('post')){
             $data=$request->all();
 
+            DB::beginTransaction();
             $order = new Order();
             $order->name = Auth::user()->name;
             $order->phone =$addresses->phone;
             $order->email =Auth::user()->email;
             $order->county =$addresses->shipcharges->county;
             $order->town =$addresses->towns->town;
-            $order->coupon_code = 0;
+            $order->coupon_code =Session::get('couponAmount');
             $order->order_status="New Order";
             $order->payment_method = $request->payment_method;
             $order->user_id =Auth::user()->id;
-            // $order->grand_total = $request->productsize;
-            // $order->shipping_charges=$user_id;
-            // $order->coupon_amount=$user_id;
+            $order->grand_total = Session::get('grand_total');
+            $order->shipping_charges=$addresses->shipping_cost;
             $order->save();
+
+            $order_id=DB::getPdo()->lastinsertid();
             
-            // $message="The Product has been added to Cart";
-            //     Session::flash('success_message',$message);
-            //     return redirect('/mycart')->with('success_message','Product has been Added to cart');
+            $cartitems=Cart::where('user_id',Auth::user()->id)->get();
+            
+            foreach($cartitems as $item){
+                $cartitem = new Ordersproduct();
+                $cartitem->order_id =$order_id;
+                $cartitem->user_id = Auth::user()->id;
+                $cartitem->product_id = $item->product_id;
+                $getproductdetails=Merchadise::select('merch_code','merch_name')->where('id',$item->product_id)->first();
+                $cartitem->product_name = $getproductdetails->merch_name;
+                $cartitem->product_code= $getproductdetails->merch_code;
+                
+                if ($item->product->is_attribute==1){
+                    $getdiscountedattrprice=Merchadise::getdiscountedattrprice($item['product_id'],$item['size']);
+                    $cartitem->product_price= $getdiscountedattrprice['final_price'];
+                }elseif($item->product->is_attribute==0){
+                    $getdiscountedprice=Merchadise::getdiscountedprice($item['product_id']);
+                    $cartitem->product_price= $getdiscountedprice;
+                }
+
+                $cartitem->save();
+            }
+            Session::put('order_id',$order_id);
+            DB::commit();
+            // dd($request->payment_method);die();
+            if($request->payment_method=="MPESA"){
+                return redirect()->route('mpesa');
+            }elseif($request->payment_method=="PAYPAL"){
+                return redirect()->route('paypal');
+            }
+        }            
+    }
+
+    public function paypal (){
+        if(Session::has('order_id')){
+            $orderdetails=Order::where('id',Session::get('order_id'))->first();
+            $nameArr=explode(' ',$orderdetails['name']);
+            $events=Events::orderby('id','desc')->paginate(4);
+            return view('frontend.product.paypal',['orderdetails'=>$orderdetails,'events'=>$events,'nameArr'=>$nameArr]);
+            
+        }else{
+            return redirect('mycart');
         }
+        
+    }
+
+    public function mpesa (){
+        $events=Events::orderby('id','desc')->paginate(4);
+        return view('frontend.product.mpesa',['events'=>$events]);
+    }
+
+    // success paypal
+    public function paypalsuccess(){
+        if(Session::has('order_id')){
+            
+            $events=Events::orderby('id','desc')->paginate(4);
+            $cartitems=Cart::where('user_id',Auth::user()->id)->get();
+            
+            foreach($cartitems as $item){
+                $productattrstock=Productattribute::where(['product_id'=>$item['product_id'],'productattr_size'=>$item['size']])->first();
+                $newstock=$productattrstock['productattr_stock']-$item['quantity'];
+                Productattribute::where(['product_id'=>$item['product_id'],'productattr_size'=>$item['size']])->update(['productattr_stock'=>$newstock]);
+            }
+            Cart::where('user_id',Auth::user()->id)->delete();
+            return view('frontend.product.paypalsuccess',['events'=>$events]);
+        }else{
+            return redirect('/mycart');
+        }
+    }
+
+    // fail paypal
+    public function paypalfail(){
+        $events=Events::latest()->take(4)->get();
+        return view('frontend.product.paypalfail',['events'=>$events]);
+    }
+
+    // thankyou page
+    public function thankyouorder(){
+        $events=Events::latest()->take(4)->get();
+        return view('frontend.product.thankyou',['events'=>$events]);
     }
 
     public function singleevent ($event_slug,$id){

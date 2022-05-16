@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\coupon;
 use App\Models\Merchadise;
 use Illuminate\Http\Request;
 use App\Models\Productimages;
+use App\Models\shipping_charge;
 use App\Models\Productattribute;
 use App\Models\Merchadisecategory;
-use App\Models\shipping_charge;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 
 class Merchadise_controller extends Controller
@@ -19,9 +21,31 @@ class Merchadise_controller extends Controller
      */
     public function index()
     {
-        $merchadise=Merchadise::all();
+        
+        $merchadise=Merchadise::with(['merchadisecategor'=>function($query)
+            {
+                $query->select('id','merchadisecat_title');
+            }
+        ])->where('merch_isactive',1)->get();
         $merchadisecats=Merchadisecategory::all();
-        return view('backend.merchadise.addmerchadise',['merchadise'=>$merchadise,'merchadisecats'=>$merchadisecats]);
+
+        $productfilters=Merchadise::productfilters();
+        $fabricarray=$productfilters['fabricarray'];
+        $occasionarray=$productfilters['occasionarray'];
+    
+        return view('backend.merchadise.addmerchadise',['productfilters'=>$productfilters,'fabricarray'=>$fabricarray,'occasionarray'=>$occasionarray,'merchadise'=>$merchadise,'merchadisecats'=>$merchadisecats]);
+    }
+
+    // products with attributes
+    public function attributes()
+    {   //$merchadisedata=Merchadise::find($id);
+        $merchadiseattributes=Merchadise::with(['merchadisecategor'=>function($query)
+            {
+                $query->select('id','merchadisecat_title');
+            }
+        ])->where('merch_isactive',0)->get();
+
+        return view('backend.merchadise.merchadiseaddattributes',['merchadiseattributes'=>$merchadiseattributes]);
     }
 
     /**
@@ -43,47 +67,117 @@ class Merchadise_controller extends Controller
     
     public function store(Request $request)
     {
-        $request->validate([
-            'merch_name'=>'required',
-            'merch_code'=>'required|unique:merchadises',
-            'merch_details'=>'required',
-            'merch_price'=>'required',
-            'merch_splprice'=>'required',
-            'merch_image'=>'image|mimes:png,jpg,jpeg|max:10000',
-        ]);
+        if($request->isMethod('post')){
+            $data=$request->all();
+            $rules=[
+                'merch_name'=>'required',
+                'merch_code'=>'required',
+                'merch_price'=>'required|numeric',
+                'merch_details'=>'required',
+                // 'merchcat_id'=>'required',
+            ];
 
-        if($request->hasfile('merch_image')){
-            $merchadiseimage=$request->file('merch_image');
-            $merchmerchadiseimage=$request->get('merch_name').'.'.$merchadiseimage->getClientOriginalExtension();
-            $dest=public_path('/merchadise');
-            $merchadiseimage->move($dest,$merchmerchadiseimage);
-        } else {
-            $merchmerchadiseimage='na';
+            $custommessages=[
+                'merch_name.required'=>'Enter The Merchadise Name',
+                'merch_code.required'=>'Enter The Merchadise Code',
+                'merch_price.required'=>'Enter The Merchadise Price',
+                'merch_price.numeric'=>'Enter a Valid Amount',
+                'merch_details.required'=>'Write Merchadise description here',
+                // 'merchcat_id.required'=>'Select the Merchadise Category',
+            ];
+            $this->validate($request,$rules,$custommessages);
+
+            if(empty($data['is_featured'])){
+                $isfeatured='No';
+            }else{
+                $isfeatured='Yes';
+            }
+
+            if(empty($data['is_attribute'])){
+                $isattribute=0;
+            }else{
+                $isattribute=1;
+            }
+            
+            if(isset($data['fabric'])){
+                $fabrics=implode(',',$data['fabric']);
+                
+            }else{
+                $fabrics="";
+            }
+
+            if($data['is_attribute']==0){
+                $merch_isactive=1;
+            }elseif($data['is_attribute']==1){
+                $merch_isactive=0;
+            }
+
+            if(isset($data['occasion'])){
+                $occasions=implode(',',$data['occasion']);
+                
+            }else{
+                $occasions="";
+            }
+
+            if(empty($data['product_discount'])){
+                $data['product_discount']=0;
+            }
+
+            if($request->hasFile('merch_image')){
+                $imagetmp=$request->file('merch_image');
+                if($imagetmp->isValid()){
+                    $extension=$imagetmp->getClientOriginalExtension();
+                    $image_name=$request->get('merch_name').'-'.rand(111,9999).'.'.$extension;
+
+                    $large_image_path='images/productimages/large/'.$image_name;
+                    $medium_image_path='images/productimages/medium/'.$image_name;
+                    $small_image_path='images/productimages/small/'.$image_name;
+
+                    Image::make($imagetmp)->save($large_image_path);
+                    Image::make($imagetmp)->resize(520,600)->save($medium_image_path);
+                    Image::make($imagetmp)->resize(260,300)->save($small_image_path);
+
+                }
+            }
+
+            if($request->hasFile('merch_video')){
+                $videotmp=$request->file('merch_video');
+                if($videotmp->isValid()){
+                    $extension=$videotmp->getClientOriginalExtension();
+                    $video_name=$request->get('merch_name').'-'.rand(111,9999).'.'.$extension;
+
+                    $video_path='videos/productvideos/';
+                    $videotmp->move($video_path,$video_name);
+                }
+            }
+
+            $merchadise=new Merchadise();
+            $merchadise->merch_name=$data['merch_name'];
+            $merchadise->url=$data['url'];
+            $merchadise->merch_code=$data['merch_code'];
+            $merchadise->merch_price=$data['merch_price'];
+            $merchadise->stock=$data['stock'];
+            $merchadise->merch_isactive=$merch_isactive;
+            $merchadise->merch_details=$data['merch_details'];
+            $merchadise->merchcat_id=$data['merchadisecategory'];
+            $merchadise->is_featured=$isfeatured;
+            $merchadise->product_discount=$data['product_discount'];
+            $merchadise->is_attribute=$isattribute;
+            $merchadise->merch_image=$image_name;
+            $merchadise->merch_video=$video_name;
+            $merchadise->meta_name=$data['meta_name'];
+            $merchadise->meta_description=$data['meta_description'];
+            $merchadise->meta_keywords=$data['meta_keywords'];
+            $merchadise->fabric=$fabrics;
+            $merchadise->occasion=$occasions;
+            $merchadise->save();
+
+            if($isattribute==0){
+                return redirect()->route('merchadise.index')->with('success','Merchadise has been added Successfully');
+            }elseif($isattribute==1){
+                return redirect('admin/merchadise/attributes')->with('success','Merchadise has been added Successfully.Kindly fill the Merchadise attributes');
+            }
         }
-       
-        $merchadise=new Merchadise;
-        $merchadise->merchcat_id=$request->merchadisecategory;
-        $merchadise->merch_name=$request->merch_name;
-        $merchadise->merch_code=$request->merch_code;
-        $merchadise->merch_price=$request->merch_price;
-        $merchadise->merch_splprice=$request->merch_splprice;
-        $merchadise->merch_details=$request->merch_details;
-        $merchadise->merch_image=$merchmerchadiseimage;
-        $merchadise->save();
-
-        foreach($request->file('product_images') as $productimg){
-            $productimagesname=$request->get('merch_name').'.'.$productimg->getClientOriginalExtension();
-            $imgpath=$productimg->store('public/productimages');
-            $imgdata=new Productimages;
-            $imgdata->product_id=$merchadise->id;
-            $imgdata->product_images=$imgpath;
-            // $imgdata->move($imgpath,$productimagesname);
-            $imgdata->save();
-
-
-        }
-
-        return redirect('admin/merchadise')->with('success','The Merchaise has been created succesfully');
     }
 
     /**
@@ -94,110 +188,180 @@ class Merchadise_controller extends Controller
      */
     public function show($id)
     {
-        $merchadisedata=Merchadise::find($id);
-        // dd($merchadisedata->merchadiseattributes);
-        return view('backend.merchadise.productattributes')->with(compact('merchadisedata'));
+        // $merchadisedata=Merchadise::find($id);
+        // // dd($merchadisedata->merchadiseattributes);
+        // return view('backend.merchadise.productattributes')->with(compact('merchadisedata'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Merchadise  $merchadise
+     * @param int  $id
      * @return \Illuminate\Http\Response
      */
         public function edit($id)
         {
-            $merchadisecats=Merchadisecategory::all();
             $merchadisedata=Merchadise::find($id);
+            $merchadisecats=Merchadisecategory::all();
 
-            return view('backend.merchadise.productattributes')->with(compact('$merchadisedata'));
+            $productfilters=Merchadise::productfilters();
+            $fabricarray=$productfilters['fabricarray'];
+            $occasionarray=$productfilters['occasionarray'];
+
+            return view('backend.merchadise.editmerchadise')->with(compact('merchadisedata','fabricarray','occasionarray','merchadisecats'));
         }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Merchadise  $merchadise
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,$id)
     {
-        $request->validate([
-            'merch_name'=>'required',
-            'merch_code'=>'required|unique:merchadises',
-            'merch_details'=>'required',
-            'merch_price'=>'required',
-            'merch_splprice'=>'required',
-            'merch_image'=>'image|mimes:png,jpg,jpeg|max:10000',
-        ]);
+            $data=$request->all();
+            
+            $rules=[
+                'merch_name'=>'required',
+                'merch_code'=>'required',
+                'merch_price'=>'required|numeric',
+                'merch_details'=>'required',
+                // 'merchcat_id'=>'required',
+            ];
 
-        
-        if($request->hasfile('merch_image')){
-            $merchimage=$request->file('merch_image');
-            $merchmerchadiseimage=$request->get('merch_name').'.'.$merchimage->getClientOriginalExtension();
-            $dest=public_path('/merchadise');
-            $merchimage->move($dest,$merchmerchadiseimage);
-        } else {
-            $merchmerchadiseimage=$request->merch_image;
-        }
-       
-        $merchadise=Merchadise::find($id);
-        $merchadise->merchcat_id=$request->merchadisecategory;
-        $merchadise->merch_name=$request->merch_name;
-        $merchadise->merch_code=$request->merch_code;
-        $merchadise->merch_price=$request->merch_price;
-        $merchadise->merch_splprice=$request->merch_splprice;
-        $merchadise->merch_details=$request->merch_details;
-        $merchadise->merch_image=$merchmerchadiseimage;
-        $merchadise->save();
+            $custommessages=[
+                'merch_name.required'=>'Enter The Merchadise Name',
+                'merch_code.required'=>'Enter The Merchadise Code',
+                'merch_price.required'=>'Enter The Merchadise Price',
+                'merch_price.numeric'=>'Enter a Valid Amount',
+                'merch_details.required'=>'Write Merchadise description here',
+                // 'merchcat_id.required'=>'Select the Merchadise Category',
+            ];
+            $this->validate($request,$rules,$custommessages);
 
-        return redirect('admin/merchadise')->with('success','The Merchadise has been Updated succesfully');
+            if(empty($data['is_featured'])){
+                $isfeatured='No';
+            }else{
+                $isfeatured='Yes';
+            }
+
+            if(empty($data['is_attribute'])){
+                $isattribute=0;
+            }else{
+                $isattribute=1;
+            }
+            
+            if(isset($data['fabrics'])){
+                $fabrics=implode(',',$data['fabrics']);
+                
+            }
+
+            if(isset($data['occasions'])){
+                $occasions=implode(',',$data['occasions']);
+                
+            }
+
+            if($request->hasfile('merch_image')){
+                $imagetmp=$request->file('merch_image');
+                $image_name=$request->get('merch_name').'-'.rand(111,9999).'.'.$imagetmp->getClientOriginalExtension();
+
+                $large_image_path='images/productimages/large/'.$image_name;
+                $medium_image_path='images/productimages/medium/'.$image_name;
+                $small_image_path='images/productimages/small/'.$image_name;
+
+                Image::make($imagetmp)->save($large_image_path);
+                Image::make($imagetmp)->resize(520,600)->save($medium_image_path);
+                Image::make($imagetmp)->resize(260,300)->save($small_image_path);
+                $imagetmp->move($large_image_path, $image_name);
+                $imagetmp->move($medium_image_path, $image_name);
+                $imagetmp->move($small_image_path, $image_name);
+            } else {
+                $image_name=$request->merch_image;
+            }
+
+            if($request->hasfile('merch_video')){
+                $videotmp=$request->file('merch_video');
+                $video_name=$request->get('merch_name').'-'.rand(111,9999).'.'.$videotmp->getClientOriginalExtension();
+
+                $video_path='videos/productvideos/'.$video_name;
+
+                $videotmp->move($video_path,$video_name);
+            } else {
+                $video_name=$request->merch_video;
+            }
+
+            $merchadise=Merchadise::find($id);
+            $merchadise->merch_name=$data['merch_name'];
+            $merchadise->url=$data['url'];
+            $merchadise->merch_code=$data['merch_code'];
+            $merchadise->merch_price=$data['merch_price'];
+            $merchadise->stock=$data['stock'];
+            $merchadise->merch_details=$data['merch_details'];
+            $merchadise->merchcat_id=$data['merchadisecategory'];
+            $merchadise->is_featured=$isfeatured;
+            $merchadise->product_discount=$data['product_discount'];
+            $merchadise->is_attribute=$isattribute;
+            $merchadise->merch_image=$image_name;
+            $merchadise->merch_video=$video_name;
+            $merchadise->meta_name=$data['meta_name'];
+            $merchadise->meta_description=$data['meta_description'];
+            $merchadise->meta_keywords=$data['meta_keywords'];
+            $merchadise->fabric=$fabrics;
+            $merchadise->occasion=$occasions;
+            $merchadise->save();
+
+            return redirect('admin/merchadise')->with('success','The Merchadise has been Updated succesfully');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Merchadise  $merchadise
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function addattributes(Request $request,$id)
-    {
-        $merchadisedata=Merchadise::select('id','merch_name','merch_code','merch_image')->findorfail($id);
-        
-        if ($request->isMethod('post')){
-            $data=$request->all();
+        public function addattributes(Request $request,$id)
+        {
+            $merchadisedata=Merchadise::select('id','merch_name','merch_code','merch_image')->with('merchadiseattributes')->find($id);
             
-            foreach($data['productattr_sku'] as $key=>$value){
-                if(!empty($value)){
-                    $attrcountsku=Productattribute::where('productattr_sku',$value)->count();
+            if ($request->isMethod('post')){
+                $data=$request->all();
+                
+                foreach($data['productattr_sku'] as $key=>$value){
+                    if(!empty($value)){
+                        $attrcountsku=Productattribute::where('productattr_sku',$value)->count();
 
-                    if($attrcountsku>0){
-                        $error_message='The Sku already exists.kindly add another one';
-                        Session::flash('error_message',$error_message);
-                        return redirect()->back();
+                        if($attrcountsku>0){
+                            $error_message='The Sku already exists.kindly add another one';
+                            Session::flash('error_message',$error_message);
+                            return redirect()->back();
+                        }
+
+                        $attrcountsize=Productattribute::where(['product_id'=>$id,'productattr_size'=>$data['productattr_size'][$key]])->count();
+                        if($attrcountsize>0){
+                            $success_message='The Sku already exists.kindly add another one';
+                            Session::flash('success_message',$success_message);
+                            return redirect()->back();
+                        }
+
+                        $attribute=new Productattribute;
+                        $attribute->product_id=$id;
+                        $attribute->productattr_sku=$value;
+                        $attribute->productattr_size=$data['productattr_size'][$key];
+                        $attribute->productattr_price=$data['productattr_price'][$key];
+                        $attribute->productattr_stock=$data['productattr_stock'][$key];
+                        $attribute->productattr_status=0;
+                        $attribute->save();
+
+                        $updateproductstatus=Merchadise::where(['id'=>$id])->first();
+                        Merchadise::where(['id'=>$id])->update(['merch_isactive'=>1]);
                     }
-
-                    $attrcountsize=Productattribute::where(['product_id'=>$id,'productattr_size'=>$data['productattr_size'][$key]])->count();
-                    if($attrcountsize>0){
-                        $success_message='The Sku already exists.kindly add another one';
-                        Session::flash('success_message',$success_message);
-                        return redirect()->back();
-                    }
-
-                    $attribute=new Productattribute;
-                    $attribute->product_id=$id;
-                    $attribute->productattr_sku=$value;
-                    $attribute->productattr_size=$data['productattr_size'][$key];
-                    $attribute->productattr_price=$data['productattr_price'][$key];
-                    $attribute->productattr_stock=$data['productattr_stock'][$key];
-                    $attribute->productattr_status=0;
-                    $attribute->save();
                 }
+                return redirect('admin/merchadise/')->with('success','The Attribute has been added Successfully');
+                // return view('backend.merchadise.productattributes')->with(compact('merchadisedata'));
             }
-            return view('backend.merchadise.productattributes')->with(compact('merchadisedata'));;
         }
-    }
 
     /**
      * Update the specified resource in storage.
@@ -208,24 +372,26 @@ class Merchadise_controller extends Controller
      */
     public function editattributes(Request $request,$id)
     {
-        $merchadisedata=Merchadise::select('id','merch_name','merch_code','merch_image')->findorfail($id);
+        $merchadisedata=Merchadise::select('id','merch_name','merch_code','merch_image')->find($id);
         
         if ($request->isMethod('post')){
             $data=$request->all();
-            
             foreach($data['attrid'] as $key=>$attr){
                 if(!empty($attr)){
-                    Productattribute::where(['id'=>$data['attrid'][$key]])->update
-                    (['productattr_price'=>$data['productattr_price'][$key],
-                    'productattr_stock'=>$data['productattr_stock'][$key]]);
+                    Productattribute::where(['id'=>$data['attrid'][$key]])
+                    ->update([
+                        'productattr_price'=>$data['productattr_price'][$key],
+                        'productattr_stock'=>$data['productattr_stock'][$key],
+                    ]);
                 }
-
-                $message='Product attributes have been updated successfully';
-                Session::flash('success_message',$message);
-                return redirect()->back();
             }
-            return view('backend.merchadise.productattributes')->with(compact('merchadisedata'));;
+            $message='Product attributes have been updated successfully';
+                Session::flash('success_message',$message);
+                return redirect('admin/merchadise/'.$merchadisedata->id.'/edit');
         }
+        
+        return view('backend.merchadise.editproductattributes')->with(compact('merchadisedata'));
+        
     }
 
     public function updateattributestatus(Request $request)
@@ -251,9 +417,31 @@ class Merchadise_controller extends Controller
      * @param  \App\Models\Merchadise  $merchadise
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Merchadise $merchadise)
+    public function deletemerchimage(Merchadise $merchadise)
     {
-        //
+        $merch_image=Merchadise::select('merch_image')->where('id',$merchadise)->first();
+
+        $smallimagepath='images/productimages/large/';
+        $mediumimagepath='images/productimages/medium/';
+        $largeimagepath='images/productimages/large/';
+
+        if(file_exists($smallimagepath.$merch_image->merch_image)){
+            unlink($smallimagepath.$merch_image->merch_image);
+        }
+
+        if(file_exists($mediumimagepath.$merch_image->merch_image)){
+            unlink($mediumimagepath.$merch_image->merch_image);
+        }
+
+        if(file_exists($largeimagepath.$merch_image->merch_image)){
+            unlink($largeimagepath.$merch_image->merch_image);
+        }
+
+        Merchadise::where('id',$merchadise)->update(['merch_image'=>'']);
+
+        $message='Merchadise Image Deleted Successfully!';
+        Session::flash('success_message',$message);
+        return redirect()->back();
     }
 
     /**
@@ -290,6 +478,7 @@ class Merchadise_controller extends Controller
         return view('backend.merchadise.editshippingcharge',['shippingdetails'=>$shippingdetails]);   
     }
 
+    // update shipping status
     public function updateshippingstatus(Request $request)
     {
         $shippingstatus=shipping_charge::find($request->shipping_id);
@@ -297,4 +486,13 @@ class Merchadise_controller extends Controller
         $shippingstatus->save();
         // return response()->json(['success'=>'Shipping Status Changed Successfully']);
     }
+
+    // update Coupon status
+    public function updatecouponstatus(Request $request)
+    {
+        $couponstatus=coupon::find($request->coupon_id);
+        $couponstatus->status=$request->status;
+        $couponstatus->save();
+    }
+    
 }

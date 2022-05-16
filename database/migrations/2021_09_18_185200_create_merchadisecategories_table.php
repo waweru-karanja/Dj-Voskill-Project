@@ -16,6 +16,9 @@ class CreateMerchadisecategoriesTable extends Migration
         Schema::create('merchadisecategories', function (Blueprint $table) {
             $table->id();
             $table->String('merchadisecat_title');
+            $table->string('category_discount');
+            $table->string('url');
+            $table->boolean('status')->default('1');
             $table->timestamps();
         });
     }

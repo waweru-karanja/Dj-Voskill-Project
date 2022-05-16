@@ -4,19 +4,25 @@ $.ajaxSetup({
         'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
     }
 });
+
 $(document).ready(function(){
-    // change price based on the attribute
+    
+    // change price based on the attribute in the product page
     $('#getprice').change(function(){
         var productattr_size=$(this).val();
+
         if(productattr_size==""){
-            alert("Please Select Size");
+            alert("Please Select price");
             return false;
         }
         var product_id=$(this).attr("product-id");
         
         $.ajax({
             url:'/getproductprice',
-            data:{productattr_size:productattr_size,product_id:product_id},
+            data:{
+                productsize:productattr_size,
+                product_id:product_id
+            },
             type:'POST',
             success: function(resp){
                 console.log(resp);
@@ -38,7 +44,6 @@ $(document).ready(function(){
             
         });
     });
-
 });
 
 $('.show_confirm').click(function(event) {
@@ -59,42 +64,6 @@ $('.show_confirm').click(function(event) {
     });
 });
 
-
-// update items in the cart page
-$(document).on('click','.itemupdate',function(){
-    
-    if($(this).hasClass('qtyminus')){
-        var quantity=$(this).next().val();
-        console.log("the quantity is ",quantity);
-        new_qty=parseInt(quantity)-1;
-        if(quantity<=1){
-            alert("item must be greater or equal to 1");
-            return false;
-        }else{
-            new_qty=parseInt(quantity)-1;
-        }
-    }
-
-    if($(this).hasClass('qtyplus')){
-        // console.log($(this).prev());
-        var quantity=$(this).prev().val();
-        new_qty=parseInt(quantity)+1;
-    }
-
-    var cartid=$(this).data('cartid');
-    
-    $.ajax({
-        // $.ajax().always(function(data){
-        data:{"cartid":cartid,"quantity":new_qty},
-        url:'/updatecartitemquantity',
-        type:'post',
-        success:function(resp){
-            $("#appendcartitems").html(resp.view);
-        },error:function(){
-            alert("error");
-        }
-    })
-})
 
 // select Dynamic dropdown for the shipping counties
 $(document).on('change','.county',function(){
@@ -125,9 +94,6 @@ $(document).on('change','.county',function(){
 // show the price based on the town
 $(document).on('change','.town',function(){
     var tow_id=$(this).val();
-    // var a=$(this).parent();
-    
-    
     $.ajax({
         type:'get',
         url:'displayshippingprice',
@@ -135,16 +101,26 @@ $(document).on('change','.town',function(){
         dataType:'json',
         success:function(data){
             console.log(data);
-            console.log(data.shipping_charges); 
-                $('.total_amount').val(data.shipping_charges);
-                $('.pickup_point').val(data.pickuppoint);
-                $('.shipping_amount').html(data.shipping_charges);
-                
+            console.log(data.shipping_charges);
+            $('.total_amount').val(data.shipping_charges);
+            $('.pickup_point').val(data.pickuppoint);
+            $('.shipping_amount').html(data.shipping_charges);
+            
         },
         error:function(){
 
         }
     });
+
+    var shippingcharges=val((parseFloat($("#shipping_amount").val())));
+    //here am trying to get the subtotal price
+    var sub_total=val((parseFloat($("#sub_total").val())));
+    //here am getting the total price
+    var grand_total=parseInt(sub_total)+parseInt(shippingcharges);
+    //here am displaying the grand_total in the browser
+     $('#grand_total').html("Ksh"+grand_total);
+
+
 });
 
 // change list to grid view 
@@ -153,9 +129,3 @@ $(document).ready(function() {
     $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
 });
 
-// script for showing products on sorting in products list
-$(document).ready(function(){
-    $("#nice-select").on('change',function(){
-        this.form.submit();
-    });
-});

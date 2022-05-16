@@ -16,6 +16,6 @@ class MerchadiseSeeder extends Seeder
      */
     public function run()
     {
-        Merchadise::factory()->count(15)->create();
+        Merchadise::factory()->count(7)->create();
     }
 }

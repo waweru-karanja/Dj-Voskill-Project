@@ -22070,13 +22070,6 @@ dl li {
   outline: 1px solid slategrey;
 }
 
-/*# sourceMappingURL=maps/style.css.map */
-
-.table th, .table td { max-width: 150px;
-   min-width: 70px; overflow-x: scroll;
-    text-overflow: scroll; white-space: nowrap; }
-
-
   /*----------------------
   10.- Contact us  
 -----------------------*/
@@ -22091,3 +22084,4 @@ dl li {
 .contact-info p { margin-bottom: 0px; }
 .contact-info li:last-child { margin-bottom: 0px; border: none; }
 
+/* datatables */

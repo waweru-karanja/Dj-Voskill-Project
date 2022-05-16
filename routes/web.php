@@ -2,12 +2,14 @@
 
 use App\Models\Postcomments;
 use App\Http\Middleware\Admin;
+use App\Models\Merchadisecategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mix_Controller;
 use App\Http\Controllers\Home_Controller;
 use App\Http\Controllers\Role_Controller;
 use App\Http\Controllers\User_controller;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\Searchcontroller;
 use App\Http\Controllers\Admins_Controller;
 use App\Http\Controllers\Events_Controller;
@@ -30,11 +32,11 @@ use App\Http\Controllers\Commentreplies_controller;
 use App\Http\Controllers\MerchadiseAttr_controller;
 use App\Http\Controllers\BlogpostComment_controller;
 use App\Http\Controllers\Bookingcategory_controller;
+use App\Http\Controllers\Merchadisesection_controller;
 use App\Http\Controllers\product_categoriescontroller;
 use App\Http\Controllers\Bookingsattributes_controller;
 use App\Http\Controllers\Merchadisecategory_controller;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,13 +79,28 @@ Route::get('/events', [Home_Controller::class,'events'])->name('events');
 Route::get('event/{slug}/{id}', [Home_Controller::class,'singleevent'])->name('singleevent');
 
             /*Merchadise Page */
-Route::get('/products', [Home_Controller::class,'merchadise'])->name('merchadise');
+$caturls=Merchadisecategory::select('url')->where('status',1)->get()->pluck('url');
+
+foreach($caturls as $url)
+{
+    Route::get('/'.$url,[Home_Controller::class,'merchadise'])->name('merchadise');
+}
+// Route::get('/products', [Home_Controller::class,'merchadise'])->name('merchadise');
+
+// slide to fetch products
+Route::get('/productslider', [Home_Controller::class,'productslider'])->name('productslider');
 
 Route::get('merchadise/{slug}/{id}', [Home_Controller::class,'singleproduct'])->name('singleproduct');
 
 Route::post('/addtocart', [Home_Controller::class,'addtocart'])->name('addtocart');
 
+// get attribute price in the product page
+Route::post('/add-to-cart', [Home_Controller::class,'add_to_cart'])->name('add-to-cart');
+
 Route::post('/getproductprice', [Home_Controller::class,'getproductprice'])->name('getproductprice');
+
+// get attribute price in the listing page
+Route::post('/getattrproductprice', [Home_Controller::class,'getattrproductprice'])->name('getattrproductprice');
 
 Route::get('/mycart',[Home_controller::class,'cart'])->name('mycart');
 
@@ -91,15 +108,31 @@ Route::post('delete-cart-item/{id}', [Home_controller::class,'deletecartitem'])-
 
 Route::post('/updatecartitemquantity', [Home_Controller::class,'updatecartitem'])->name('updatecartitem');
 
-Route::get('/checkout',[Home_controller::class,'checkout'])->middleware(['auth'])->name('mycheckout');
-
-Route::post('/addtoorder', [Home_Controller::class,'addtoorder'])->name('addtoorder');
-
 Route::get('/getshippingprice',[Home_controller::class,'getshippingprice'])->name('getshippingprice');
 
 Route::get('/displayshippingprice',[Home_controller::class,'displayshippingprice'])->name('displayshippingprice');
 
 Route::resource('address',Address_Controller::class);
+
+Route::group(['middleware'=>['auth']],function(){
+    Route::post('/apply-coupon',[Home_controller::class,'applycoupon'])->name('applycoupon');
+
+    Route::post('/addtoorder', [Home_Controller::class,'addtoorder'])->name('addtoorder');
+
+    Route::get('/checkout',[Home_controller::class,'checkout'])->name('mycheckout');
+
+    Route::get('/paypal', [Home_Controller::class,'paypal'])->name('paypal');
+
+    Route::get('/mpesa', [Home_Controller::class,'mpesa'])->name('mpesa');
+
+    Route::get('paypal/success', [Home_Controller::class,'paypalsuccess'])->name('paypalsuccess');
+
+    Route::get('paypal/fail', [Home_Controller::class,'paypalfail'])->name('paypalfail');
+
+    Route::get('/thankyou',[Home_controller::class,'thankyouorder'])->name('thankyouorder');
+});
+
+
 
             /*Blog Page */
 Route::group(['prefix'=>'blog'],function(){
@@ -180,22 +213,30 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
 
     Route::resource('blogpost', Blogpost_Controller::class);
 
+    Route::get('merchadise/attributes', [Merchadise_controller::class,'attributes'])->name('attributes');
+
     Route::resource('merchadise', Merchadise_controller::class);
+
+    Route::resource('merchadisecategory', Merchadisecategory_controller::class);
+
+    Route::get('/updatecategorystatus',[Merchadisecategory_controller::class,'updatecategorystatus'])->name('updatecategorystatus');
+
+    Route::resource('merchadisesections', Merchadisesection_controller::class);
+
+    Route::get('/updatesectionstatus',[Merchadisesection_controller::class,'updatesectionstatus'])->name('updatesectionstatus');
+
+    Route::get('delete-merch-image/{id}', [CouponController::class,'deletemerchimage'])->name('deletemerchimage');
+
+    Route::get('delete-merch-video/{id}', [CouponController::class,'deletemerchvideo'])->name('deletemerchvideo');
+
+    // Route::get('merchadise/addatributes/{id}', [Merchadise_controller::class,'show'])->name('addattributes');
     
-    // Route::post('/getproductprice', [Home_controller::class,'getproductprice'])->name('getproductprice');
-    // Merchadise
     Route::resource('coupons', CouponController::class);
 
-    // Route::get('/createcoupon', [CouponController::class,'create'])->name('createcoupon');
-
-    // Route::match(['get','post'],'add-edit-coupon/{id?}',[CouponController::class,'addeditcoupon'])->name('addeditcoupon');
-
     // Merchadise attributes
-    Route::get('merchadise/addatributes/{id}', [Merchadise_controller::class,'show'])->name('addattributes');
+    Route::post('/attributes/{id}', [Merchadise_controller::class,'addattributes'])->name('addattributes');
 
-    Route::post('/attributes/{id}', [Merchadise_controller::class,'addattributes'])->name('attributes');
-
-    Route::post('/edit-attributes/{id}', [Merchadise_controller::class,'editattributes'])->name('editattributes');
+    Route::match(['get','post'],'edit-attributes/{id}', [Merchadise_controller::class,'editattributes'])->name('editattributes');
 
     Route::post('/updateattributestatus', [Merchadise_controller::class,'updateattributestatus'])->name('updateattributestatus');
 
@@ -204,10 +245,10 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     Route::match(['get','post'],'editshippingcharges/{id}', [Merchadise_controller::class,'editshippingcharge'])->name('editshippingcharge');
 
     Route::get('/updateshippingstatus',[Merchadise_controller::class,'updateshippingstatus'])->name('updateshippingstatus');
+
+    Route::get('/updatecouponstatus',[Merchadise_controller::class,'updatecouponstatus'])->name('updatecouponstatus');
     
     /*Post comment Page */
-
-    Route::resource('merchadisecategory', Merchadisecategory_controller::class);
 
     Route::get('blogpost/{id}/delete', [Blogpost_Controller::class,'destroy']);
 

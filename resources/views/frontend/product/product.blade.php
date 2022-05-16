@@ -1,6 +1,6 @@
 <?php use App\Models\Merchadise; ?>
 @extends('frontend.master')
-@section('title','Our Merchandise')
+@section('title','Our Merchadise')
 @section('content')
 
 <div class="ps-shop ps-shop--grid">
@@ -19,9 +19,9 @@
                             <li>
                                 <div class="ltn__grid-list-tab-menu ">
                                     <div class="nav">
-                                        <button class="btn btn-info listview" id="list">
+                                        {{-- <button class="btn btn-info listview" id="list">
                                             List View
-                                        </button>
+                                        </button> --}}
                                         <button class="btn btn-danger active gridview" id="grid">
                                             Grid View
                                         </button>
@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <p>
                                     <label for="amount">Price range:</label>
                                     <input type="text" id="amount_start" name="start_price" value="250" readonly="readonly" style="border:0px; font-weight:bold;">
@@ -38,7 +38,7 @@
                                 </p>
                                     
                                 <div id="slider-range"></div>
-                            </li>
+                            </li> --}}
                             <li>
                                 <div class="showing-product-number text-right">
                                     <form name="sortproducts">
@@ -75,7 +75,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div id="showproducts" class="row list-group">
+                    <div id="showproducts" class="row grid-group">
                         @if (count($products)>0)
                             @foreach ($products as $product)
                                 <div class="item col-xs-3 col-lg-3">

@@ -39,7 +39,7 @@
         </div>
     </div>
     
-    <!----Events Start---->
+    <!----Blog Start---->
     <div class="ms_genres_wrapper" style=" margin-bottom:20px;">
         <div class="row">
             <div class="col-lg-12">
@@ -118,6 +118,34 @@
                     </table>
                 @endif
             </div>
+            
+        </div>
+    </div>
+
+    <!----Products start---->
+    <div class="ms_genres_wrapper" style=" margin-bottom:20px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ms_heading">
+                    <h2>Our Merchadise</h2>
+                    <span class="veiw_all"><a href="{{route ('blog') }}">View All</a></span>
+                </div>
+            </div>
+            @foreach ($merchad as $merch )
+            <div class="col-lg-3 col-md-6" style="border:2px solid black;">
+                <div class="swiper-slide">
+                    <div class="ms_rcnt_box">
+                        <div class="ms_rcnt_box_img">
+                            <img src="{{ asset('blogposts/'.$merch->blo_image) }}" alt="{{ $merch->blo_title }}" style="width:100%; height:200px;">
+                            
+                        </div>
+                        <div class="ms_rcnt_box_text">
+                            <h3><a href="{{ url('blog/post/'.Str::slug($merch->blo_title).'/'.$merch->id) }}">{{ $merch->blo_title }} </a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
             
         </div>
     </div>
