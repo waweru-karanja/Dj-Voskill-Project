@@ -68,6 +68,7 @@
             <li class="nav-item {{ 'admin/merchadise/merchadisesections'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('merchadisesections.index') }}"> All Product Sections</a></li>
             <li class="nav-item {{ 'admin/shippingcharges'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('shippingcharges') }}"> Shipping Charges </a></li>
             <li class="nav-item {{ 'admin/coupons'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('coupons.index') }}"> Coupons For Our Merchadise </a></li>
+            <li class="nav-item {{ 'admin/mpesapayments'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('mpesapayments.index') }}"> Payments Made by Mpesa </a></li>
           </ul>
         </div>
       </li>

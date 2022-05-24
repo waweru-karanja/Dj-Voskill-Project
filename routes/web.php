@@ -22,6 +22,7 @@ use App\Http\Controllers\Bookings_controller;
 use App\Http\Controllers\ContactUs_Controller;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Merchadise_controller;
+use App\Http\Controllers\MpesapaymentController;
 use App\Http\Controllers\PostComment_controller;
 use App\Http\Controllers\Userprofile_controller;
 use App\Http\Controllers\Blogcategory_Controller;
@@ -32,6 +33,7 @@ use App\Http\Controllers\Commentreplies_controller;
 use App\Http\Controllers\MerchadiseAttr_controller;
 use App\Http\Controllers\BlogpostComment_controller;
 use App\Http\Controllers\Bookingcategory_controller;
+use App\Http\Controllers\MpesatransactionController;
 use App\Http\Controllers\Merchadisesection_controller;
 use App\Http\Controllers\product_categoriescontroller;
 use App\Http\Controllers\Bookingsattributes_controller;
@@ -123,11 +125,16 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::get('/paypal', [Home_Controller::class,'paypal'])->name('paypal');
 
-    Route::get('/mpesa', [Home_Controller::class,'mpesa'])->name('mpesa');
-
     Route::get('paypal/success', [Home_Controller::class,'paypalsuccess'])->name('paypalsuccess');
 
     Route::get('paypal/fail', [Home_Controller::class,'paypalfail'])->name('paypalfail');
+
+        // pay with mpesa
+    Route::get('/mpesa', [Home_Controller::class,'mpesa'])->name('mpesa');
+
+    Route::get('/mpesa/confirm', [Home_Controller::class,'confirm_mpesa'])->name('confirm_mpesa');
+
+    Route::post('/mpesa/confirm/transaction', [Home_Controller::class,'confirm_transaction'])->name('confirm_transaction');
 
     Route::get('/thankyou',[Home_controller::class,'thankyouorder'])->name('thankyouorder');
 });
@@ -285,6 +292,9 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     Route::get('/paidbookings', [Bookings_controller::class,'depositpaid'])->name('paidbookings');
 
     Route::get('/cancelledbookings', [Bookings_controller::class,'cancelledbookings'])->name('cancelledbookings');
+
+            // all mpesa and paypal payments
+    Route::resource('mpesapayments',MpesapaymentController::class);
 
 });
 

@@ -149,7 +149,6 @@
             // sort products on dropdown
             $("#sort").on('change',function(){
                 var sortproducts=$(this).val();
-                alert(sortproducts)
             })
 
             // slider function

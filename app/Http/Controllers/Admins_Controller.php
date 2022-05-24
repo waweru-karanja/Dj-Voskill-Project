@@ -75,14 +75,14 @@ class Admins_Controller extends Controller
     {
 
         $role=Role::where('id',$request->rolename)->first();
-          if($role->Role_name!=='Regular User' && $user->is_admin=1)
-          {
-             $user->roles()->sync($role);
-          }
-         elseif($role->Role_name='Regular User' && $user->is_admin=1){
-             $user->roles()->sync($role);
-             $user->update(['is_admin'=>0]);
-         }
+        if($role->Role_name!=='Regular User' && $user->is_admin=1)
+        {
+            $user->roles()->sync($role);
+        }
+        elseif($role->Role_name='Regular User' && $user->is_admin=1){
+            $user->roles()->sync($role);
+            $user->update(['is_admin'=>0]);
+        }
 
          $user->role_id=$request->rolename;
          $user->save();

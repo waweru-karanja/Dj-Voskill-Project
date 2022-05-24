@@ -69,12 +69,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MerchadisecategorySeeder::class);
 
-        $this->call([
-            MerchadisestatusSeeder::class,
-            MerchadiseSeeder::class,
-        ]);
-        \App\Models\Merchadisestatus::factory()->hasproducts(7)->create();
-
         $this->call(ProductattributeSeeder::class);
 
         $this->call(paymentmethodSeeder::class);

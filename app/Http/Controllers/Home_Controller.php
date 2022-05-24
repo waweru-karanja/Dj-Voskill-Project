@@ -485,6 +485,11 @@ class Home_Controller extends Controller
         return view('frontend.product.mpesa',['events'=>$events]);
     }
 
+    public function confirm_mpesa (){
+        $events=Events::orderby('id','desc')->paginate(4);
+        return view('frontend.product.mpesaconfirm',['events'=>$events]);
+    }
+    
     // success paypal
     public function paypalsuccess(){
         if(Session::has('order_id')){

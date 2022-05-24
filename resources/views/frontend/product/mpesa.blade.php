@@ -10,7 +10,7 @@
         </div>
         
         <div class="panel-body">
-            <form action="#" class="form-horizontal" role="form" method="POST">
+            <form action="{{route('stkpush')}}" class="form-horizontal" role="form" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -18,14 +18,16 @@
                         <div class="form-group">
                             <label for="product_discount" class=" control-label">Amount To Pay</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control text-white bg-dark" name="product_discount" id="product_discount" value="total amount">
+                                <input type="number" class="form-control text-white bg-dark" name="total_amount" id="total_amount" value="{{ Session::get('grand_total') }}">
                             </div>
                         </div>
+
+                        <input type="text" class="form-control text-white bg-dark" name="user" id="user" value="{{ Auth::user() }}" hidden>
 
                         <div class="form-group">
                             <label for="merch_code" class=" control-label">Phone Number</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control text-white bg-dark" required name="merch_code" id="merch_code" placeholder="Phone Number To Charge Amount">
+                                <input type="number" class="form-control text-white bg-dark" required name="phone_number" id="phone_number" placeholder="Phone Number To Charge Amount">
                             </div>
                         </div>
 
